@@ -1,0 +1,8 @@
+<li class="tagged_item">
+	<a href="{url}" rel="{tag}">{title}</a>
+	{!if related_tags}
+	<div class="related_tags">
+		{related}: {related_tags}
+	</div>
+	{!endif}
+</li>
