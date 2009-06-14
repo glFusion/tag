@@ -194,7 +194,7 @@ function plugin_upgrade_tag() {
 		case '0.3.0':	// 0.3.0 --> 0.3.1
 		case '0.3.1':
 		case '0.3.2':
-            require_once $_CONF['path'] . 'plugins/themedit/install_defaults.php';
+            require_once $_CONF['path'] . 'plugins/tag/install_defaults.php';
             plugin_initconfig_tag();
 			break;
 		case '0.4.1':
