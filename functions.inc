@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                             |
+// | Copyright (C) 2008-2009 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -196,8 +196,9 @@ function plugin_upgrade_tag() {
 		case '0.3.2':
             require_once $_CONF['path'] . 'plugins/tag/install_defaults.php';
             plugin_initconfig_tag();
-			break;
 		case '0.4.1':
+		case '0.4.2':
+		case '0.4.3':
 			break;
 		default:
 			break;
@@ -215,7 +216,13 @@ function plugin_getheadercss_tag() {
     global $_CONF;
 
     $styles = array();
-    $styles[] = $_CONF['path_html'] . 'tag/tag.css';
+
+    $layout_css = $_CONF['path_layout'] . '/tag.css';
+    if (file_exists($layout_css)) {
+        $styles[] = $layout_css;
+    } else {
+        $styles[] = $_CONF['path_html'] . 'tag/tag.css';
+    }
     return($styles);
 }
 
@@ -259,7 +266,7 @@ function plugin_enablestatechange_tag($state) {
 }
 
 /**
-* Add template vars to 'storytext.thtml', 'featuredstorytext.thtml' and
+* Add template vars to 'article.thtml', 'featuredstorytext.thtml' and
 * 'archivestorytext.thtml'.
 *
 *
@@ -269,7 +276,7 @@ if ($_TAG_CONF['publish_as_template_vars'] === true) {
 	function plugin_templatesetvars_tag($templatename, &$template) {
 		global $_TAG_CONF;
 
-		if (in_array($templatename, array('featuredstorytext', 'storytext', 'archivestorytext'))) {
+        if (in_array($templatename, array('featuredarticle', 'article', 'archivearticle'))) {
 			$template->set_var('tag_label', $_TAG_CONF['template_vars']['tag_label']);
 			$template->set_var('tag_part', $_TAG_CONF['template_vars']['tag_part']);
 		}
@@ -326,6 +333,9 @@ function TAG_post($name, $is_token = false, $is_num = false) {
 * Escape a string for displaying in HTML
 */
 function TAG_escape($str) {
+
+//    return $str;
+
 	// Unescape a string
 	$str = str_replace(
 		array('&lt;', '&gt;', '&amp;', '&quot:', '&#039;'),
@@ -430,27 +440,13 @@ function TAG_normalize($str) {
 	global $_TAG_CONF;
 
 	$encoding = COM_getCharset();
-	if (function_exists('mb_convert_kana')) {
-		/**
-		* Convert Zenkaku alphabet and number into Hankaku, and Hankaku Katakana
-		* into Zenkaku Katakana.  We distinguish between Hiragana and Katakana.
-		*/
-		$str = mb_convert_kana($str, 'aKV', $encoding);
-		if ($_TAG_CONF['tag_case_sensitive'] === false) {
-			$str = mb_strtolower($str, $encoding);
-		}
 
-		if (mb_strwidth($str, $encoding) > $_TAG_CONF['max_tag_len']) {
-			$str = mb_strcut($str, 0, $_TAG_CONF['max_tag_len'], $encoding);
-		}
-	} else {
-		if ($_TAG_CONF['tag_case_sensitive'] === false) {
-			$str = strtolower($str);
-		}
+	if ($_TAG_CONF['tag_case_sensitive'] === false) {
+		$str = MBYTE_strtolower($str);
+	}
 
-		if (strlen($_TAG_CONF['max_tag_len']) > $_TAG_CONF['max_tag_len']) {
-			$str = substr($str, 0, $_TAG_CONF['max_tag_len']);
-		}
+	if (MBYTE_strlen($_TAG_CONF['max_tag_len']) > $_TAG_CONF['max_tag_len']) {
+		$str = MBYTE_substr($str, 0, $_TAG_CONF['max_tag_len']);
 	}
 
 	return $str;
@@ -705,8 +701,8 @@ function plugin_itemsaved_tag($id, $type) {
 			 . "WHERE (sid = '" . addslashes($id) . "')";
 		$result = DB_query($sql);
 		$A = DB_fetchArray($result);
-		$introtext = stripslashes($A['introtext']);
-		$bodytext  = stripslashes($A['bodytext']);
+		$introtext = $A['introtext'];
+		$bodytext  = $A['bodytext'];
 		$tag1 = TAG_scanTag($introtext);
 		$tag2 = TAG_scanTag($bodytext);
 		$tags = array_merge($tag1, $tag2);
@@ -858,9 +854,9 @@ function TAG_getTaggedItems($tag) {
 
 	while (($A = DB_fetchArray($result)) !== false) {
 		list($type, $sid) = $A;
-		$type = stripslashes($type);
-		$sid  = stripslashes($sid);
-		$list[] = array('type' => $type, 'sid' => $sid);
+		if ( $type != '' && $sid != '' ) {
+    		$list[] = array('type' => $type, 'sid' => $sid);
+    	}
 	}
 
 	$T = new Template($_CONF['path'] . 'plugins/tag/templates');
@@ -879,9 +875,9 @@ function TAG_getTaggedItems($tag) {
 				}
 
 				$A = DB_fetchArray($result);
-				$title = TAG_escape(stripslashes($A['title']));
-				$body  = stripslashes($A['introtext']) . '<br>'
-					   . stripslashes($A['bodytext']);
+				$title = TAG_escape($A['title']);
+				$body  = $A['introtext'] . '<br />'
+					   . $A['bodytext'];
 				$all_tags = TAG_scanTag($body);
 				$url = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $L['sid']);
 				break;
@@ -926,12 +922,7 @@ function TAG_checkBadword($word) {
 
 		$loaded = true;
 	}
-
-	if (function_exists('mb_strtolower')) {
-		$word = mb_strtolower($word, COM_getCharset());
-	} else {
-		$word = strtolower($lower);
-	}
+    $word = MBYTE_strtolower($word);
 
 	return in_array($word, $list);
 }
@@ -951,10 +942,10 @@ function TAG_rescanTag($tag) {
 	$sids = array();
 
 	while (($A = DB_fetchArray($result)) !== false) {
-		if (in_array($tag, TAG_scanTag(stripslashes($A['introtext'])))) {
+		if (in_array($tag, TAG_scanTag($A['introtext']))) {
 			$sids[] = $A['sid'];
 			continue;
-		} else if (in_array($tag, TAG_scanTag(stripslashes($A['bodytext'])))) {
+		} else if (in_array($tag, TAG_scanTag($A['bodytext']))) {
 			$sids[] = $A['sid'];
 		}
 	}
@@ -1022,8 +1013,8 @@ function TAG_scanAllStories() {
 	$tags = array();
 
 	while (($A = DB_fetchArray($result)) !== false) {
-		$tags_in_introxtext = TAG_scanTag(stripslashes($A['introtext']));
-		$tags_in_bodytext   = TAG_scanTag(stripslashes($A['bodytext']));
+		$tags_in_introxtext = TAG_scanTag($A['introtext']);
+		$tags_in_bodytext   = TAG_scanTag($A['bodytext']);
 		$temp = array_merge($tags_in_introxtext, $tags_in_bodytext);
 		if (count($temp) > 0) {
 			$tags[$A['sid']] = $temp;
@@ -1103,7 +1094,7 @@ function TAG_getStoryTitle($sid) {
 	$result = DB_query($sql);
 	if (!DB_error() AND DB_numRows($result) == 1) {
 		$A = DB_fetchArray($result);
-		return stripslashes($A['title']);
+		return $A['title'];
 	} else {
 		return '';
 	}

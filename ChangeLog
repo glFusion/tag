@@ -1,0 +1,5 @@
+Tag Plugin ChangeLog
+
+0.4.3
+-----
+- Fixed error where phantom tags could appear.
