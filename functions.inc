@@ -863,6 +863,9 @@ function TAG_getTaggedItems($tag) {
 	$T->set_file('item', 'tagged_item.thtml');
 
 	foreach ($list as $L) {
+	    $title = '';
+	    $url   = '';
+        $all_tags = '';
 		switch ($L['type']) {
 			case 'article':
 				$sql = "SELECT title, introtext, bodytext "
