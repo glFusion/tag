@@ -35,7 +35,7 @@ require_once '../lib-common.php';
 /**
 * Retrieve request vars
 */
-COM_setArgNames(array('tag'));
+COM_setArgNames(array('tag',''));
 $tag = COM_getArgument('tag');
 
 /**
