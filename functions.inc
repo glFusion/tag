@@ -338,8 +338,8 @@ function TAG_escape($str) {
 
 	// Unescape a string
 	$str = str_replace(
-		array('&lt;', '&gt;', '&amp;', '&quot:', '&#039;'),
-		array(   '<',    '>',     '&',      '"',      "'"),
+        array('&lt;', '&gt;',  '&auml;', '&ouml;', '&amp;', '&quot:', '&#039;'),
+        array(   '<',    '>',   'ä',    'ö',    '&', '"',      "'"),
 		$str
 	);
 
