@@ -1,7 +1,8 @@
 Tag Plugin ChangeLog
 
-0.4.3
+0.5.0
 -----
+- Implemented Media Gallery and Static Page support
 - Fixed issue where admin could not ban or delete a tag.
 - Tag menu did not work with URL rewrite enabled.
 - Fixed error where phantom tags could appear.

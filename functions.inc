@@ -689,36 +689,97 @@ function TAG_isBadword($word) {
 * Call back function invoked when an item is being saved
 */
 function plugin_itemsaved_tag($id, $type) {
-	global $_TABLES;
+	global $_TABLES, $_PLUGINS;
 
-	if ($type == 'article') {
-		// Delete old records from tag_map
-		$sql = "DELETE FROM {$_TABLES['tag_map']} "
-			 . "WHERE (type = 'article') AND (sid = '" . addslashes($id) . "')";
-		DB_query($sql);
+	switch ($type) {
+	    case 'article' :
+    		// Delete old records from tag_map
+    		$sql = "DELETE FROM {$_TABLES['tag_map']} "
+    			 . "WHERE (type = 'article') AND (sid = '" . addslashes($id) . "')";
+    		DB_query($sql);
 
-		$sql = "SELECT introtext, bodytext FROM {$_TABLES['stories']} "
-			 . "WHERE (sid = '" . addslashes($id) . "')";
-		$result = DB_query($sql);
-		$A = DB_fetchArray($result);
-		$introtext = $A['introtext'];
-		$bodytext  = $A['bodytext'];
-		$tag1 = TAG_scanTag($introtext);
-		$tag2 = TAG_scanTag($bodytext);
-		$tags = array_merge($tag1, $tag2);
-		$tags = array_unique($tags);
-		if (count($tags) > 0) {
-			foreach ($tags as $tag) {
-				if (!TAG_isBadword($tag)) {
-					TAG_saveTagToList($tag);
-					TAG_saveTagToMap($tag, $id, $type);
-				}
+    		$sql = "SELECT introtext, bodytext FROM {$_TABLES['stories']} "
+    			 . "WHERE (sid = '" . addslashes($id) . "')";
+    		$result = DB_query($sql);
+			if (DB_numRows($result) == 0) {
+				return false;
 			}
-		}
-	} else {
-		COM_errorLog('plugin_itemsaved_tag: $id = ' . $id . ', $type = ' . $type);
-	}
+    		$A = DB_fetchArray($result);
+    		$introtext = $A['introtext'];
+    		$bodytext  = $A['bodytext'];
+    		$tag1 = TAG_scanTag($introtext);
+    		$tag2 = TAG_scanTag($bodytext);
+    		$tags = array_merge($tag1, $tag2);
+    		$tags = array_unique($tags);
+    		if (count($tags) > 0) {
+    			foreach ($tags as $tag) {
+    				if (!TAG_isBadword($tag)) {
+    					TAG_saveTagToList($tag);
+    					TAG_saveTagToMap($tag, $id, $type);
+    				}
+    			}
+    		}
+    		break;
+    	case 'staticpage' :
+            if (!in_array('staticpages', $_PLUGINS)) {
+                return false;
+            }
+    		// Delete old records from tag_map
+    		$sql = "DELETE FROM {$_TABLES['tag_map']} "
+    			 . "WHERE (type = 'staticpage') AND (sid = '" . addslashes($id) . "')";
+    		DB_query($sql);
 
+    		$sql = "SELECT sp_content FROM {$_TABLES['staticpage']} "
+    			 . "WHERE (sp_id = '" . addslashes($id) . "')";
+    		$result = DB_query($sql);
+			if (DB_numRows($result) == 0) {
+				return false;
+			}
+    		$A = DB_fetchArray($result);
+    		$text = $A['sp_content'];
+    		$tags = TAG_scanTag($text);
+    		$tags = array_unique($tags);
+    		if (count($tags) > 0) {
+    			foreach ($tags as $tag) {
+    				if (!TAG_isBadword($tag)) {
+    					TAG_saveTagToList($tag);
+    					TAG_saveTagToMap($tag, $id, $type);
+    				}
+    			}
+    		}
+    		break;
+        case 'mediagallery' :
+            if (!in_array('mediagallery', $_PLUGINS)) {
+                return false;
+            }
+    		// Delete old records from tag_map
+    		$sql = "DELETE FROM {$_TABLES['tag_map']} "
+    			 . "WHERE (type = 'mediagallery') AND (sid = '" . addslashes($id) . "')";
+    		DB_query($sql);
+
+    		$sql = "SELECT media_desc FROM {$_TABLES['mg_media']} "
+    			 . "WHERE (media_id = '" . addslashes($id) . "')";
+    		$result = DB_query($sql);
+			if (DB_numRows($result) == 0) {
+				return false;
+			}
+    		$A = DB_fetchArray($result);
+    		$text = $A['media_desc'];
+    		$tags = TAG_scanTag($text);
+    		$tags = array_unique($tags);
+    		if (count($tags) > 0) {
+    			foreach ($tags as $tag) {
+    				if (!TAG_isBadword($tag)) {
+    					TAG_saveTagToList($tag);
+    					TAG_saveTagToMap($tag, $id, $type);
+    				}
+    			}
+    		}
+    		break;
+        default :
+    		COM_errorLog('plugin_itemsaved_tag: $id = ' . $id . ', $type = ' . $type);
+    		break;
+    }
 	return false;
 }
 
@@ -749,9 +810,9 @@ function TAG_getLevel($count) {
 *                           false = for public_html/tag/index.php
 */
 function TAG_getTagCloud($limit = 0, $is_block = false) {
-	global $_CONF, $_TABLES, $_TAG_CONF;
+	global $_CONF, $_TABLES, $_TAG_CONF, $_PLUGINS;
 
-	$sql = "SELECT t.tag_id, t.tag, COUNT(t.tag_id) AS cnt "
+	$sql = "SELECT t.tag_id, t.tag, m.type, COUNT(t.tag_id) AS cnt "
 		 . "FROM {$_TABLES['tag_map']} AS m "
 		 . "LEFT JOIN {$_TABLES['tag_list']} AS t "
 		 . "ON t.tag_id = m.tag_id "
@@ -768,7 +829,7 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
 	$list = array();
 
 	while (($A = DB_fetchArray($result)) !== false) {
-		$list[$A['tag']] = array('tag_id' => $A['tag_id'], 'cnt' => $A['cnt']);
+		$list[$A['tag']] = array('tag_id' => $A['tag_id'], 'cnt' => $A['cnt'], 'type' => $A['type']);
 	}
 
 	ksort($list, SORT_STRING);
@@ -784,6 +845,11 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
 	$items = '';
 
 	foreach ($list as $tag => $data) {
+	    if ( $data['type'] != 'article' ) {
+            if (!in_array($data['type'], $_PLUGINS)) {
+                continue;
+            }
+        }
 		$rel   = rawurlencode($tag);
 		$title = $tag;
 		if ($_TAG_CONF['replace_underscore'] === true) {
@@ -839,7 +905,7 @@ function TAG_formatRelatedTags($all_tags, $tag) {
 * Return items with a given tag
 */
 function TAG_getTaggedItems($tag) {
-	global $_CONF, $_TABLES, $_TAG_CONF;
+	global $_CONF, $_TABLES, $_TAG_CONF, $_PLUGINS, $_MG_CONF, $MG_albums;
 
 	$retval = '';
 
@@ -885,7 +951,52 @@ function TAG_getTaggedItems($tag) {
 				$url = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $L['sid']);
 				break;
 
-			default:
+            case 'mediagallery' :
+                if (!in_array('mediagallery', $_PLUGINS)) {
+                    return false;
+                }
+                $sql = "SELECT media_title, media_desc, album_id "
+                     . "FROM {$_TABLES['mg_media']} m LEFT JOIN {$_TABLES['mg_media_albums']} ma ON m.media_id=ma.media_id "
+                     . "WHERE (m.media_id = '" . addslashes($L['sid']) . "') ";
+				$result = DB_query($sql);
+				if (DB_numRows($result) == 0) {
+					continue;
+				}
+				$A = DB_fetchArray($result);
+				$album_id = $A['album_id'];
+				if ( $MG_albums[$album_id]->access == 0 ) {
+				    continue;
+				}
+				$title = TAG_escape($A['media_title']);
+				if ( $title == '' ) {
+				    $title = 'No title defined';
+				}
+				$body  = $A['media_desc'];
+				$all_tags = TAG_scanTag($body);
+				$url = $_MG_CONF['site_url'] . '/media.php?s=' . $L['sid'];
+				break;
+            case 'staticpage' :
+                if (!in_array('staticpages', $_PLUGINS)) {
+                    return false;
+                }
+                $sql = "SELECT sp_title, sp_content "
+                     . "FROM {$_TABLES['staticpage']} "
+                     . "WHERE (sp_id = '" . addslashes($L['sid']) . "') "
+					 . COM_getPermSQL('AND');
+				$result = DB_query($sql);
+				if (DB_numRows($result) == 0) {
+					continue;
+				}
+				$A = DB_fetchArray($result);
+				$title = TAG_escape($A['sp_title']);
+				if ( $title == '' ) {
+				    $title = 'No title defined';
+				}
+				$body  = $A['sp_content'];
+				$all_tags = TAG_scanTag($body);
+				$url = COM_buildURL( $_CONF['site_url'] . '/staticpages/index.php?page=' . $L['sid']) ;
+				break;
+            default:
 				continue;
 				break;
 		}
