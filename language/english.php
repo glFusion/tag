@@ -96,6 +96,7 @@ $LANG_TAG = array(
 	'edit_fail'         => 'Cannot modify.',
 	'menu_title'        => 'Items containing tags: %s',
 	'no_item'           => 'No matching items found.',
+	'no_title'          => 'No title available',
 );
 
 

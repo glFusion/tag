@@ -905,7 +905,8 @@ function TAG_formatRelatedTags($all_tags, $tag) {
 * Return items with a given tag
 */
 function TAG_getTaggedItems($tag) {
-	global $_CONF, $_TABLES, $_TAG_CONF, $_PLUGINS, $_MG_CONF, $MG_albums;
+	global $_CONF, $_TABLES, $_TAG_CONF, $_PLUGINS, $_MG_CONF, $MG_albums,
+	       $LANG_TAG, $LANG33, $LANG_MG00, $LANG_STATIC;
 
 	$retval = '';
 
@@ -949,6 +950,7 @@ function TAG_getTaggedItems($tag) {
 					   . $A['bodytext'];
 				$all_tags = TAG_scanTag($body);
 				$url = COM_buildURL($_CONF['site_url'] . '/article.php?story=' . $L['sid']);
+				$type_text = $LANG33[55];
 				break;
 
             case 'mediagallery' :
@@ -969,11 +971,12 @@ function TAG_getTaggedItems($tag) {
 				}
 				$title = TAG_escape($A['media_title']);
 				if ( $title == '' ) {
-				    $title = 'No title defined';
+				    $title = $LANG_TAG['no_title'];
 				}
 				$body  = $A['media_desc'];
 				$all_tags = TAG_scanTag($body);
 				$url = $_MG_CONF['site_url'] . '/media.php?s=' . $L['sid'];
+				$type_text = $LANG_MG00['menulabel'];
 				break;
             case 'staticpage' :
                 if (!in_array('staticpages', $_PLUGINS)) {
@@ -990,11 +993,12 @@ function TAG_getTaggedItems($tag) {
 				$A = DB_fetchArray($result);
 				$title = TAG_escape($A['sp_title']);
 				if ( $title == '' ) {
-				    $title = 'No title defined';
+				    $title = $LANG_TAG['no_title'];
 				}
 				$body  = $A['sp_content'];
 				$all_tags = TAG_scanTag($body);
 				$url = COM_buildURL( $_CONF['site_url'] . '/staticpages/index.php?page=' . $L['sid']) ;
+				$type_text = $LANG_STATIC['staticpages'];
 				break;
             default:
 				continue;
@@ -1002,6 +1006,7 @@ function TAG_getTaggedItems($tag) {
 		}
 
 		$T->set_var('title', $title);
+		$T->set_var('type',$type_text);
 		$T->set_var('url', $url);
 		$T->set_var('tag', TAG_escape($tag));
 		$T->set_var('related', TAG_str('related'));
