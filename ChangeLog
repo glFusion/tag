@@ -1,5 +1,9 @@
 Tag Plugin ChangeLog
 
+0.5.1
+-----
+- Implemented PLG_itemDeleted() API
+
 0.5.0
 -----
 - Implemented Media Gallery and Static Page support

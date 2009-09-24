@@ -199,6 +199,7 @@ function plugin_upgrade_tag() {
 		case '0.4.1':
 		case '0.4.2':
 		case '0.4.3':
+		case '0.5.0':
 			break;
 		default:
 			break;
@@ -685,10 +686,8 @@ function TAG_isBadword($word) {
 	return array_search($word, $badwords);
 }
 
-/**
-* Call back function invoked when an item is being saved
-*/
-function plugin_itemsaved_tag($id, $type) {
+function plugin_itemdeleted_tag($id,$type)
+{
 	global $_TABLES, $_PLUGINS;
 
 	switch ($type) {
@@ -696,6 +695,50 @@ function plugin_itemsaved_tag($id, $type) {
     		// Delete old records from tag_map
     		$sql = "DELETE FROM {$_TABLES['tag_map']} "
     			 . "WHERE (type = 'article') AND (sid = '" . addslashes($id) . "')";
+    		DB_query($sql);
+    		break;
+    	case 'staticpage' :
+            if (!in_array('staticpages', $_PLUGINS)) {
+                return false;
+            }
+    		// Delete old records from tag_map
+    		$sql = "DELETE FROM {$_TABLES['tag_map']} "
+    			 . "WHERE (type = 'staticpage') AND (sid = '" . addslashes($id) . "')";
+    		DB_query($sql);
+    		break;
+        case 'mediagallery' :
+            if (!in_array('mediagallery', $_PLUGINS)) {
+                return false;
+            }
+    		// Delete old records from tag_map
+    		$sql = "DELETE FROM {$_TABLES['tag_map']} "
+    			 . "WHERE (type = 'mediagallery') AND (sid = '" . addslashes($id) . "')";
+    		DB_query($sql);
+    		break;
+        default :
+//    		COM_errorLog('plugin_itemdeleted_tag: $id = ' . $id . ', $type = ' . $type);
+    		break;
+    }
+	return false;
+}
+
+/**
+* Call back function invoked when an item is being saved
+*/
+function plugin_itemsaved_tag($id, $type, $old_id='') {
+	global $_TABLES, $_PLUGINS;
+
+	if ( $old_id != '' ) {
+	    $item_old_id = $old_id;
+	} else {
+	    $item_old_id = $id;
+	}
+
+	switch ($type) {
+	    case 'article' :
+    		// Delete old records from tag_map
+    		$sql = "DELETE FROM {$_TABLES['tag_map']} "
+    			 . "WHERE (type = 'article') AND (sid = '" . addslashes($item_old_id) . "')";
     		DB_query($sql);
 
     		$sql = "SELECT introtext, bodytext FROM {$_TABLES['stories']} "
@@ -726,7 +769,7 @@ function plugin_itemsaved_tag($id, $type) {
             }
     		// Delete old records from tag_map
     		$sql = "DELETE FROM {$_TABLES['tag_map']} "
-    			 . "WHERE (type = 'staticpage') AND (sid = '" . addslashes($id) . "')";
+    			 . "WHERE (type = 'staticpage') AND (sid = '" . addslashes($item_old_id) . "')";
     		DB_query($sql);
 
     		$sql = "SELECT sp_content FROM {$_TABLES['staticpage']} "
@@ -754,7 +797,7 @@ function plugin_itemsaved_tag($id, $type) {
             }
     		// Delete old records from tag_map
     		$sql = "DELETE FROM {$_TABLES['tag_map']} "
-    			 . "WHERE (type = 'mediagallery') AND (sid = '" . addslashes($id) . "')";
+    			 . "WHERE (type = 'mediagallery') AND (sid = '" . addslashes($item_old_id) . "')";
     		DB_query($sql);
 
     		$sql = "SELECT media_desc FROM {$_TABLES['mg_media']} "
@@ -777,7 +820,7 @@ function plugin_itemsaved_tag($id, $type) {
     		}
     		break;
         default :
-    		COM_errorLog('plugin_itemsaved_tag: $id = ' . $id . ', $type = ' . $type);
+//    		COM_errorLog('plugin_itemsaved_tag: $id = ' . $id . ', $type = ' . $type);
     		break;
     }
 	return false;
