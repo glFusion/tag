@@ -125,11 +125,13 @@ function plugin_commentsupport_tag() {
 function plugin_cclabel_tag() {
     global $_CONF, $LANG_TAG;
 
-	$pi_name   = TAG_str('admin_label');
-	$admin_url = $_CONF['site_admin_url'] . '/plugins/tag/index.php';
-	$icon_url  = $_CONF['site_url'] . '/tag/images/tag.gif';
+	if (SEC_hasRights('tag.admin')) {
+    	$pi_name   = TAG_str('admin_label');
+    	$admin_url = $_CONF['site_admin_url'] . '/plugins/tag/index.php';
+    	$icon_url  = $_CONF['site_url'] . '/tag/images/tag.gif';
 
-    return array($pi_name, $admin_url, $icon_url);
+        return array($pi_name, $admin_url, $icon_url);
+    }
 }
 
 /**
