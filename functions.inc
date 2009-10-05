@@ -202,6 +202,8 @@ function plugin_upgrade_tag() {
 		case '0.4.2':
 		case '0.4.3':
 		case '0.5.0':
+		case '0.5.1':
+		    DB_query("UPDATE {$_TABLES['tag_map']} SET type='staticpages' WHERE type='staticpage'",1);
 			break;
 		default:
 			break;
@@ -699,13 +701,13 @@ function plugin_itemdeleted_tag($id,$type)
     			 . "WHERE (type = 'article') AND (sid = '" . addslashes($id) . "')";
     		DB_query($sql);
     		break;
-    	case 'staticpage' :
+    	case 'staticpages' :
             if (!in_array('staticpages', $_PLUGINS)) {
                 return false;
             }
     		// Delete old records from tag_map
     		$sql = "DELETE FROM {$_TABLES['tag_map']} "
-    			 . "WHERE (type = 'staticpage') AND (sid = '" . addslashes($id) . "')";
+    			 . "WHERE (type = 'staticpages') AND (sid = '" . addslashes($id) . "')";
     		DB_query($sql);
     		break;
         case 'mediagallery' :
@@ -765,13 +767,13 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
     			}
     		}
     		break;
-    	case 'staticpage' :
+    	case 'staticpages' :
             if (!in_array('staticpages', $_PLUGINS)) {
                 return false;
             }
     		// Delete old records from tag_map
     		$sql = "DELETE FROM {$_TABLES['tag_map']} "
-    			 . "WHERE (type = 'staticpage') AND (sid = '" . addslashes($item_old_id) . "')";
+    			 . "WHERE (type = 'staticpages') AND (sid = '" . addslashes($item_old_id) . "')";
     		DB_query($sql);
 
     		$sql = "SELECT sp_content FROM {$_TABLES['staticpage']} "
@@ -1023,7 +1025,7 @@ function TAG_getTaggedItems($tag) {
 				$url = $_MG_CONF['site_url'] . '/media.php?s=' . $L['sid'];
 				$type_text = $LANG_MG00['menulabel'];
 				break;
-            case 'staticpage' :
+            case 'staticpages' :
                 if (!in_array('staticpages', $_PLUGINS)) {
                     return false;
                 }
