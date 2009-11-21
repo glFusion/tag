@@ -1,5 +1,10 @@
 Tag Plugin ChangeLog
 
+0.5.3
+-----
+- Added Dutch translation
+- Fixed issue where the template vars did not 'reset' if empty
+
 0.5.1
 -----
 - Implemented PLG_itemDeleted() API
