@@ -284,6 +284,9 @@ if ($_TAG_CONF['publish_as_template_vars'] === true) {
         if (in_array($templatename, array('featuredarticle', 'article', 'archivearticle'))) {
 			$template->set_var('tag_label', $_TAG_CONF['template_vars']['tag_label']);
 			$template->set_var('tag_part', $_TAG_CONF['template_vars']['tag_part']);
+		} else {
+			$template->set_var('tag_label', '');
+			$template->set_var('tag_part', '');
 		}
 	}
 }
@@ -339,8 +342,6 @@ function TAG_post($name, $is_token = false, $is_num = false) {
 */
 function TAG_escape($str) {
 
-//    return $str;
-
 	// Unescape a string
 	$str = str_replace(
         array('&lt;', '&gt;',  '&auml;', '&ouml;', '&amp;', '&quot:', '&#039;'),
@@ -348,7 +349,7 @@ function TAG_escape($str) {
 		$str
 	);
 
-	return htmlspecialchars($str, ENT_QUOTES, COM_getCharset());
+	return htmlspecialchars($str, ENT_QUOTES, COM_getEncodingt());
 }
 
 /**
