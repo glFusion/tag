@@ -977,10 +977,13 @@ function TAG_getTaggedItems($tag) {
 	$T = new Template($_CONF['path'] . 'plugins/tag/templates');
 	$T->set_file('item', 'tagged_item.thtml');
 
+    $numTags = 0;
+
 	foreach ($list as $L) {
 	    $title = '';
 	    $url   = '';
         $all_tags = '';
+        $type_text = '';
 		switch ($L['type']) {
 			case 'article':
 				$sql = "SELECT title, introtext, bodytext "
@@ -1053,14 +1056,21 @@ function TAG_getTaggedItems($tag) {
 				break;
 		}
 
-		$T->set_var('title', $title);
-		$T->set_var('type',$type_text);
-		$T->set_var('url', $url);
-		$T->set_var('tag', TAG_escape($tag));
-		$T->set_var('related', TAG_str('related'));
-		$T->set_var('related_tags', TAG_formatRelatedTags($all_tags, $tag));
-		$T->parse('output', 'item');
-		$retval .= $T->finish($T->get_var('output'));
+        if ( $type_text != '' ) {
+    		$T->set_var('title', $title);
+    		$T->set_var('type',$type_text);
+    		$T->set_var('url', $url);
+    		$T->set_var('tag', TAG_escape($tag));
+    		$T->set_var('related', TAG_str('related'));
+    		$T->set_var('related_tags', TAG_formatRelatedTags($all_tags, $tag));
+    		$T->parse('output', 'item');
+    		$retval .= $T->finish($T->get_var('output'));
+    		$numTags++;
+    	}
+	}
+
+	if ( $numTags == 0 ) {
+	    $retval = '';
 	}
 
 	return $retval;
