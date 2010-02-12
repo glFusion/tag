@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                        |
+// | Copyright (C) 2008-2010 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -51,7 +51,7 @@ $_TABLES['tag_menu']      = $_DB_table_prefix . 'tag_menu';
 
 $_TAG_CONF['pi_name']           = 'tag';
 $_TAG_CONF['pi_display_name']   = 'Tag';
-$_TAG_CONF['pi_version']        = '0.5.4';
-$_TAG_CONF['gl_version']        = '1.1.6';
+$_TAG_CONF['pi_version']        = '1.0.0';
+$_TAG_CONF['gl_version']        = '1.1.9';
 $_TAG_CONF['pi_url']            = 'http://www.glfusion.org/';
 ?>

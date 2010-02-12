@@ -1,5 +1,10 @@
 Tag Plugin ChangeLog
 
+1.0.0
+-----
+- New plugin integration based on standard glFusion PLG_() APIs. This allows
+  any plugin to take advantage of the features provided by the Tag Plugin
+
 0.5.4
 -----
 - Fixed some permission issues.
