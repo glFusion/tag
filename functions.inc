@@ -697,6 +697,9 @@ function plugin_itemdeleted_tag($id,$type)
 		 . "WHERE (type = '".$type."') AND (sid = '" . addslashes($id) . "')";
 	DB_query($sql);
 
+    CACHE_remove_instance('tagcloud');
+    CACHE_remove_instance('tagkwd');
+
 	return false;
 }
 
@@ -733,6 +736,8 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
     		}
     	}
     }
+    CACHE_remove_instance('tagcloud');
+    CACHE_remove_instance('tagkwd');
     return false;
 }
 
@@ -764,6 +769,14 @@ function TAG_getLevel($count) {
 */
 function TAG_getTagCloud($limit = 0, $is_block = false) {
 	global $_CONF, $_TABLES, $_TAG_CONF, $_PLUGINS;
+
+    $cacheInstance = 'tagcloud__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+
+    $retval = '';
+    $retval = CACHE_check_instance($cacheInstance, 0);
+    if ( $retval ) {
+        return $retval;
+    }
 
 	$sql = "SELECT t.tag_id, t.tag, m.type, COUNT(t.tag_id) AS cnt "
 		 . "FROM {$_TABLES['tag_map']} AS m "
@@ -822,8 +835,10 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
 	$T->set_var('container_id', $is_block ? 'b_tag_cloud_container' : 'tag_cloud_container');
 	$T->set_var('items', $items);
 	$T->parse('output', 'container');
+	$retval .= $T->finish($T->get_var('output'));
 
-	return $T->finish($T->get_var('output'));
+    CACHE_create_instance($cacheInstance, $retval, 0);
+	return $retval;
 }
 
 /**
@@ -1004,6 +1019,14 @@ function TAG_getKeywords($num_keywords) {
 		$num_keywords = 10;
 	}
 
+    $cacheInstance = 'tagkwd__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+
+    $retval = '';
+    $retval = CACHE_check_instance($cacheInstance, 0);
+    if ( $retval ) {
+        return unserialize($retval);
+    }
+
 	$sql = "SELECT L.tag, COUNT(m.tag_id) AS cnt "
 		 . "FROM {$_TABLES['tag_map']} AS m "
 		 . "LEFT JOIN {$_TABLES['tag_list']} AS L "
@@ -1018,6 +1041,7 @@ function TAG_getKeywords($num_keywords) {
 		}
 	}
 
+    CACHE_create_instance($cacheInstance, serialize($retval), 0);
 	return $retval;
 }
 

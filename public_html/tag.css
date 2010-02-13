@@ -25,7 +25,7 @@ a.tag_link:visited
 
 a.tag_link:hover
 {
-	color: white;
+	color: white !important;
 	background-color: blue;
 }
 

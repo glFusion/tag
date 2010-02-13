@@ -4,6 +4,7 @@ Tag Plugin ChangeLog
 -----
 - New plugin integration based on standard glFusion PLG_() APIs. This allows
   any plugin to take advantage of the features provided by the Tag Plugin
+- Implemented caching of some of the more costly SQL queries
 
 0.5.4
 -----
