@@ -721,9 +721,10 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
 	DB_query($sql);
 
 	$info = array();
-	$what = 'raw-description,title';;
+	$what = 'raw-description,title,status';
     $info = PLG_getItemInfo($type, $item_old_id, $what,0);
-    if ( isset($info['raw-description']) ) {
+    $status = (isset($info['status']) && $info['status'] != '') ? $info['status'] : 1;
+    if ( isset($info['raw-description']) && $status == 1) {
         $text = $info['raw-description'];
     	$tags = TAG_scanTag($text);
     	$tags = array_unique($tags);
@@ -905,9 +906,10 @@ function TAG_getTaggedItems($tag) {
 	    $url   = '';
         $all_tags = '';
         $type_text = '';
-        $what = 'raw-description,url,title,label';
+        $what = 'raw-description,url,title,label,status';
         $info = PLG_getItemInfo($L['type'], $L['sid'], $what);
-        if ( isset($info['raw-description']) ) {
+        $status = (isset($info['status']) && $info['status'] != '') ? $info['status'] : 1;
+        if ( isset($info['raw-description']) && $status == 1) {
             $text = $info['raw-description'];
             $url  = $info['url'];
             $title = $info['title'];
