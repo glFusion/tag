@@ -2,6 +2,7 @@ Tag Plugin ChangeLog
 
 1.0.0
 -----
+- New configuration option to select with nav blocks display.
 - New plugin integration based on standard glFusion PLG_() APIs. This allows
   any plugin to take advantage of the features provided by the Tag Plugin
 - Implemented caching of some of the more costly SQL queries

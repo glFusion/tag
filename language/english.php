@@ -126,6 +126,7 @@ $LANG_confignames['tag'] = array(
 	'default_block_name_menu'  => 'Default name for Tag Menu Block',
 	'menu_indenter'            => 'String to be used as an indenter in Tag Menu',
 	'add_num_items_to_menu'    => 'Display number of items in Tag Menu',
+	'displayblocks'            => 'Display glFusion Blocks',
 
 );
 
@@ -137,8 +138,8 @@ $LANG_fs['tag'] = array(
     'fs_main'   => 'Tag plugin Main Config',
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['tag'] = array(
     0 => array('Yes' => true, 'No' => false),
+    1 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
 );
 ?>

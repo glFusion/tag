@@ -41,10 +41,9 @@ $tag = COM_getArgument('tag');
 /**
 * Display
 */
-$display = COM_siteHeader();
+$display = TAG_siteHeader();
 $T = new Template($_CONF['path'] . 'plugins/tag/templates');
 $T->set_file('page', 'index.thtml');
-$T->set_var('xhtml', XHTML);
 
 /**
 * Lang vars
@@ -80,6 +79,6 @@ if ($tag != '') {
 
 $T->parse('output', 'page');
 $display .= $T->finish($T->get_var('output'))
-		 .  COM_siteFooter();
+		 .  TAG_siteFooter();
 echo $display;
 ?>

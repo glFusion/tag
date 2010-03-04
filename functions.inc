@@ -178,6 +178,9 @@ function plugin_upgrade_tag() {
 	$A = DB_fetchArray($result);
 	$pi_version = $A['pi_version'];		// Version info stored in database
 
+    require_once $_CONF['path'] . 'system/classes/config.class.php';
+    $c = config::get_instance();
+
 	// Do upgrading
 	switch ($pi_version) {
 		case '0.1.0':	// 0.1.0 --> 0.2.0
@@ -201,7 +204,10 @@ function plugin_upgrade_tag() {
 		case '0.5.0':
 		case '0.5.1':
 		    DB_query("UPDATE {$_TABLES['tag_map']} SET type='staticpages' WHERE type='staticpage'",1);
-			break;
+        case '0.5.2' :
+        case '0.5.3' :
+        case '0.5.4' :
+            $c->add('displayblocks', $_TAG_DEFAULT['displayblocks'], 'select', 0, 0, 1, 150, true, 'tag');
 		default:
 			break;
 	}
@@ -1210,6 +1216,49 @@ function TAG_buildTagMenu(&$nodes, &$node, $parent_tag_ids, $level) {
 	}
 
 	return $retval;
+}
+
+function TAG_siteHeader($title='', $meta='')
+{
+    global $_TAG_CONF;
+
+    $retval = '';
+
+    switch( $_TAG_CONF['displayblocks'] ) {
+        case 0 : // left only
+        case 2 :
+            $retval .= COM_siteHeader('menu',$title,$meta);
+            break;
+        case 1 : // right only
+        case 3 :
+            $retval .= COM_siteHeader('none',$title,$meta);
+            break;
+        default :
+            $retval .= COM_siteHeader('menu',$title,$meta);
+            break;
+    }
+    return $retval;
+}
+
+function TAG_siteFooter() {
+    global $_CONF, $_TAG_CONF;
+
+    $retval = '';
+
+    switch( $_TAG_CONF['displayblocks'] ) {
+        case 0 : // left only
+        case 3 : // none
+            $retval .= COM_siteFooter();
+            break;
+        case 1 : // right only
+        case 2 : // left and right
+            $retval .= COM_siteFooter( true );
+            break;
+        default :
+            $retval .= COM_siteFooter();
+            break;
+    }
+    return $retval;
 }
 
 /**

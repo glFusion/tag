@@ -184,6 +184,12 @@ $_TAG_DEFAULT['menu_indenter'] = '&nbsp;&nbsp;&nbsp;';
 $_TAG_DEFAULT['add_num_items_to_menu'] = false;
 
 /**
+* Which glFusion blocks to display
+*/
+
+$_TAG_DEFAULT['displayblocks'] = 0;
+
+/**
 * Initialize Tag plugin configuration
 *
 * Creates the database entries for the configuation if they don't already exist.
@@ -223,6 +229,7 @@ function plugin_initconfig_tag() {
     $c->add('default_block_name_menu', $_TAG_DEFAULT['default_block_name_menu'], 'text', 0, 0, NULL, 130, true, 'tag');
     $c->add('menu_indenter', $_TAG_DEFAULT['menu_indenter'], 'text', 0, 0, NULL, 140, true, 'tag');
     $c->add('add_num_items_to_menu', $_TAG_DEFAULT['add_num_items_to_menu'], 'select', 0, 0, 0, 140, true, 'tag');
+    $c->add('displayblocks', $_TAG_DEFAULT['displayblocks'], 'select', 0, 0, 1, 150, true, 'tag');
 
     return true;
 }

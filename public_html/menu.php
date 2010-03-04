@@ -46,10 +46,9 @@ if (count($tags) == 0) {
 /**
 * Display
 */
-$display = COM_siteHeader();
+$display = TAG_siteHeader();
 $T = new Template($_CONF['path'] . 'plugins/tag/templates');
 $T->set_file('page', 'menu.thtml');
-$T->set_var('xhtml', XHTML);
 
 /**
 * Lang vars
@@ -123,6 +122,6 @@ $T->set_var(
 $T->set_var('tag_menu', $tag_menu);
 $T->parse('output', 'page');
 $display .= $T->finish($T->get_var('output'))
-		 .  COM_siteFooter();
+		 .  TAG_siteFooter();
 echo $display;
 ?>
