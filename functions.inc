@@ -1018,7 +1018,7 @@ function TAG_rescanTag($tag) {
 * @return array of string
 */
 function TAG_getKeywords($num_keywords) {
-	global $_TABLES;
+	global $_TABLES, $_CONF;
 
 	$retval = array();
 
