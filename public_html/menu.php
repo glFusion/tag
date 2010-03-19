@@ -62,9 +62,9 @@ foreach ($lang_vars as $lang_var) {
 $tag_menu = array();
 $sql = "SELECT type, sid, COUNT(sid) AS cnt "
 	 . "FROM {$_TABLES['tag_map']} "
-	 . "WHERE (tag_id IN ('" . implode("','", array_map('addslashes', $tags)) . "')) "
+	 . "WHERE (tag_id IN ('" . implode("','", array_map('DB_escapeString', $tags)) . "')) "
 	 . "GROUP BY type, sid "
-	 . "HAVING cnt = '" . addslashes(count($tags)) . "'";
+	 . "HAVING cnt = '" . DB_escapeString(count($tags)) . "'";
 $result = DB_query($sql);
 if (!DB_error()) {
 	while (($A = DB_fetchArray($result)) !== false) {

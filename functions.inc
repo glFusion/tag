@@ -267,9 +267,9 @@ function plugin_enablestatechange_tag($state) {
 
 	$state = ($state === true) ? 1 : 0;
 	$sql = "UPDATE {$_TABLES['blocks']} "
-		 . "SET is_enabled = '" . addslashes($state) . "' "
-		 . "WHERE (name = '" . addslashes($_TAG_CONF['default_block_name']) . "') "
-		 . "OR (name = '" . addslashes($_TAG_CONF['default_block_name_menu']) . "')";
+		 . "SET is_enabled = '" . DB_escapeString($state) . "' "
+		 . "WHERE (name = '" . DB_escapeString($_TAG_CONF['default_block_name']) . "') "
+		 . "OR (name = '" . DB_escapeString($_TAG_CONF['default_block_name_menu']) . "')";
 	 DB_query($sql);
 }
 
@@ -532,7 +532,7 @@ function TAG_getTagId($tag) {
 	}
 
 	$sql = "SELECT tag_id FROM {$_TABLES['tag_list']} "
-		 . "WHERE (tag = '" . addslashes($tag) . "')";
+		 . "WHERE (tag = '" . DB_escapeString($tag) . "')";
 	$result = DB_query($sql);
 	if (DB_error()) {
 		return false;
@@ -556,7 +556,7 @@ function TAG_getTagName($id) {
 	global $_TABLES;
 
 	$sql = "SELECT tag FROM {$_TABLES['tag_list']} WHERE (tag_id = '"
-		 . addslashes($id) . "')";
+		 . DB_escapeString($id) . "')";
 	$result = DB_query($sql);
 	if (!DB_error() AND DB_numRows($result) == 1) {
 		$A = DB_fetchArray($result);
@@ -582,7 +582,7 @@ function TAG_saveTagToList($tag) {
 	$A = DB_fetchArray($result);
 	if ($A['cnt'] == 0) {
 		$sql = "INSERT INTO {$_TABLES['tag_list']} (tag) "
-			 . "VALUES ('" . addslashes($tag) . "')";
+			 . "VALUES ('" . DB_escapeString($tag) . "')";
 		$result = DB_query($sql);
 		return (DB_error() == '');
 	} else {
@@ -606,9 +606,9 @@ function TAG_saveTagToMap($tag, $id, $type) {
 	}
 
 	$sql = "SELECT COUNT(*) AS cnt FROM {$_TABLES['tag_map']} "
-		 . "WHERE (tag_id = '" . addslashes($tag_id) . "') AND "
-		 . "(sid = '" . addslashes($id) . "') AND "
-		 . "(type = '" . addslashes($type) . "')";
+		 . "WHERE (tag_id = '" . DB_escapeString($tag_id) . "') AND "
+		 . "(sid = '" . DB_escapeString($id) . "') AND "
+		 . "(type = '" . DB_escapeString($type) . "')";
 	$result = DB_query($sql);
 	if (DB_error()) {
 		return false;
@@ -617,8 +617,8 @@ function TAG_saveTagToMap($tag, $id, $type) {
 	$A = DB_fetchArray($result);
 	if ($A['cnt'] == 0) {
 		$sql = "INSERT INTO {$_TABLES['tag_map']} (tag_id, type, sid) "
-			 . "VALUES ('" . addslashes($tag_id) . "', '" . addslashes($type)
-			 . "', '" . addslashes($id) . "')";
+			 . "VALUES ('" . DB_escapeString($tag_id) . "', '" . DB_escapeString($type)
+			 . "', '" . DB_escapeString($id) . "')";
 		$result = DB_query($sql);
 		return (DB_error() == '');
 	} else {
@@ -700,7 +700,7 @@ function plugin_itemdeleted_tag($id,$type)
 
 	// Delete old records from tag_map
 	$sql = "DELETE FROM {$_TABLES['tag_map']} "
-		 . "WHERE (type = '".$type."') AND (sid = '" . addslashes($id) . "')";
+		 . "WHERE (type = '".$type."') AND (sid = '" . DB_escapeString($id) . "')";
 	DB_query($sql);
 
     CACHE_remove_instance('tagcloud');
@@ -723,7 +723,7 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
 
 	// Delete old records from tag_map
 	$sql = "DELETE FROM {$_TABLES['tag_map']} "
-		 . "WHERE (type = '".addslashes($type)."') AND (sid = '" . addslashes($item_old_id) . "')";
+		 . "WHERE (type = '".DB_escapeString($type)."') AND (sid = '" . DB_escapeString($item_old_id) . "')";
 	DB_query($sql);
 
 	$info = array();
@@ -887,7 +887,7 @@ function TAG_getTaggedItems($tag) {
 	$retval = '';
 
 	$sql = "SELECT type, sid FROM {$_TABLES['tag_map']} "
-		 . "WHERE (tag_id = '" . addslashes(TAG_getTagId($tag)) . "')";
+		 . "WHERE (tag_id = '" . DB_escapeString(TAG_getTagId($tag)) . "')";
 	$result = DB_query($sql);
 	if (DB_error()) {
 		return $retval;
@@ -1135,7 +1135,7 @@ function TAG_increaseHitCount($tag_id) {
 	global $_TABLES;
 
 	$sql = "UPDATE {$_TABLES['tag_list']} SET hits = hits + 1 "
-		 . "WHERE (tag_id = '" . addslashes($tag_id) . "')";
+		 . "WHERE (tag_id = '" . DB_escapeString($tag_id) . "')";
 	DB_query($sql);
 }
 
@@ -1146,7 +1146,7 @@ function TAG_getStoryTitle($sid) {
 	global $_TABLES;
 
 	$sql = "SELECT title FROM {$_TABLES['stories']} "
-		 . "WHERE (sid = '" . addslashes($sid) . "') "
+		 . "WHERE (sid = '" . DB_escapeString($sid) . "') "
 		 . COM_getPermSQL(' AND ');
 	$result = DB_query($sql);
 	if (!DB_error() AND DB_numRows($result) == 1) {
@@ -1168,7 +1168,7 @@ function TAG_getNumItems($tag_ids) {
 
 	$sql = "SELECT COUNT(sid) AS cnt "
 		 . "FROM {$_TABLES['tag_map']} "
-		 . "WHERE (tag_id IN ('" . implode("','", array_map('addslashes', $tag_ids))
+		 . "WHERE (tag_id IN ('" . implode("','", array_map('DB_escapeString', $tag_ids))
 		 . "')) "
 		 . "GROUP BY sid "
 		 . "HAVING cnt = " . count($tag_ids);

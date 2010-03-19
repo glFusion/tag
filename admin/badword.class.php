@@ -126,18 +126,18 @@ class TagBadword
 		*/
 		$word = TAG_post('word');
 		$sql = "INSERT INTO {$_TABLES['tag_badwords']} (badword) "
-			 . "VALUES ('" . addslashes($word) . "')";
+			 . "VALUES ('" . DB_escapeString($word) . "')";
 		$result = DB_query($sql);
 
 		// Delete the bad word from list and map if it already exists
 		$tag_id = TAG_getTagId($word);
 		if ($tag_id !== false) {
 			$sql = "DELETE FROM {$_TABLES['tag_list']} "
-				 . "WHERE (tag_id = '" . addslashes($tag_id) . "')";
+				 . "WHERE (tag_id = '" . DB_escapeString($tag_id) . "')";
 			DB_query($sql);
 
 			$sql = "DELETE FROM {$_TABLES['tag_map']} "
-				 . "WHERE (tag_id = '" . addslashes($tag_id) . "')";
+				 . "WHERE (tag_id = '" . DB_escapeString($tag_id) . "')";
 			DB_query($sql);
 		}
 
@@ -166,7 +166,7 @@ class TagBadword
 		/**
 		* Delete a bad word from DB
 		*/
-		$words4db = array_map('addslashes', $words);
+		$words4db = array_map('DB_escapeString', $words);
 		$words4db = "('" . implode("','", $words4db) . "')";
 
 		$sql = "DELETE FROM {$_TABLES['tag_badwords']} "

@@ -31,7 +31,8 @@
 // +--------------------------------------------------------------------------+
 
 require_once '../../../lib-common.php';
-require_once $_CONF['path_system'] . 'classes/navbar.class.php';
+require_once '../../auth.inc.php';
+USES_class_navbar();
 
 /**
 * Only let admin users access this page

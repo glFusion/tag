@@ -154,7 +154,7 @@ class TagStats
 			return '';
 		}
 
-		$tag_ids = array_map('addslashes', $tag_ids);
+		$tag_ids = array_map('DB_escapeString', $tag_ids);
 		$tag_ids = "'" . implode("','", $tag_ids) . "'";
 
 		// Register banned words into DB
