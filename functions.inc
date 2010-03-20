@@ -127,7 +127,7 @@ function plugin_cclabel_tag() {
 	if (SEC_hasRights('tag.admin')) {
     	$pi_name   = TAG_str('admin_label');
     	$admin_url = $_CONF['site_admin_url'] . '/plugins/tag/index.php';
-    	$icon_url  = $_CONF['site_url'] . '/tag/images/tag.gif';
+    	$icon_url  = $_CONF['site_url'] . '/tag/images/tag.png';
 
         return array($pi_name, $admin_url, $icon_url);
     }
