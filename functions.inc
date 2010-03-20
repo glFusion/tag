@@ -214,6 +214,7 @@ function plugin_upgrade_tag() {
 
 	// Update plugin info
 	$result = DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = \"{$_TAG_CONF['pi_version']}\" WHERE (pi_name = 'tag')");
+	$result = DB_query("UPDATE {$_TABLES['plugins']} SET pi_gl_version = \"{$_TAG_CONF['gl_version']}\" WHERE (pi_name = 'tag')");
 	COM_errorLog(ucfirst("tag") . " plugin was successfully updated to version {$_TAG_CONF['pi_version']}.");
 
 	return true;
