@@ -59,7 +59,7 @@ $INSTALL_plugin['tag'] = array(
   array('type' => 'table', 'table' => $_TABLES['tag_menu'], 'sql' => $_SQL['tag_menu']),
 
   array('type' => 'group', 'group' => 'tag Admin', 'desc' => 'Users in this group can administer the tag plugin',
-        'variable' => 'admin_group_id', 'addroot' => true),
+        'variable' => 'admin_group_id', 'addroot' => true, 'admin' => true),
 
   array('type' => 'feature', 'feature' => 'tag.admin', 'desc' => 'Ability to administer the tag plugin',
         'variable' => 'admin_feature_id'),
