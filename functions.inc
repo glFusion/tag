@@ -731,7 +731,11 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
 	$info = array();
 	$what = 'raw-description,title,status';
     $info = PLG_getItemInfo($type, $item_old_id, $what,0);
-    $status = (isset($info['status']) && $info['status'] != '') ? $info['status'] : 1;
+    if ( isset($info['status']) ) {
+        $status = (int) $info['status'];
+    } else {
+        $status = 1;
+    }
     if ( isset($info['raw-description']) && $status == 1) {
         $text = $info['raw-description'];
     	$tags = TAG_scanTag($text);
