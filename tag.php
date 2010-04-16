@@ -52,6 +52,6 @@ $_TABLES['tag_menu']      = $_DB_table_prefix . 'tag_menu';
 $_TAG_CONF['pi_name']           = 'tag';
 $_TAG_CONF['pi_display_name']   = 'Tag';
 $_TAG_CONF['pi_version']        = '1.0.0';
-$_TAG_CONF['gl_version']        = '1.1.9';
+$_TAG_CONF['gl_version']        = '1.2.0';
 $_TAG_CONF['pi_url']            = 'http://www.glfusion.org/';
 ?>
