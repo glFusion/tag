@@ -99,6 +99,7 @@ $LANG_TAG = array(
 	'menu_title'        => 'Objekte die Tags enthalten: %s',
 	'no_item'           => 'Keine passenden Objekte gefunden.',
 	'no_title'			=> 'Kein Titel verfügbar',
+	'desc_tag'          => 'Link to list of all content items flagged with this specific tag',
 );
 
 

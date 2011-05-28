@@ -96,6 +96,8 @@ $LANG_TAG = array(
 	'edit_fail'         => 'Kan niet wijzigen.',
 	'menu_title'        => 'Item(s) die de tag: %s bevat(ten)',
 	'no_item'           => 'Geen items gevonden.',
+	'no_title'          => 'No title available',
+	'desc_tag'          => 'Link to list of all content items flagged with this specific tag',
 );
 
 

@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010 by the following authors:                        |
+// | Copyright (C) 2008-2011 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -296,27 +296,13 @@ if ($_TAG_CONF['publish_as_template_vars'] === true) {
 	}
 }
 
-/**
-* Strip slashes when magic_quotes_gpc is on
-*/
-function TAG_stripSlashes($var) {
-	if (is_array($var)) {
-		return array_map('TAG_stripSlashes', $var);
-	} else {
-		if (get_magic_quotes_gpc()) {
-			$var = stripslashes($var);
-		}
-
-		return $var;
-	}
-}
 
 /**
 * Retrieve a Get var
 */
 function TAG_get($name, $is_num = false) {
 	if (isset($_GET[$name])) {
-		return COM_applyFilter(TAG_stripSlashes($_GET[$name]), $is_num);
+		return COM_applyFilter($_GET[$name], $is_num);
 	} else {
 		return false;
 	}
@@ -327,7 +313,7 @@ function TAG_get($name, $is_num = false) {
 */
 function TAG_post($name, $is_token = false, $is_num = false) {
 	if (isset($_POST[$name])) {
-		$var = TAG_stripSlashes($_POST[$name]);
+		$var = $_POST[$name];
 		if ($is_token) {
 			if (is_array($var)) {
 				return array_map('COM_applyFilter', $var, array_fill(0, count($var), $is_num));
@@ -467,57 +453,63 @@ function TAG_normalize($str) {
 * Replace [tag:foo] tags
 *
 */
-function plugin_autotags_tag($cmd, $content = '', $autotag = '') {
+function plugin_autotags_tag($op, $content = '', $autotag = '') {
 	global $_CONF, $_TAG_CONF, $LANG_TAG;
 
-	if ($cmd == 'tagname') {
+	if ($op == 'tagname') {
 		return $_TAG_CONF['tag_name'];
-	} else if (in_array(strtolower($autotag['tag']), (array) $_TAG_CONF['tag_name'])) {
-		$tagstr   = $autotag['tagstr'];
-		$param    = substr($tagstr, strlen($_TAG_CONF['tag_name']) + 2, -1);
-		$tag_part = '';
+	} else if ($op == 'tagusage') {
+	    return;
+	} else if ($op == 'desc' ) {
+        $tagDescription = $LANG_TAG['desc_'.$_TAG_CONF['tag_name']];
+        return $tagDescription;
+	} else if ($op == 'parse') {
+	    if (in_array(strtolower($autotag['tag']), (array) $_TAG_CONF['tag_name'])) {
+    		$tagstr   = $autotag['tagstr'];
+    		$param    = substr($tagstr, strlen($_TAG_CONF['tag_name']) + 2, -1);
+    		$tag_part = '';
 
-		if ($param != '') {
-			$tags = TAG_split($param);
+    		if ($param != '') {
+    			$tags = TAG_split($param);
 
-			foreach ($tags as $tag) {
-				$tag = TAG_normalize($tag);
-				if (TAG_checkBadword($tag) === true) {
-					$tag_part .= TAG_str('badword_replace') . ' ';
-				} else {
-					if ($_TAG_CONF['tag_stemming'] === true) {
-						$tag = TAG_stem($tag);
-					}
+    			foreach ($tags as $tag) {
+    				$tag = TAG_normalize($tag);
+    				if (TAG_checkBadword($tag) === true) {
+    					$tag_part .= TAG_str('badword_replace') . ' ';
+    				} else {
+    					if ($_TAG_CONF['tag_stemming'] === true) {
+    						$tag = TAG_stem($tag);
+    					}
 
-					$text = $tag;
-					if ($_TAG_CONF['replace_underscore'] === true) {
-						$text = str_replace('_', ' ', $text);
-					}
-					$url = $_CONF['site_url'] . '/tag/index.php?tag='
-						 . rawurlencode($tag);
-					$tag_part .= '<a class="tag_link" href="' . COM_buildURL($url)
-							  .  '">' .  TAG_escape($text) . '</a> ';
-				}
-			}
+    					$text = $tag;
+    					if ($_TAG_CONF['replace_underscore'] === true) {
+    						$text = str_replace('_', ' ', $text);
+    					}
+    					$url = $_CONF['site_url'] . '/tag/index.php?tag='
+    						 . rawurlencode($tag);
+    					$tag_part .= '<a class="tag_link" href="' . COM_buildURL($url)
+    							  .  '">' .  TAG_escape($text) . '</a> ';
+    				}
+    			}
 
-			$tag_part = rtrim($tag_part);
+    			$tag_part = rtrim($tag_part);
 
-			// Set work vars to be included in templates
-			$_TAG_CONF['template_vars']['tag_part']  = $tag_part;
-			$_TAG_CONF['template_vars']['tag_label'] = $LANG_TAG['display_label'];
+    			// Set work vars to be included in templates
+    			$_TAG_CONF['template_vars']['tag_part']  = $tag_part;
+    			$_TAG_CONF['template_vars']['tag_label'] = $LANG_TAG['display_label'];
 
-			if ($_TAG_CONF['publish_as_template_vars'] === true) {
-				// Replace a tag part with a null string
-				$content = str_replace($tagstr, '', $content);
-			} else {
-				if ($tag_part != '') {
-					$content = str_replace($tagstr, $LANG_TAG['display_label'] . $tag_part, $content);
-				}
-			}
+    			if ($_TAG_CONF['publish_as_template_vars'] === true) {
+    				// Replace a tag part with a null string
+    				$content = str_replace($tagstr, '', $content);
+    			} else {
+    				if ($tag_part != '') {
+    					$content = str_replace($tagstr, $LANG_TAG['display_label'] . $tag_part, $content);
+    				}
+    			}
+    			return $content;
+    		}
 		}
 	}
-
-	return $content;
 }
 
 /**
