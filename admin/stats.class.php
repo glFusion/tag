@@ -110,12 +110,12 @@ class TagStats
 		$sw = 1;
 		$body = '';
 
-		while (($A = DB_fetchArray($result)) !== false) {
+		while (($A = DB_fetchArray($result)) !== FALSE) {
 			$tag_id = $A['tag_id'];
 			$body .= '<tr class="pluginRow' . $sw . '">'
 				  .  '<td><input id="tag' . TAG_escape($tag_id) . '" name="tag_ids[]" '
 				  .  'type="checkbox" value="' . TAG_escape($A['tag_id'])
-				  .  '"' . XHTML . '><label for="tag' . TAG_escape($tag_id)
+				  .  '"/><label for="tag' . TAG_escape($tag_id)
 				  .  '">' . TAG_escape($A['tag']) . '</label></td>'
 				  .  '<td style="text-align: right;">' .  TAG_escape($A['cnt'])
 				  .  '</td><td style="text-align: right;">'

@@ -572,6 +572,8 @@ function TAG_saveTagToList($tag) {
 	if (empty($tag) === true OR TAG_getTagId($tag) !== false) {
 		return true;
 	}
+	$sql = "SELECT COUNT(*) AS cnt FROM {$_TABLES['tag_list']} WHERE tag='".DB_escapeString($tag)."'";
+	$result = DB_query($sql);
 
 	$A = DB_fetchArray($result);
 	if ($A['cnt'] == 0) {
@@ -677,7 +679,7 @@ function TAG_isBadword($word) {
 		$sql = "SELECT * FROM {$_TABLES['tag_badwords']}";
 		$result = DB_query($sql);
 		if (!DB_error() AND DB_numRows($result) > 0) {
-			while (($A = DB_fetchArray($result)) !== false) {
+			while (($A = DB_fetchArray($result)) !== FALSE) {
 				$badwords[] = $A['badword'];
 			}
 		}
@@ -799,7 +801,7 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
 
 	$list = array();
 
-	while (($A = DB_fetchArray($result)) !== false) {
+	while (($A = DB_fetchArray($result)) !== FALSE) {
 		$list[$A['tag']] = array('tag_id' => $A['tag_id'], 'cnt' => $A['cnt'], 'type' => $A['type']);
 	}
 
@@ -893,7 +895,7 @@ function TAG_getTaggedItems($tag) {
 
 	$list = array();
 
-	while (($A = DB_fetchArray($result)) !== false) {
+	while (($A = DB_fetchArray($result)) !== FALSE) {
 		list($type, $sid) = $A;
 		if ( $type != '' && $sid != '' ) {
     		$list[] = array('type' => $type, 'sid' => $sid);
@@ -962,7 +964,7 @@ function TAG_checkBadword($word) {
 		$sql = "SELECT * FROM {$_TABLES['tag_badwords']}";
 		$result = DB_query($sql);
 
-		while (($A = DB_fetchArray($result)) !== false) {
+		while (($A = DB_fetchArray($result)) !== FALSE) {
 			$list[] = $A['badword'];
 		}
 
@@ -987,7 +989,7 @@ function TAG_rescanTag($tag) {
 
 	$sids = array();
 
-	while (($A = DB_fetchArray($result)) !== false) {
+	while (($A = DB_fetchArray($result)) !== FALSE) {
 		if (in_array($tag, TAG_scanTag($A['introtext']))) {
 			$sids[] = $A['sid'];
 			continue;
@@ -1042,7 +1044,7 @@ function TAG_getKeywords($num_keywords) {
 		 . "LIMIT {$num_keywords}";
 	$result = DB_query($sql);
 	if (!DB_error()) {
-		while (($A = DB_fetchArray($result)) !== false) {
+		while (($A = DB_fetchArray($result)) !== FALSE) {
 			$retval[] = $A['tag'];
 		}
 	}
@@ -1067,7 +1069,7 @@ function TAG_scanAllStories() {
 
 	$tags = array();
 
-	while (($A = DB_fetchArray($result)) !== false) {
+	while (($A = DB_fetchArray($result)) !== FALSE) {
 		$tags_in_introxtext = TAG_scanTag($A['introtext']);
 		$tags_in_bodytext   = TAG_scanTag($A['bodytext']);
 		$temp = array_merge($tags_in_introxtext, $tags_in_bodytext);
@@ -1109,7 +1111,7 @@ function TAG_getMenuList() {
 		return $nodes;
 	}
 
-	while (($A = DB_fetchArray($result)) !== false) {
+	while (($A = DB_fetchArray($result)) !== FALSE) {
 		$A['child'] = array();
 
 		if (trim($A['tag_ids']) == '') {

@@ -100,7 +100,7 @@ class TagBadword
 		} else {
 			$sw = 1;
 
-			while (($A = DB_fetchArray($result)) !== false) {
+			while (($A = DB_fetchArray($result)) !== FALSE) {
 				$word = TAG_escape($A['badword']);
 				$body .= '<tr><td>'
 					  .  '<input id="' . $word . '" name="words[]" type="checkbox" '

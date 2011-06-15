@@ -76,7 +76,7 @@ class TagMenuconfig
 		$sql = "SELECT menu_id, menu_name FROM {$_TABLES['tag_menu']}";
 		$result = DB_query($sql);
 		if (!DB_error()) {
-			while (($A = DB_fetchArray($result)) !== false) {
+			while (($A = DB_fetchArray($result)) !== FALSE) {
 				$this->menuList[$A['menu_id']] = $A['menu_name'];
 			}
 		}
@@ -93,7 +93,7 @@ class TagMenuconfig
 		$sql = "SELECT * FROM {$_TABLES['tag_list']}";
 		$result = DB_query($sql);
 		if (!DB_error() AND DB_numRows($result) >0) {
-			while (($A = DB_fetchArray($result)) !== false) {
+			while (($A = DB_fetchArray($result)) !== FALSE) {
 				$this->tagList[$A['tag_id']] = $A['tag'];
 			}
 		}
@@ -143,7 +143,7 @@ class TagMenuconfig
 					 . "WHERE (tag_id IN (" . $tag_ids . "))";
 				$result = DB_query($sql);
 				if (!DB_error()) {
-					while (($A = DB_fetchArray($result)) !== false) {
+					while (($A = DB_fetchArray($result)) !== FALSE) {
 						$retval .= $A['tag'] . ' ';
 					}
 

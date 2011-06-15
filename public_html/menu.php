@@ -67,7 +67,7 @@ $sql = "SELECT type, sid, COUNT(sid) AS cnt "
 	 . "HAVING cnt = '" . DB_escapeString(count($tags)) . "'";
 $result = DB_query($sql);
 if (!DB_error()) {
-	while (($A = DB_fetchArray($result)) !== false) {
+	while (($A = DB_fetchArray($result)) !== FALSE) {
 		$url   = '';
 		$title = '';
 		$item  = '<li><a href="';
