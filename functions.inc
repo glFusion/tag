@@ -8,7 +8,7 @@
 // +--------------------------------------------------------------------------+
 // | $Id::                                                                   $|
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2011 by the following authors:                        |
+// | Copyright (C) 2008-2013 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -68,7 +68,7 @@ require_once $_CONF['path'].'plugins/tag/tag.php';
 /**
 * Include Porter Stemmer
 */
-if ($_TAG_CONF['tag_stemming'] === true) {
+if (isset($_TAG_CONF['tag_stemming']) && $_TAG_CONF['tag_stemming'] === true) {
 	require_once $_CONF['path'].'plugins/tag/porter_stemmer.php';
 }
 
@@ -282,7 +282,7 @@ function plugin_enablestatechange_tag($state) {
 *
 * Vars available in templates are {tag_label} and {tag_part}.
 */
-if ($_TAG_CONF['publish_as_template_vars'] === true) {
+if (isset($_TAG_CONF['publish_as_template_vars']) && $_TAG_CONF['publish_as_template_vars'] === true) {
 	function plugin_templatesetvars_tag($templatename, &$template) {
 		global $_TAG_CONF;
 
@@ -464,34 +464,34 @@ function plugin_autotags_tag($op, $content = '', $autotag = '') {
         $tagDescription = $LANG_TAG['desc_'.$_TAG_CONF['tag_name']];
         return $tagDescription;
 	} else if ($op == 'parse') {
-	    if (in_array(strtolower($autotag['tag']), (array) $_TAG_CONF['tag_name'])) {
+	    if (isset($autotag['tag']) && in_array(strtolower($autotag['tag']), (array) $_TAG_CONF['tag_name'])) {
     		$tagstr   = $autotag['tagstr'];
     		$param    = substr($tagstr, strlen($_TAG_CONF['tag_name']) + 2, -1);
     		$tag_part = '';
 
     		if ($param != '') {
     			$tags = TAG_split($param);
+                if ( is_array($tags) ) {
+        			foreach ($tags as $tag) {
+        				$tag = TAG_normalize($tag);
+        				if (TAG_checkBadword($tag) === true) {
+        					$tag_part .= TAG_str('badword_replace') . ' ';
+        				} else {
+        					if ($_TAG_CONF['tag_stemming'] === true) {
+        						$tag = TAG_stem($tag);
+        					}
 
-    			foreach ($tags as $tag) {
-    				$tag = TAG_normalize($tag);
-    				if (TAG_checkBadword($tag) === true) {
-    					$tag_part .= TAG_str('badword_replace') . ' ';
-    				} else {
-    					if ($_TAG_CONF['tag_stemming'] === true) {
-    						$tag = TAG_stem($tag);
-    					}
-
-    					$text = $tag;
-    					if ($_TAG_CONF['replace_underscore'] === true) {
-    						$text = str_replace('_', ' ', $text);
-    					}
-    					$url = $_CONF['site_url'] . '/tag/index.php?tag='
-    						 . rawurlencode($tag);
-    					$tag_part .= '<a class="tag_link" href="' . COM_buildURL($url)
-    							  .  '">' .  TAG_escape($text) . '</a> ';
-    				}
-    			}
-
+        					$text = $tag;
+        					if ($_TAG_CONF['replace_underscore'] === true) {
+        						$text = str_replace('_', ' ', $text);
+        					}
+        					$url = $_CONF['site_url'] . '/tag/index.php?tag='
+        						 . rawurlencode($tag);
+        					$tag_part .= '<a class="tag_link" href="' . COM_buildURL($url)
+        							  .  '">' .  TAG_escape($text) . '</a> ';
+        				}
+        			}
+                }
     			$tag_part = rtrim($tag_part);
 
     			// Set work vars to be included in templates
@@ -633,6 +633,10 @@ function TAG_scanTag($str) {
 	global $_TAG_CONF;
 
 	$retval = array();
+
+    if ( !isset($_TAG_CONF['tag_name']) ) {
+        return $retval;
+    }
 
 	$pattern = '|\[' . $_TAG_CONF['tag_name'] . ':([^\]]*)\]|i';
 	if (preg_match_all($pattern, $str, $match, PREG_SET_ORDER)) {

@@ -99,6 +99,7 @@ $LANG_TAG = array(
 	'no_item'           => 'No matching items found.',
 	'no_title'          => 'No title available',
 	'desc_tag'          => 'Link to list of all content items flagged with this specific tag',
+	'admin_help'        => 'Tag plugin enables you to put "tags" to your articles and make it easier for you and visitors to classify articles using the tags.',
 );
 
 

@@ -33,6 +33,7 @@
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
 USES_class_navbar();
+USES_lib_admin();
 
 /**
 * Only let admin users access this page
@@ -41,7 +42,7 @@ if (!SEC_hasRights('tag.admin')) {
     /**
 	* Someone is trying to illegally access this page
 	*/
-    COM_errorLog("Someone has tried to illegally access the tag Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
+    COM_errorLog("Someone has tried to access the tag Admin page without proper permissions.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
     $display = COM_siteHeader()
 			 . COM_startBlock($LANG_TAG['access_denied'])
 			 . $LANG_TAG['access_denied_msg']
@@ -105,11 +106,10 @@ switch ($action) {
 /**
 * Display
 */
-$display = COM_siteHeader();
+$display = '';
 $T = new Template($_CONF['path'] . 'plugins/tag/templates');
 $T->set_file('admin', 'admin.thtml');
-$T->set_var('xhtml', XHTML);
-$T->set_var('header', TAG_str('admin'));
+//$T->set_var('header', TAG_str('admin'));
 if ($msg != '') {
 	$T->set_var('msg', '<p>' . $msg . '</p>');
 }
@@ -152,6 +152,24 @@ switch ($action) {
 		$content = $obj->view();
 		break;
 }
+
+$display = COM_siteHeader();
+
+// writing the menu on top
+$menu_arr = array (
+    array('url' => $_CONF['site_admin_url'],
+          'text' => $LANG_ADMIN['admin_home'])
+);
+
+$display .= COM_startBlock (TAG_str('admin'), '',
+                           COM_getBlockTemplate ('_admin_block', 'header'));
+
+$display .= ADMIN_createMenu(
+    $menu_arr,
+    $LANG_TAG['admin_help'],
+    $_CONF['site_url'] . '/tag/images/tag.png'
+);
+$display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
 $T->set_var('content', $content);
 $T->parse('output', 'admin');

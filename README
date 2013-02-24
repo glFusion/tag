@@ -1,9 +1,9 @@
 Tag Plugin for glFusion
-Version: 1.0.0
+Version: 1.0.1
 
 For the latest documentation, please see
 
-	http://www.glfusion.org/wiki/doku.php?id=tag:start
+	http://www.glfusion.org/wiki/tag:start
 
 LICENSE
 
@@ -21,9 +21,8 @@ SYSTEM REQUIREMENTS
 
 PayPal has the following system requirements:
 
-    * PHP 4.3.3 and higher. Because of some security issues PHP 4.3.10 or
-      higher is strictly recommended. (PHP5 should be fine.)
-    * glFusion v1.1.9 or newer
+    * PHP 5.2.0 and higher.
+    * glFusion v1.3.0 or newer
 
 INSTALLATION
 

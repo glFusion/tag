@@ -1,5 +1,9 @@
 Tag Plugin ChangeLog
 
+1.0.1
+------
+- Support for glFusion 1.3.0 AutoTag manager
+
 1.0.0
 -----
 - Implemented new glFusion admin authentication.
