@@ -6,9 +6,7 @@
 // |                                                                          |
 // | MySQL SQL for Tag plugin                                                 |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                        |
+// | Copyright (C) 2008-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -59,7 +57,7 @@ $_SQL['tag_map_index'] = "CREATE INDEX idx_tag_map_tag_id ON {$_TABLES['tag_map'
 
 $_SQL['tag_badwords'] = "CREATE TABLE " . $_TABLES['tag_badwords'] . " ("
 		. "badword VARCHAR(255) NOT NULL,"
-		. "PRIMARY KEY badword(badword)"
+		. "PRIMARY KEY badword(badword(191))"
 		. ")";
 
 $_SQL['tag_menu'] = "CREATE TABLE " . $_TABLES['tag_menu'] . " ("
