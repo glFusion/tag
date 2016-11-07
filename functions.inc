@@ -6,9 +6,7 @@
 // |                                                                          |
 // | glFusion integration APIs                                                |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2013 by the following authors:                        |
+// | Copyright (C) 2008-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -211,7 +209,7 @@ function plugin_upgrade_tag() {
             DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_name='tag Admin'",1);
 
         case '1.0.1' :
-            DB_query("ALTER TABLE $_TABLES['tag_badwords'] DROP PRIMARY KEY badword, ADD PRIMARY KEY badword (`badword`(191));");
+            DB_query("ALTER {TABLE $_TABLES['tag_badwords']} DROP PRIMARY KEY badword, ADD PRIMARY KEY badword (`badword`(191));");
 
 		default:
 			break;
