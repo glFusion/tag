@@ -38,7 +38,7 @@ if (!defined ('GVERSION')) {
 
 $_SQL['tag_list'] = "CREATE TABLE " . $_TABLES['tag_list'] . " ("
 		. "tag_id MEDIUMINT(10) NOT NULL AUTO_INCREMENT,"
-		. "tag VARCHAR(255) NOT NULL DEFAULT '',"
+		. "tag VARCHAR(128) NOT NULL DEFAULT '',"
 		. "hits MEDIUMINT(10) NOT NULL DEFAULT '0',"
 		. "PRIMARY KEY tag_id(tag_id)"
 		. ")";
