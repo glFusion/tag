@@ -93,7 +93,7 @@ $LANG_TAG = array(
     'menu_rescan'       => 'Rescan Content',
     'cancel'            => 'Cancel',
     'rescan'            => 'Rescan',
-    'rescan_instructions' => 'This will rescan all glFusion content and rebuild the tag mappinps. This process will rescan all content, so it could take some time to run. You generally do not need to rescan all content. If you have re-installed the Tag Plugin, rescanning should be done, othrwise, it should not be necessary.',
+    'rescan_instructions' => 'This will rescan all glFusion content and rebuild the tag mappings. This process will rescan all content, so it could take some time to run. You generally do not need to rescan all content. If you have re-installed the Tag Plugin, rescanning should be done, othrwise, it should not be necessary.',
     'rescan_title'      => 'Rescan All Content',
     'rescan_complete'   => 'Rescanning of content has completed',
 );
