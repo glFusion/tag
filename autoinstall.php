@@ -6,9 +6,7 @@
 // |                                                                          |
 // | glFusion Auto Installer module                                           |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                             |
+// | Copyright (C) 2009-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // +--------------------------------------------------------------------------+
@@ -54,10 +52,6 @@ $INSTALL_plugin['tag'] = array(
 
   array('type' => 'table', 'table' => $_TABLES['tag_map'], 'sql' => $_SQL['tag_map']),
 
-  array('type' => 'table', 'table' => $_TABLES['tag_badwords'], 'sql' => $_SQL['tag_badwords']),
-
-  array('type' => 'table', 'table' => $_TABLES['tag_menu'], 'sql' => $_SQL['tag_menu']),
-
   array('type' => 'group', 'group' => 'tag Admin', 'desc' => 'Users in this group can administer the tag plugin',
         'variable' => 'admin_group_id', 'addroot' => true, 'admin' => true),
 
@@ -73,11 +67,7 @@ $INSTALL_plugin['tag'] = array(
 
   array('type' => 'block', 'name' => 'block_tag', 'title' => 'Popular tags at this site',
           'phpblockfn' => 'phpblock_tag_cloud', 'block_type' => 'phpblock',
-          'group_id' => 'admin_group_id'),
-
-  array('type' => 'block', 'name' => 'block_tag_menu', 'title' => 'Tag Menu',
-          'phpblockfn' => 'phpblock_tag_menu', 'block_type' => 'phpblock',
-          'group_id' => 'admin_group_id', 'is_enabled' => 0),
+          'group_id' => 'admin_group_id' , 'onleft' => true),
 );
 
 
@@ -124,7 +114,7 @@ function plugin_load_configuration_tag()
 }
 
 
-function plugin_postinstall_tag()
+function plugin_postinstall_tagXX()
 {
 	/**
 	* Scan all tags that might already exist in stories in case of re-installation
@@ -149,13 +139,13 @@ function plugin_autouninstall_tag ()
 {
     $out = array (
         /* give the name of the tables, without $_TABLES[] */
-        'tables' => array('tag_list','tag_map','tag_badwords','tag_menu'),
+        'tables' => array('tag_list','tag_map'),
         /* give the full name of the group, as in the db */
         'groups' => array('tag Admin'),
         /* give the full name of the feature, as in the db */
         'features' => array('tag.admin'),
         /* give the full name of the block, including 'phpblock_', etc */
-        'php_blocks' => array('phpblock_tag_cloud','phpblock_tag_menu'),
+        'php_blocks' => array('phpblock_tag_cloud'),
         /* give all vars with their name */
         'vars'=> array()
     );

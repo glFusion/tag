@@ -6,14 +6,12 @@
 // |                                                                          |
 // | Plugin system integration options                                        |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2013 by the following authors:                        |
+// | Copyright (C) 2008-2016 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
-// | Based on the Tag Plugin for Geeklog CMS                                  |
-// | Copyright (C) 2008 by the following authors:                             |
+// | Based on the Tag Plugin                                                  |
+// | Copyright (C) 2008-2012 by the following authors:                        |
 // |                                                                          |
 // | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
 // +--------------------------------------------------------------------------+
@@ -44,6 +42,7 @@ global $_DB_table_prefix, $_TABLES;
 
 $_TABLES['tag_list']      = $_DB_table_prefix . 'tag_list';
 $_TABLES['tag_map']       = $_DB_table_prefix . 'tag_map';
+// no longer used - keep to allow smooth migrations
 $_TABLES['tag_badwords']  = $_DB_table_prefix . 'tag_badwords';
 $_TABLES['tag_menu']      = $_DB_table_prefix . 'tag_menu';
 
@@ -51,7 +50,7 @@ $_TABLES['tag_menu']      = $_DB_table_prefix . 'tag_menu';
 
 $_TAG_CONF['pi_name']           = 'tag';
 $_TAG_CONF['pi_display_name']   = 'Tag';
-$_TAG_CONF['pi_version']        = '1.0.2';
-$_TAG_CONF['gl_version']        = '1.5.0';
-$_TAG_CONF['pi_url']            = 'http://www.glfusion.org/';
+$_TAG_CONF['pi_version']        = '2.0.0';
+$_TAG_CONF['gl_version']        = '1.6.3';
+$_TAG_CONF['pi_url']            = 'https://www.glfusion.org/';
 ?>

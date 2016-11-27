@@ -1,8 +1,10 @@
+{# begin {templatelocation} #}
 <li class="tagged_item">
-	<a href="{url}" rel="{tag}">{type}:&nbsp;{title}</a>
+	<h3 class="uk-margin-remove"><a href="{url}" rel="{tag}">{type}:&nbsp;{title}</a></h3>
 	{!if related_tags}
 	<div class="related_tags">
 		{related}: {related_tags}
 	</div>
 	{!endif}
 </li>
+{# end {templatelocation} #}

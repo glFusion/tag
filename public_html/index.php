@@ -6,9 +6,11 @@
 // |                                                                          |
 // | User interface                                                           |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Based on the Tag Plugin for Geeklog CMS                                  |
+// | Copyright (C) 2010-2016 by the following authors:                        |
+// |                                                                          |
+// | Mark R. Evans          mark AT glfusion DOT org                          |
+// |                                                                          |
+// | Based on the Tag Plugin                                                  |
 // | Copyright (C) 2008 by the following authors:                             |
 // |                                                                          |
 // | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
@@ -32,6 +34,8 @@
 
 require_once '../lib-common.php';
 
+$page = '';
+
 /**
 * Retrieve request vars
 */
@@ -41,7 +45,6 @@ $tag = COM_getArgument('tag');
 /**
 * Display
 */
-$display = TAG_siteHeader();
 $T = new Template($_CONF['path'] . 'plugins/tag/templates');
 $T->set_file('page', 'index.thtml');
 
@@ -51,7 +54,7 @@ $T->set_file('page', 'index.thtml');
 $lang_vars = array('tag_list');
 
 foreach ($lang_vars as $lang_var) {
-	$T->set_var('lang_' . $lang_var, TAG_str($lang_var));
+    $T->set_var('lang_' . $lang_var, TAG_str($lang_var));
 }
 
 /**
@@ -63,22 +66,28 @@ $T->set_var('tag_cloud', TAG_getTagCloud($_TAG_CONF['max_tag_cloud'], false));
 * Other tags
 */
 if ($tag != '') {
-	$tag = TAG_normalize($tag);
-	$tag_id = TAG_getTagId($tag);
-	if ($tag_id !== false) {
-		TAG_increaseHitCount($tag_id);
-		$text = $tag;
-		if ($_TAG_CONF['replace_underscore'] === true) {
-			$text = str_replace('_', ' ', $text);
-		}
-		$T->set_var('selected_tag', sprintf($LANG_TAG['selected_tag'], TAG_escape($text)));
-	}
+    $tag = TAG_normalize($tag);
+    $tag_id = TAG_getTagId($tag);
+    if ($tag_id !== false) {
+        TAG_increaseHitCount($tag_id);
+        $text = $tag;
+        if ($_TAG_CONF['replace_underscore'] === true) {
+            $text = str_replace('_', ' ', $text);
+        }
+        $T->set_var('selected_tag', sprintf($LANG_TAG['selected_tag'], TAG_escape($text)));
+    }
 
-	$T->set_var('tagged_items', ($tag != '') ? TAG_getTaggedItems($tag) : '');
+    $T->set_var('tagged_items', ($tag != '') ? TAG_getTaggedItems($tag) : '');
 }
 
 $T->parse('output', 'page');
-$display .= $T->finish($T->get_var('output'))
-		 .  TAG_siteFooter();
+
+$page .= $T->finish($T->get_var('output'));
+
+
+$display = TAG_siteHeader();
+$display .= $page;
+$display .= TAG_siteFooter();
+
 echo $display;
 ?>

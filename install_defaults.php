@@ -6,9 +6,11 @@
 // |                                                                          |
 // | Initialize the online configuration settings                             |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Based on the Tag Plugin for Geeklog CMS                                  |
+// | Copyright (C) 2008-2016 by the following authors:                        |
+// |                                                                          |
+// | Mark R. Evans          mark AT glfusion DOT org                          |
+// |                                                                          |
+// | Based on the Tag Plugin                                                  |
 // | Copyright (C) 2008 by the following authors:                             |
 // |                                                                          |
 // | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
@@ -51,13 +53,9 @@ $_TAG_DEFAULT = array();
 
 // Plugin info
 
-$_TAG_DEFAULT['pi_version'] = '0.3.2';						// Plugin Version
-$_TAG_DEFAULT['gl_version'] = '1.4.0';						// GL Version plugin for
-$_TAG_DEFAULT['pi_url']     = 'http://mystral-kk.net/';	// Plugin Homepage
-
-//=========================================================
-//  DO NOT CHANGE ANYTHING ABOVE THIS LINE
-//=========================================================
+$_TAG_DEFAULT['pi_version'] = '2.0.0';
+$_TAG_DEFAULT['gl_version'] = '1.6.3';
+$_TAG_DEFAULT['pi_url']     = 'https://www.glfusion.org/';
 
 /**
 * User Configurations
@@ -76,7 +74,7 @@ $_TAG_DEFAULT['default_block_name'] = 'tag_cloud_block';
 $_TAG_DEFAULT['tag_name'] = 'tag';
 
 /**
-* Max length of a tag in bytes.  Should not be longer than 255.
+* Max length of a tag in bytes.  Should not be longer than 128.
 */
 $_TAG_DEFAULT['max_tag_len'] = 60;
 
@@ -140,7 +138,7 @@ $_TAG_DEFAULT['tag_cloud_threshold'][8]  = 9;
 /**
 * Whether to replace an underscore included in tag texts with a space
 */
-$_TAG_DEFAULT['replace_underscore'] = false;
+$_TAG_DEFAULT['replace_underscore'] = true;
 
 /**
 * The number of key words to be included in <meta name="keywords"
@@ -162,26 +160,14 @@ $_TAG_DEFAULT['publish_as_template_vars'] = false;
 $_TAG_DEFAULT['template_vars'] = array();
 
 /**
-* Configurations for tag menu (Tag-0.3.0 or later)
+* Enable what's related hook
 */
+$_TAG_DEFAULT['enable_whatsrelated'] = false;
 
 /**
-* Default name of a tag menu block which will be created during the
-* installation.
+* Maximum number of items to return in what's related
 */
-$_TAG_DEFAULT['default_block_name_menu'] = 'tag_menu_block';
-
-/**
-* Character(s) for indenting tag menu item
-*/
-$_TAG_DEFAULT['menu_indenter'] = '&nbsp;&nbsp;&nbsp;';
-
-/**
-* Whether to add the number of items to each tag menu item
-*
-* @note This feature could be a costly operation
-*/
-$_TAG_DEFAULT['add_num_items_to_menu'] = false;
+$_TAG_DEFAULT['whatsrelated_limit'] = 10;
 
 /**
 * Which glFusion blocks to display
@@ -202,7 +188,7 @@ function plugin_initconfig_tag() {
     global $_TAG_CONF, $_TAG_DEFAULT;
 
     if (isset($_TAG_CONF) AND is_array($_TAG_CONF)
-     AND (count($_TAG_CONF) >= 1)) {
+    AND (count($_TAG_CONF) >= 1)) {
         $_TAG_DEFAULT = array_merge($_TAG_DEFAULT, $_TAG_CONF);
     }
 
@@ -226,9 +212,8 @@ function plugin_initconfig_tag() {
     $c->add('replace_underscore', $_TAG_DEFAULT['replace_underscore'], 'select', 0, 0, 0, 110, true, 'tag');
     $c->add('num_keywords', $_TAG_DEFAULT['num_keywords'], 'text', 0, 0, NULL, 110, true, 'tag');
     $c->add('publish_as_template_vars', $_TAG_DEFAULT['publish_as_template_vars'], 'select', 0, 0, 0, 120, true, 'tag');
-    $c->add('default_block_name_menu', $_TAG_DEFAULT['default_block_name_menu'], 'text', 0, 0, NULL, 130, true, 'tag');
-    $c->add('menu_indenter', $_TAG_DEFAULT['menu_indenter'], 'text', 0, 0, NULL, 140, true, 'tag');
-    $c->add('add_num_items_to_menu', $_TAG_DEFAULT['add_num_items_to_menu'], 'select', 0, 0, 0, 140, true, 'tag');
+    $c->add('enable_whatsrelated', $_TAG_DEFAULT['enable_whatsrelated'], 'select', 0, 0, 0, 125, true, 'tag');
+    $c->add('whatsrelated_limit', $_TAG_DEFAULT['whatsrelated_limit'], 'text', 0, 0, null, 130, true, 'tag');
     $c->add('displayblocks', $_TAG_DEFAULT['displayblocks'], 'select', 0, 0, 1, 150, true, 'tag');
 
     return true;

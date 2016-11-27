@@ -1,7 +1,8 @@
+{# begin {templatelocation} #}
 <p>{lang_desc_admin_stats}</p>
 
-<form method="post" action="{this_script}">
-	<table class="plugin">
+<form class="uk-form" method="post" action="{this_script}">
+	<table class="uk-table">
 		<tr>
 			<th>{lang_lbl_tag}</th>
 			<th>{lang_lbl_count}</th>
@@ -9,9 +10,10 @@
 		</tr>
 		{body}
 	</table>
-	<br{xhtml}>
+	<br>
 	<input name="cmd" type="hidden" value="stats">
 	<input name="action" type="hidden" value="doDelete">
 	<input name="submit" type="submit" value="{lang_delete_checked}">
 	<input name="submit" type="submit" value="{lang_ban_checked}">
 </form>
+{# end {templatelocation} #}

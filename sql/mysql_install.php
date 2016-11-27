@@ -10,7 +10,7 @@
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
-// | Based on the Tag Plugin for Geeklog CMS                                  |
+// | Based on the Tag Plugin                                                  |
 // | Copyright (C) 2008 by the following authors:                             |
 // |                                                                          |
 // | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
@@ -37,36 +37,22 @@ if (!defined ('GVERSION')) {
 }
 
 $_SQL['tag_list'] = "CREATE TABLE " . $_TABLES['tag_list'] . " ("
-		. "tag_id MEDIUMINT(10) NOT NULL AUTO_INCREMENT,"
-		. "tag VARCHAR(128) NOT NULL DEFAULT '',"
-		. "hits MEDIUMINT(10) NOT NULL DEFAULT '0',"
-		. "PRIMARY KEY tag_id(tag_id)"
-		. ")";
+. "tag_id MEDIUMINT(10) NOT NULL AUTO_INCREMENT,"
+. "tag VARCHAR(128) NOT NULL DEFAULT '',"
+. "ignore_tag TINYINT UNSIGNED NOT NULL DEFAULT '0',"
+. "hits MEDIUMINT(10) NOT NULL DEFAULT '0',"
+. "PRIMARY KEY tag_id(tag_id)"
+. ")";
 
 $_SQL['tag_list_index'] = "CREATE INDEX idx_tag_list_tag ON {$_TABLES['tag_list']} (tag)";
 
 $_SQL['tag_map'] = "CREATE TABLE " . $_TABLES['tag_map'] . " ("
-		. "map_id MEDIUMINT(10) NOT NULL AUTO_INCREMENT,"
-		. "tag_id MEDIUMINT(10) NOT NULL DEFAULT '0',"
-		. "type VARCHAR(30) NOT NULL DEFAULT 'article',"
-		. "sid VARCHAR(40) NOT NULL DEFAULT '',"
-		. "PRIMARY KEY map_id(map_id)"
-		. ")";
+. "map_id MEDIUMINT(10) NOT NULL AUTO_INCREMENT,"
+. "tag_id MEDIUMINT(10) NOT NULL DEFAULT '0',"
+. "type VARCHAR(30) NOT NULL DEFAULT 'article',"
+. "sid VARCHAR(128) NOT NULL DEFAULT '',"
+. "PRIMARY KEY map_id(map_id)"
+. ")";
 
 $_SQL['tag_map_index'] = "CREATE INDEX idx_tag_map_tag_id ON {$_TABLES['tag_map']} (tag_id)";
-
-$_SQL['tag_badwords'] = "CREATE TABLE " . $_TABLES['tag_badwords'] . " ("
-		. "badword VARCHAR(255) NOT NULL,"
-		. "PRIMARY KEY badword(badword(191))"
-		. ")";
-
-$_SQL['tag_menu'] = "CREATE TABLE " . $_TABLES['tag_menu'] . " ("
-		. "menu_id INT(10) NOT NULL AUTO_INCREMENT,"
-		. "menu_name VARCHAR(255) NOT NULL DEFAULT '',"
-		. "tag_ids VARCHAR(255) NOT NULL DEFAULT '',"
-		. "parent_id INT(10) NOT NULL DEFAULT '0',"
-		. "dsp_order INT(10) NOT NULL DEFAULT '0',"
-		. "PRIMARY KEY menu_id(menu_id)"
-		. ")";
-
 ?>

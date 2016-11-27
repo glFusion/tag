@@ -1,5 +1,3 @@
-@charset "utf-8";
-
 /***********************************************************
 *
 *  Style Sheet for glFusion Tag plugin
@@ -26,7 +24,7 @@ a.tag_link:visited
 a.tag_link:hover
 {
 	color: white !important;
-	background-color: blue;
+	background-color: #35B3EE;
 }
 
 /**
@@ -35,7 +33,6 @@ a.tag_link:hover
 div#tag_container
 {
 	color: black;
-	background-color: white;
 	text-decoration: none;
 }
 
@@ -81,7 +78,7 @@ div.related_tags a:visited
 div.related_tags a:hover
 {
 	color: white;
-	background-color: blue;
+	background-color: #35B3EE;
 }
 
 /**
@@ -137,7 +134,7 @@ a.tag_lv2,
 a.tag_lv2:visited
 {
 	color: blue;
-	font-size: 1.2em;
+	font-size: 1.1em;
 	text-decoration: none;
 }
 
@@ -151,7 +148,7 @@ a.tag_lv3,
 a.tag_lv3:visited
 {
 	color: blue;
-	font-size: 1.4em;
+	font-size: 1.2em;
 	text-decoration: none;
 }
 
@@ -165,7 +162,7 @@ a.tag_lv4,
 a.tag_lv4:visited
 {
 	color: #009933;
-	font-size: 1.6em;
+	font-size: 1.3em;
 	text-decoration: none;
 }
 
@@ -179,7 +176,7 @@ a.tag_lv5,
 a.tag_lv5:visited
 {
 	color: #009933;
-	font-size: 1.8em;
+	font-size: 1.4em;
 	text-decoration: none;
 }
 
@@ -193,7 +190,7 @@ a.tag_lv6,
 a.tag_lv6:visited
 {
 	color: #cc3300;
-	font-size: 2em;
+	font-size: 1.5em;
 	text-decoration: none;
 }
 
@@ -207,7 +204,7 @@ a.tag_lv7,
 a.tag_lv7:visited
 {
 	color: #cc3300;
-	font-size: 2.2em;
+	font-size: 1.6em;
 	text-decoration: none;
 }
 
@@ -221,7 +218,7 @@ a.tag_lv8,
 a.tag_lv8:visited
 {
 	color: red;
-	font-size: 2.4em;
+	font-size: 1.7em;
 	text-decoration: none;
 }
 
@@ -235,7 +232,7 @@ a.tag_lv9,
 a.tag_lv9:visited
 {
 	color: red;
-	font-size: 2.6em;
+	font-size: 1.8em;
 	text-decoration: none;
 }
 
@@ -243,47 +240,4 @@ a.tag_lv9:hover
 {
 	color: white;
 	background-color: red;
-}
-
-/**
-* For displaying tag menu
-*/
-
-/* Content area */
-
-div#tag_menu
-{
-}
-
-div#tag_menu_container
-{
-}
-
-div#tag_menu_body
-{
-	line-height: 1.5em;
-}
-
-div#tag_menu_body li a
-{
-}
-
-/* Menu block */
-
-div#bl_tag_menu
-{
-}
-
-a.bl_tag_menu_item,
-a.bl_tag_menu_item:visited
-{
-	color: blue;
-	text-decoration: none;
-}
-
-a.bl_tag_menu_item:hover
-{
-	color: white;
-	background-color: blue;
-	text-decoration: none;
 }

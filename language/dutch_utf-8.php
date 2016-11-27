@@ -2,13 +2,15 @@
 // +--------------------------------------------------------------------------+
 // | Tag Plugin for glFusion                                                  |
 // +--------------------------------------------------------------------------+
-// | english.php                                                              |
+// | dutch_utf-8.php                                                          |
 // |                                                                          |
-// | English Language File                                                    |
+// | Dutch Language File (UTF-8)                                              |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Based on the Tag Plugin for Geeklog CMS                                  |
+// | Copyright (C) 2008-2016 by the following authors:                        |
+// |                                                                          |
+// | Mark R. Evans          mark AT glfusion DOT org                          |
+// |                                                                          |
+// | Based on the Tag Plugin                                                  |
 // | Copyright (C) 2008 by the following authors:                             |
 // |                                                                          |
 // | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
@@ -45,19 +47,18 @@ $LANG_TAG = array(
 	'uninstall_success'	=> 'Succesvol Verwijderd',
 	'uninstall_fail'    => 'Installatie Mislukt -- Bekijk uw fouten logboek om te zien waarom.',
 	'uninstall_msg'		=> 'Tag plugin is met succes verwijderd.',
+    'version_required'  => 'Tag requires glFusion v1.1.0 or later.',
 	'tag_separators'    => ' ',	// Can be more than one character
 	'badword_replace'   => '',
 	'admin_label'       => 'Tag',
 	'display_label'     => 'Tag: ',
 	'default_block_title' => 'Populaire tags van deze website',
-	'default_block_title_menu' => 'Tag Menu',
 	'tag_list'          => 'Tag lijst',
 	'selected_tag'      => 'Items met <strong>%s</strong> als tag: ',	// %s = tag name
 	'related'           => 'Gerelateerde tags',
 	'block_title'       => 'Populaire tags van deze website',
 	'menu_stats'        => 'Statistieken',
 	'menu_badword'      => 'Banned Tags',
-	'menu_menuconfig'   => 'Tag Menu Instellingen',
 	'db_error'          => 'Kan niet lezen van de database.',
 	'action'            => 'Actie',
 	'desc_admin_stats'  => 'Dit is de lijst met geregistreerde tags.  U kunt tags verwijderen of bannen (bijv. te populaire tags of ongewenste tags).',
@@ -76,18 +77,6 @@ $LANG_TAG = array(
 	'badword'           => 'Banned tags',
 	'no_tag'            => 'Er is nog geen tag gedefinieerd.',
 	'no_badword'        => 'Er staat nog geen tag op de ban lijst.',
-	'desc_admin_menuconfig' => 'Dit zijn gedefinieerde menu items.',
-	'no_parent'         => '(Geen)',
-	'menu_name'         => 'Menu Naam',
-	'menu_parent'       => 'Bovenliggend Menu',
-	'menu_tags'         => 'Tags in menu',
-	'menu_dsp_order'    => 'Volgorde van tonen',
-	'desc_add_menu'     => 'Voeg een Tag Menu toe',
-	'desc_edit_menu'    => 'Wijzige een Tag Menu',
-	'desc_delete_menu'  => 'Delete Tag Menu',
-	'add_child'         => 'Voeg een sub-menu toe',
-	'order_up'          => 'Omhoog',
-	'order_down'        => 'Omlaag',
 	'add_success'       => 'Succesvol toegevoegd.',
 	'add_fail'          => 'Kan niet toevoegen.',
 	'delete_success'    => 'Succesvol verwijderd.',
@@ -98,6 +87,15 @@ $LANG_TAG = array(
 	'no_item'           => 'Geen items gevonden.',
 	'no_title'          => 'No title available',
 	'desc_tag'          => 'Link to list of all content items flagged with this specific tag',
+    'admin_help'        => 'The Tag plugin enables you to put "tags" in your content (stories, pages, Media Gallery descriptions, etc.) to allow easier grouping and retrieval of similar content.',
+    'ignore_confirm'    => 'Are you sure you want to ignore this tag?',
+    'unban_confirm'     => 'Are you sure you want to allow this tag?',
+    'menu_rescan'       => 'Rescan Content',
+    'cancel'            => 'Cancel',
+    'rescan'            => 'Rescan',
+    'rescan_instructions' => 'This will rescan all glFusion content and rebuild the tag mappinps. This process will rescan all content, so it could take some time to run. You generally do not need to rescan all content. If you have re-installed the Tag Plugin, rescanning should be done, othrwise, it should not be necessary.',
+    'rescan_title'      => 'Rescan All Content',
+    'rescan_complete'   => 'Rescanning of content has completed',
 );
 
 
@@ -124,11 +122,9 @@ $LANG_confignames['tag'] = array(
 	'replace_underscore'       => 'Vervang een underscore door een spatie',
 	'num_keywords'             => 'Max aantal sleutelwoorden',
 	'publish_as_template_vars' => 'Publiceer tags als template variabelen',
-	'default_block_name_menu'  => 'Standaard naam voor Tag Menu Block',
-	'menu_indenter'            => 'Karakter gebruikt als indenter in Tag Menu',
-	'add_num_items_to_menu'    => 'Toon het aantal items in Tag Menu',
 	'displayblocks'            => 'Display glFusion Blocks',
-
+    'enable_whatsrelated'      => 'Replace Story What\'s Related Block',
+    'whatsrelated_limit'       => 'Maximum number of items to return in What\'s Related block',
 );
 
 $LANG_configsubgroups['tag'] = array(

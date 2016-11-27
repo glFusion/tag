@@ -1,0 +1,16 @@
+{start_block}
+
+<h2>{lang_title}</h2>
+
+<p>{lang_rescan_instructions}</p>
+
+<div id="rescan">
+	<form id="rescanform" class="uk-form" action="{site_admin_url}/plugins/tag/index.php" method="post" style="display:inline;">
+		<input type="hidden" name="dorescan" value="x">
+		<input type="hidden" name="{security_token_name}" value="{security_token}">
+		<button id="rescanbutton" class="uk-button uk-button-primary" type="submit" >{lang_rescan}</button>
+		<button id="cancelbutton" name="cancelbutton" class="uk-button uk-button-danger" type="submit" >{lang_cancel}</button>
+	</form>
+</div>
+
+{end_block}

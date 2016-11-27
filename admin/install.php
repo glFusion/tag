@@ -6,9 +6,11 @@
 // |                                                                          |
 // | Plugin Installation                                                      |
 // +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Based on the Tag Plugin for Geeklog CMS                                  |
+// | Copyright (C) 2008-2016 by the following authors:                        |
+// |                                                                          |
+// | Mark R. Evans          mark AT glfusion DOT org                          |
+// |                                                                          |
+// | Based on the Tag Plugin                                                  |
 // | Copyright (C) 2008 by the following authors:                             |
 // |                                                                          |
 // | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
@@ -40,14 +42,14 @@ USES_lib_install();
 */
 if (!SEC_inGroup('Root')) {
     /**
-	* Someone is trying to illegally access this page
-	*/
-    COM_errorLog("Someone has tried to illegally access the tag install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
+    * Someone is trying to illegally access this page
+    */
+    COM_errorLog("Someone has tried to access the tag install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
     $display = COM_siteHeader()
-    		 . COM_startBlock($LANG_TAG['access_denied'])
-    		 . $LANG_TAG['access_denied_msg']
-    		 . COM_endBlock()
-    		 . COM_siteFooter(true);
+    . COM_startBlock($LANG_TAG['access_denied'])
+    . $LANG_TAG['access_denied_msg']
+    . COM_endBlock()
+    . COM_siteFooter(true);
     echo $display;
     exit;
 }
@@ -59,24 +61,24 @@ if (SEC_checkToken()) {
     $action = COM_applyFilter($_GET['action']);
     if ($action == 'install') {
         if (plugin_install_tag()) {
-    		// Redirects to the plugin editor
-    		echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=44');
-    		exit;
+            // Redirects to the plugin editor
+            echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=44');
+            exit;
         } else {
-    		echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=72');
-    		exit;
+            echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=72');
+            exit;
         }
     } else if ($action == 'uninstall') {
-    	if (plugin_uninstall_tag('installed')) {
-    		/**
-    		* Redirects to the plugin editor
-    		*/
-    		echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=45');
-    		exit;
-    	} else {
-    		echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=73');
-    		exit;
-    	}
+        if (plugin_uninstall_tag('installed')) {
+            /**
+            * Redirects to the plugin editor
+            */
+            echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=45');
+            exit;
+        } else {
+            echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=73');
+            exit;
+        }
     }
 }
 

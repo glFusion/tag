@@ -1,3 +1,4 @@
+{# begin {templatelocation} #}
 <div id="tag_container">
 	<h2>{lang_tag_list}</h2>
 	{tag_cloud}
@@ -8,4 +9,5 @@
 		</ol>
 	</div>
 </div>
-<br{xhtml}>
+<br>
+{# end {templatelocation} #}

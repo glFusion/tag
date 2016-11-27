@@ -2,14 +2,16 @@
 // +--------------------------------------------------------------------------+
 // | Tag Plugin for glFusion                                                  |
 // +--------------------------------------------------------------------------+
-// | german_utf-8.php                                                         |
+// | german.php                                                               |
 // |                                                                          |
-// | German Language File (UTF-8)                                             |
+// | German Language File                                                     |
+// +--------------------------------------------------------------------------+
+// | Copyright (C) 2008-2016 by the following authors:                        |
+// |                                                                          |
+// | Mark R. Evans          mark AT glfusion DOT org                          |
 // | Modifiziert: August 09 Tony Kluever									  |
-// +--------------------------------------------------------------------------+
-// | $Id::                                                                   $|
-// +--------------------------------------------------------------------------+
-// | Based on the Tag Plugin for Geeklog CMS                                  |
+// |                                                                          |
+// | Based on the Tag Plugin                                                  |
 // | Copyright (C) 2008 by the following authors:                             |
 // |                                                                          |
 // | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
@@ -52,14 +54,12 @@ $LANG_TAG = array(
 	'admin_label'       => 'Tag',
 	'display_label'     => 'Tag: ',
 	'default_block_title' => 'Beliebte Tags auf dieser Seite',
-	'default_block_title_menu' => 'Tag-Menü',
 	'tag_list'          => 'Tag-Liste',
 	'selected_tag'      => 'Objekte, die <strong>%s</strong> Tag haben: ',	// %s = tag name
 	'related'           => 'Ähnliche Tags',
 	'block_title'       => 'Bleiebte Tags auf dieser Seite',
 	'menu_stats'        => 'Statistiken',
 	'menu_badword'      => 'Gesperrte Tags',
-	'menu_menuconfig'   => 'Tag-Menü - Konfiguration',
 	'db_error'          => 'Kann nicht von Datenbank lesen.',
 	'action'            => 'Aktion',
 	'desc_admin_stats'  => 'Dies ist die Liste der registrierten Tags. Du kannst falsch registrierte Tags löschen oder Tags bannen (z.B. zu beliebte oder vulgäre Tags).',
@@ -78,18 +78,6 @@ $LANG_TAG = array(
 	'badword'           => 'Gesperrte Tags',
 	'no_tag'            => 'Noch keine Tags definiert.',
 	'no_badword'        => 'Noch keine Tags gesperrt.',
-	'desc_admin_menuconfig' => 'Dies sind definierte Menüobjekte.',
-	'no_parent'         => '(Kein)',
-	'menu_name'         => 'Menüname',
-	'menu_parent'       => 'Übergeordnetes Menü',
-	'menu_tags'         => 'Enthaltene Tags',
-	'menu_dsp_order'    => 'Sortierungsanzeige',
-	'desc_add_menu'     => 'Tag-Menü hinzufügen',
-	'desc_edit_menu'    => 'Tag-Menü bearbeiten',
-	'desc_delete_menu'  => 'Tag-Menü löschen',
-	'add_child'         => 'Untermenü hinzufügen',
-	'order_up'          => 'Hoch',
-	'order_down'        => 'Runter',
 	'add_success'       => 'Erfolgreich hinzugefügt.',
 	'add_fail'          => 'Kann nicht hinufügen.',
 	'delete_success'    => 'Erfolgreich gelöscht.',
@@ -100,6 +88,15 @@ $LANG_TAG = array(
 	'no_item'           => 'Keine passenden Objekte gefunden.',
 	'no_title'			=> 'Kein Titel verfügbar',
 	'desc_tag'          => 'Link to list of all content items flagged with this specific tag',
+    'admin_help'        => 'The Tag plugin enables you to put "tags" in your content (stories, pages, Media Gallery descriptions, etc.) to allow easier grouping and retrieval of similar content.',
+    'ignore_confirm'    => 'Are you sure you want to ignore this tag?',
+    'unban_confirm'     => 'Are you sure you want to allow this tag?',
+    'menu_rescan'       => 'Rescan Content',
+    'cancel'            => 'Cancel',
+    'rescan'            => 'Rescan',
+    'rescan_instructions' => 'This will rescan all glFusion content and rebuild the tag mappinps. This process will rescan all content, so it could take some time to run. You generally do not need to rescan all content. If you have re-installed the Tag Plugin, rescanning should be done, othrwise, it should not be necessary.',
+    'rescan_title'      => 'Rescan All Content',
+    'rescan_complete'   => 'Rescanning of content has completed',
 );
 
 
@@ -126,11 +123,9 @@ $LANG_confignames['tag'] = array(
 	'replace_underscore'       => 'Unterstrich mit Leerzeichen ersetzen',
 	'num_keywords'             => 'Max. Anzahl der Schlüsslwörter',
 	'publish_as_template_vars' => 'Veröffentliche Tags als Template-Vars',
-	'default_block_name_menu'  => 'Standardname für Tag-Menü-Block',
-	'menu_indenter'            => 'String, als Stempel in Tag-Menü',
-	'add_num_items_to_menu'    => 'Anzahl der Objekte im tag-Menü anzeigen',
 	'displayblocks'            => 'Display glFusion Blocks',
-
+    'enable_whatsrelated'      => 'Replace Story What\'s Related Block',
+    'whatsrelated_limit'       => 'Maximum number of items to return in What\'s Related block',
 );
 
 $LANG_configsubgroups['tag'] = array(
