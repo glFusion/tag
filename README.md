@@ -2,16 +2,11 @@
 
 For the latest, and more detailed, documentation, please see the [Tag Plugin Wiki Page](https://www.glfusion.org/wiki/glfusion:plugins:tag:start)
 
-### LICENSE
-
-This program is free software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation; either version 2 of the License, or (at your option) any later
-version.
-
 ### OVERVIEW
 
-The Tag plugin enables you to put "tags" to your content and make it easier for you and visitors to classify content using the tags.
+The Tag plugin enables you to put "tags" to your content and make it easier for you and visitors to classify content using the tags. This plugin works with all content types in glFusion, such as stories, static pages, Media Gallery item descriptions, Filemgmt descriptions, etc. 
+
+**NOTE**: The Tag plugin **does not** support tags in the Forum plugin. 
 
 ### SYSTEM REQUIREMENTS
 
@@ -139,3 +134,10 @@ The apperance of tag clouds are controlled with templates
   In case <public_html>/layout/your_theme/tag.css exists, this will be
   preferred over <public_html>/tag/tag.css.
 
+
+### LICENSE
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2 of the License, or (at your option) any later
+version.
