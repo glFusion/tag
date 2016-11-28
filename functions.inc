@@ -233,63 +233,62 @@ function plugin_upgrade_tag() {
     // Do upgrading
     switch ($pi_version) {
         case '0.1.0':	// 0.1.0 --> 0.2.0
-        $sql = "CREATE INDEX idx_tag_list_tag ON {$_TABLES['tag_list']} (tag)";
-        DB_query($sql);
-        $sql = "CREATE INDEX idx_tag_map_tag_id ON {$_TABLES['tag_map']} (tag_id)";
-        DB_query($sql);
-        /* Fall through into the next case */
+            $sql = "CREATE INDEX idx_tag_list_tag ON {$_TABLES['tag_list']} (tag)";
+            DB_query($sql);
+            $sql = "CREATE INDEX idx_tag_map_tag_id ON {$_TABLES['tag_map']} (tag_id)";
+            DB_query($sql);
 
         case '0.2.0':	// 0.2.0 --> 0.3.0
-        /* Fall through into the next case */
-
         case '0.3.0':	// 0.3.0 --> 0.3.1
         case '0.3.1':
         case '0.3.2':
-        require_once $_CONF['path'] . 'plugins/tag/install_defaults.php';
-        plugin_initconfig_tag();
+            require_once $_CONF['path'] . 'plugins/tag/install_defaults.php';
+            plugin_initconfig_tag();
+
         case '0.4.1':
         case '0.4.2':
         case '0.4.3':
         case '0.5.0':
         case '0.5.1':
-        DB_query("UPDATE {$_TABLES['tag_map']} SET type='staticpages' WHERE type='staticpage'",1);
+            DB_query("UPDATE {$_TABLES['tag_map']} SET type='staticpages' WHERE type='staticpage'",1);
+
         case '0.5.2' :
         case '0.5.3' :
         case '0.5.4' :
-        $c->add('displayblocks', $_TAG_DEFAULT['displayblocks'], 'select', 0, 0, 1, 150, true, 'tag');
-        DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_name='tag Admin'",1);
+            $c->add('displayblocks', $_TAG_DEFAULT['displayblocks'], 'select', 0, 0, 1, 150, true, 'tag');
+            DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_name='tag Admin'",1);
 
         case '1.0.1' :
         case '1.0.2' :
-        DB_query("ALTER TABLE {$_TABLES['tag_badwords']} DROP PRIMARY KEY, ADD PRIMARY KEY (`badword`(191));",1);
-        DB_query("ALTER TABLE {$_TABLES['tag_list']} CHANGE `tag` `tag` VARCHAR(128) NOT NULL DEFAULT '';",1);
-        DB_query("ALTER TABLE {$_TABLES['tag_list']} DROP INDEX `idx_tag_list_tag`, ADD UNIQUE `idx_tag_list_tag` (`tag`);",1);
-        DB_query("ALTER TABLE {$_TABLES['tag_list']} ADD `ignore_tag` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `tag`;",1);
-        DB_query("ALTER TABLE {$_TABLES['tag_map']} CHANGE `sid` `sid` VARCHAR(128) NOT NULL DEFAULT '';",1);
-        // remove the menu block
-        DB_query("DELETE FROM {$_TABLES['blocks']} WHERE name='block_tag_menu'",1);
-        // transfer badwords to main tag_list table
-        $badwordList = array();
-        $result = DB_query("SELECT * FROM {$_TABLES['tag_badwords']}");
-        while ( ($row = DB_fetchArray($result) != false )) {
-            $badwordList[] = $row['badword'];
-        }
-        foreach ($badwordList AS $badword ) {
-            $sql = "REPLACE INTO {$_TABLES['tag_list']} (tag,ignore_tag) VALUES ('" . DB_escapeString($badword) . "',1)";
-            DB_query($sql);
-        }
-        DB_query("DROP TABLE {$_TABLES['tag_badwords']};",1);
-        DB_query("DROP TABLE {$_TABLES['tag_menu']};",1);
+            DB_query("ALTER TABLE {$_TABLES['tag_badwords']} DROP PRIMARY KEY, ADD PRIMARY KEY (`badword`(191));",1);
+            DB_query("ALTER TABLE {$_TABLES['tag_list']} CHANGE `tag` `tag` VARCHAR(128) NOT NULL DEFAULT '';",1);
+            DB_query("ALTER TABLE {$_TABLES['tag_list']} DROP INDEX `idx_tag_list_tag`, ADD UNIQUE `idx_tag_list_tag` (`tag`);",1);
+            DB_query("ALTER TABLE {$_TABLES['tag_list']} ADD `ignore_tag` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `tag`;",1);
+            DB_query("ALTER TABLE {$_TABLES['tag_map']} CHANGE `sid` `sid` VARCHAR(128) NOT NULL DEFAULT '';",1);
+            // remove the menu block
+            DB_query("DELETE FROM {$_TABLES['blocks']} WHERE name='block_tag_menu'",1);
+            // transfer badwords to main tag_list table
+            $badwordList = array();
+            $result = DB_query("SELECT * FROM {$_TABLES['tag_badwords']}");
+            while ( ($row = DB_fetchArray($result) != false )) {
+                $badwordList[] = $row['badword'];
+            }
+            foreach ($badwordList AS $badword ) {
+                $sql = "REPLACE INTO {$_TABLES['tag_list']} (tag,ignore_tag) VALUES ('" . DB_escapeString($badword) . "',1)";
+                DB_query($sql);
+            }
+            DB_query("DROP TABLE {$_TABLES['tag_badwords']};",1);
+            DB_query("DROP TABLE {$_TABLES['tag_menu']};",1);
 
-        $c->del('default_block_name_menu','tag');
-        $c->del('menu_indenter','tag');
-        $c->del('add_num_items_to_menu','tag');
+            $c->del('default_block_name_menu','tag');
+            $c->del('menu_indenter','tag');
+            $c->del('add_num_items_to_menu','tag');
 
-        $c->add('enable_whatsrelated', false, 'select', 0, 0, 0, 125, true, 'tag');
-        $c->add('whatsrelated_limit', 10, 'text', 0, 0, null, 130, true, 'tag');
+            $c->add('enable_whatsrelated', false, 'select', 0, 0, 0, 125, true, 'tag');
+            $c->add('whatsrelated_limit', 10, 'text', 0, 0, null, 130, true, 'tag');
 
         default:
-        break;
+            break;
     }
 
     // Update plugin info
@@ -349,15 +348,14 @@ function plugin_enablestatechange_tag($state) {
     $state = ($state === true) ? 1 : 0;
 
     $sql = "UPDATE {$_TABLES['blocks']} "
-    . "SET is_enabled = '" . DB_escapeString($state) . "' "
-    . "WHERE (name = '" . DB_escapeString($_TAG_CONF['default_block_name']) . "') "
-    . "OR (name = '" . DB_escapeString($_TAG_CONF['default_block_name_menu']) . "')";
+            . "SET is_enabled = '" . DB_escapeString($state) . "' "
+            . "WHERE (name = '" . DB_escapeString($_TAG_CONF['default_block_name']) . "') "
+            . "OR (name = '" . DB_escapeString($_TAG_CONF['default_block_name_menu']) . "')";
     DB_query($sql);
 }
 
 /**
-* Add template vars to 'article.thtml', 'featuredstorytext.thtml' and
-* 'archivestorytext.thtml'.
+* Add template vars
 *
 *
 * Vars available in templates are {tag_label} and {tag_part}.
@@ -412,9 +410,9 @@ function TAG_escape($str) {
 
     // Unescape a string
     $str = str_replace(
-    array('&lt;', '&gt;',  '&auml;', '&ouml;', '&amp;', '&quot:', '&#039;'),
-    array(   '<',    '>',   'ä',    'ö',    '&', '"',      "'"),
-    $str
+        array('&lt;', '&gt;',  '&auml;', '&ouml;', '&amp;', '&quot:', '&#039;'),
+        array(   '<',    '>',   'ä',    'ö',    '&', '"',      "'"),
+        $str
     );
 
     return htmlspecialchars($str, ENT_QUOTES, COM_getEncodingt());
@@ -759,7 +757,7 @@ function plugin_itemdeleted_tag($id,$type)
 
     // Delete old records from tag_map
     $sql = "DELETE FROM {$_TABLES['tag_map']} "
-    . "WHERE (type = '".$type."') AND (sid = '" . DB_escapeString($id) . "')";
+            . "WHERE (type = '".$type."') AND (sid = '" . DB_escapeString($id) . "')";
     DB_query($sql);
 
     CACHE_remove_instance('tagcloud');
@@ -782,7 +780,7 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
 
     // Delete old records from tag_map
     $sql = "DELETE FROM {$_TABLES['tag_map']} "
-    . "WHERE (type = '".DB_escapeString($type)."') AND (sid = '" . DB_escapeString($item_old_id) . "')";
+            . "WHERE (type = '".DB_escapeString($type)."') AND (sid = '" . DB_escapeString($item_old_id) . "')";
     DB_query($sql);
 
     $info = array();
@@ -854,11 +852,11 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
     }
 
     $sql = "SELECT t.tag_id, t.tag, m.type, COUNT(t.tag_id) AS cnt "
-    . "FROM {$_TABLES['tag_map']} AS m "
-    . "LEFT JOIN {$_TABLES['tag_list']} AS t "
-    . "ON t.tag_id = m.tag_id "
-    . "GROUP BY t.tag_id "
-    . "ORDER BY cnt DESC ";
+            . "FROM {$_TABLES['tag_map']} AS m "
+            . "LEFT JOIN {$_TABLES['tag_list']} AS t "
+            . "ON t.tag_id = m.tag_id "
+            . "GROUP BY t.tag_id "
+            . "ORDER BY cnt DESC ";
     if ($limit > 0) {
         $sql .= "LIMIT {$limit}";
     }
@@ -894,10 +892,14 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
         $title = TAG_escape($title);
         $level = TAG_getLevel($data['cnt']);
         $url   = COM_buildURL($_CONF['site_url'] . '/tag/index.php?tag=' . $rel);
-        $T->set_var('level', $level);
-        $T->set_var('url', $url);
-        $T->set_var('rel', $rel);
-        $T->set_var('title', $title);
+
+        $T->set_var(array(
+            'level'     => $level,
+            'url'       => $url,
+            'rel'       => $rel,
+            'title'     => $title,
+        ));
+
         $T->parse('items', 'item',true);
     }
 
