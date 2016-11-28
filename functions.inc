@@ -66,7 +66,6 @@ require_once $_CONF['path'].'plugins/tag/tag.php';
 if ( !isset($_TAG_CONF['enable_whatsrelated'])) $_TAG_CONF['enable_whatsrelated'] = false;
 if ( !isset($_TAG_CONF['whatsrelated_limit'])) $_TAG_CONF['whatsrelated_limit'] = 10;
 
-
 /**
 * Include Porter Stemmer
 */
@@ -101,12 +100,6 @@ function plugin_getmenuitems_tag() {
 
 /**
 * Check to see if this Plugin uses comments
-*
-* glFusion is checking to see if this plugin supports comments, tell it no!
-* NOTE: to support comments you must use the same date/time based ID for your
-* widget.  In other words, to make primary keys for your plugin you should call
-* makesid().  Comments are keyed off of that...it is a limitation on how glFusion
-* does comments.
 *
 * @return   boolean true or false
 *
@@ -225,7 +218,7 @@ function plugin_upgrade_tag() {
 
     $result = DB_query("SELECT pi_version FROM {$_TABLES['plugins']} WHERE (pi_name = 'tag')");
     $A = DB_fetchArray($result);
-    $pi_version = $A['pi_version'];		// Version info stored in database
+    $pi_version = $A['pi_version'];
 
     require_once $_CONF['path'] . 'system/classes/config.class.php';
     $c = config::get_instance();
@@ -373,7 +366,7 @@ if (isset($_TAG_CONF['publish_as_template_vars']) && $_TAG_CONF['publish_as_temp
 
 
 /**
-* Retrieve a Get var
+* Retrieve a GET var
 */
 function TAG_get($name, $is_num = false) {
     if (isset($_GET[$name])) {
@@ -722,7 +715,7 @@ function TAG_scanTag($str) {
 }
 
 /**
-* Return if a word is "bad" or not
+* Return if a word is "ignored" or not
 *
 * @param  string $word - a normalized word to check
 * @return boolean - true = bad, false = not bad
@@ -1160,7 +1153,7 @@ function TAG_increaseHitCount($tag_id) {
     global $_TABLES;
 
     $sql = "UPDATE {$_TABLES['tag_list']} SET hits = hits + 1 "
-    . "WHERE (tag_id = '" . DB_escapeString($tag_id) . "')";
+            . "WHERE (tag_id = '" . DB_escapeString($tag_id) . "')";
 
     DB_query($sql);
 }
@@ -1188,11 +1181,11 @@ function TAG_getNumItems($tag_ids) {
     global $_TABLES;
 
     $sql = "SELECT COUNT(sid) AS cnt "
-    . "FROM {$_TABLES['tag_map']} "
-    . "WHERE (tag_id IN ('" . implode("','", array_map('DB_escapeString', $tag_ids))
-    . "')) "
-    . "GROUP BY sid "
-    . "HAVING cnt = " . count($tag_ids);
+            . "FROM {$_TABLES['tag_map']} "
+            . "WHERE (tag_id IN ('" . implode("','", array_map('DB_escapeString', $tag_ids))
+            . "')) "
+            . "GROUP BY sid "
+            . "HAVING cnt = " . count($tag_ids);
     $result = DB_query($sql);
     if (DB_error()) {
         return 'N/A';
@@ -1211,15 +1204,15 @@ function TAG_siteHeader($title='', $meta='')
     switch( $_TAG_CONF['displayblocks'] ) {
         case 0 : // left only
         case 2 :
-        $retval .= COM_siteHeader('menu',$title,$meta);
-        break;
+            $retval .= COM_siteHeader('menu',$title,$meta);
+            break;
         case 1 : // right only
         case 3 :
-        $retval .= COM_siteHeader('none',$title,$meta);
-        break;
+            $retval .= COM_siteHeader('none',$title,$meta);
+            break;
         default :
-        $retval .= COM_siteHeader('menu',$title,$meta);
-        break;
+            $retval .= COM_siteHeader('menu',$title,$meta);
+            break;
     }
     return $retval;
 }
@@ -1232,15 +1225,15 @@ function TAG_siteFooter() {
     switch( $_TAG_CONF['displayblocks'] ) {
         case 0 : // left only
         case 3 : // none
-        $retval .= COM_siteFooter();
-        break;
+            $retval .= COM_siteFooter();
+            break;
         case 1 : // right only
         case 2 : // left and right
-        $retval .= COM_siteFooter( true );
-        break;
+            $retval .= COM_siteFooter( true );
+            break;
         default :
-        $retval .= COM_siteFooter();
-        break;
+            $retval .= COM_siteFooter();
+            break;
     }
     return $retval;
 }
@@ -1260,9 +1253,6 @@ function phpblock_tag_cloud($limit = 0) {
     if ($limit <= 0) {
         $limit = $_TAG_CONF['max_tag_cloud_in_block'];
     }
-
     return TAG_getTagCloud($limit, true);
 }
-
-
 ?>
