@@ -66,6 +66,7 @@ require_once $_CONF['path'].'plugins/tag/tag.php';
 if ( !isset($_TAG_CONF['enable_whatsrelated'])) $_TAG_CONF['enable_whatsrelated'] = false;
 if ( !isset($_TAG_CONF['whatsrelated_limit'])) $_TAG_CONF['whatsrelated_limit'] = 10;
 
+
 /**
 * Include Porter Stemmer
 */
@@ -363,15 +364,11 @@ function plugin_enablestatechange_tag($state) {
 */
 if (isset($_TAG_CONF['publish_as_template_vars']) && $_TAG_CONF['publish_as_template_vars'] === true) {
     function plugin_templatesetvars_tag($templatename, &$template) {
-
         global $_TAG_CONF;
 
-        if (in_array($templatename, array('featuredarticle', 'article', 'archivearticle')) && isset($_TAG_CONF['template_vars']) ) {
+        if ( isset($_TAG_CONF['template_vars']['tag_label']) &&  isset($_TAG_CONF['template_vars']['tag_part'])) {
             $template->set_var('tag_label', $_TAG_CONF['template_vars']['tag_label']);
             $template->set_var('tag_part', $_TAG_CONF['template_vars']['tag_part']);
-        } else {
-            $template->unset_var('tag_label');
-            $template->unset_var('tag_part');
         }
     }
 }

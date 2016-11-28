@@ -90,7 +90,7 @@ function viewTagList()
 
     $actions = '<input name="delsel" type="image" src="'
             . $_CONF['layout_url'] . '/images/admin/delete.' . $_IMAGE_TYPE
-            . '" style="vertical-align:bottom;" title="' . "delete them"
+            . '" style="vertical-align:bottom;" title="' . TAG_str('ban_checked')
             . '" onclick="return confirm(\'' . TAG_str('ignore_confirm') . '\');"'
             . ' value="' . TAG_str('ban_checked') . '" '
             . '/>&nbsp;' . TAG_str('ban_checked');
@@ -431,8 +431,6 @@ switch ( $cmd ) {
         break;
 }
 
-
-//@TODO FIX Message Handling
 $T = new Template($_CONF['path'] . 'plugins/tag/templates');
 $T->set_file('admin', 'admin.thtml');
 
