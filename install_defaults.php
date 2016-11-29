@@ -214,6 +214,7 @@ function plugin_initconfig_tag() {
     $c->add('publish_as_template_vars', $_TAG_DEFAULT['publish_as_template_vars'], 'select', 0, 0, 0, 120, true, 'tag');
     $c->add('enable_whatsrelated', $_TAG_DEFAULT['enable_whatsrelated'], 'select', 0, 0, 0, 125, true, 'tag');
     $c->add('whatsrelated_limit', $_TAG_DEFAULT['whatsrelated_limit'], 'text', 0, 0, null, 130, true, 'tag');
+    $c->add('limit_related_types', '', 'text', 0, 0, null, 140, true, 'tag');
     $c->add('displayblocks', $_TAG_DEFAULT['displayblocks'], 'select', 0, 0, 1, 150, true, 'tag');
 
     return true;

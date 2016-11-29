@@ -164,10 +164,9 @@ function plugin_chkVersion_tag() {
 if ( $_TAG_CONF['enable_whatsrelated'] == true ) {
     function plugin_getwhatsrelated_tag( $type, $id )
     {
-        global $_CONF, $_TAG_CONF, $_TABLES;
+        global $_CONF, $_TAG_CONF, $_TABLES, $_PLUGINS;
 
         $retval = array();
-
         $tag_ids = '';
         $first = 0;
         $counter = 0;
@@ -180,7 +179,29 @@ if ( $_TAG_CONF['enable_whatsrelated'] == true ) {
             $first++;
         }
         if ( $tag_ids != '' ) {
-            $result = DB_query("SELECT distinct type,sid FROM {$_TABLES['tag_map']} WHERE tag_id in (".$tag_ids.") AND (sid != '".DB_escapeString($id)."')");
+            $limitType = '';
+            if ( isset($_TAG_CONF['limit_related_types']) && $_TAG_CONF['limit_related_types'] != "" ) {
+                $allowed_related_types = '';
+                $commaCount = 0;
+                $limitArray = explode(',',$_TAG_CONF['limit_related_types']);
+                foreach( $limitArray AS $ltype ) {
+                    $ltype = strtolower($ltype);
+                    if ( $ltype == 'article' || in_array($ltype,$_PLUGINS)) {
+                        if ( $commaCount > 0 ) $allowed_related_types .= ',';
+                        $allowed_related_types .= "'".COM_applyFilter($ltype)."'";
+                        $commaCount++;
+                    }
+                }
+                if ( $allowed_related_types != '' ) {
+                    $limitType = " AND type in (".$allowed_related_types.") ";
+                }
+            }
+            $sql = "SELECT distinct type,sid FROM {$_TABLES['tag_map']}
+                    WHERE tag_id in (".$tag_ids.") " . $limitType . "
+                    AND (sid != '".DB_escapeString($id)."')";
+
+            $result = DB_query($sql);
+
             while (  ($row = DB_fetchArray($result)) != false ) {
                 $itemInfo = PLG_getItemInfo($row['type'], $row['sid'], 'title,url,date-created');
                 if ( $itemInfo['title'] != '' && $itemInfo['url'] != '' ) {
@@ -279,6 +300,7 @@ function plugin_upgrade_tag() {
 
             $c->add('enable_whatsrelated', false, 'select', 0, 0, 0, 125, true, 'tag');
             $c->add('whatsrelated_limit', 10, 'text', 0, 0, null, 130, true, 'tag');
+            $c->add('limit_related_types', '', 'text', 0, 0, null, 140, true, 'tag');
 
         default:
             break;

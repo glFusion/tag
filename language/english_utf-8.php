@@ -124,6 +124,7 @@ $LANG_confignames['tag'] = array(
     'displayblocks'            => 'Display glFusion Blocks',
     'enable_whatsrelated'      => 'Replace Story What\'s Related Block',
     'whatsrelated_limit'       => 'Maximum number of items to return in What\'s Related block',
+    'limit_related_types'      => 'Allowed content types for What\'s Related (comma delimited list)',
 );
 
 $LANG_configsubgroups['tag'] = array(
