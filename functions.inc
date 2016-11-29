@@ -144,7 +144,7 @@ function plugin_getadminoption_tag() {
     if (SEC_hasRights('tag.admin')) {
         $pi_name   = TAG_str('admin_label');
         $admin_url = $_CONF['site_admin_url'] . '/plugins/tag/index.php';
-        $num_items = DB_count($_TABLES['tag_list']);
+        $num_items = DB_count($_TABLES['tag_list'],'ignore_tag',0);
         return array($pi_name, $admin_url, $num_items);
     }
 }
@@ -342,8 +342,8 @@ function plugin_enablestatechange_tag($state) {
 
     $sql = "UPDATE {$_TABLES['blocks']} "
             . "SET is_enabled = '" . DB_escapeString($state) . "' "
-            . "WHERE (name = '" . DB_escapeString($_TAG_CONF['default_block_name']) . "') "
-            . "OR (name = '" . DB_escapeString($_TAG_CONF['default_block_name_menu']) . "')";
+            . "WHERE (name = '" . DB_escapeString($_TAG_CONF['default_block_name']) . "')";
+
     DB_query($sql);
 }
 
@@ -847,7 +847,7 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
     $sql = "SELECT t.tag_id, t.tag, m.type, COUNT(t.tag_id) AS cnt "
             . "FROM {$_TABLES['tag_map']} AS m "
             . "LEFT JOIN {$_TABLES['tag_list']} AS t "
-            . "ON t.tag_id = m.tag_id "
+            . "ON t.tag_id = m.tag_id WHERE t.ignore_tag = 0 "
             . "GROUP BY t.tag_id "
             . "ORDER BY cnt DESC ";
     if ($limit > 0) {
