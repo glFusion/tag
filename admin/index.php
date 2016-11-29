@@ -340,6 +340,13 @@ function rescanConfirm()
         'lang_rescan' => $LANG_TAG['rescan'],
         'lang_rescan_instructions' => $LANG_TAG['rescan_instructions'],
         'lang_title' => $LANG_TAG['rescan_title'],
+
+        'lang_scanning' => 'Scanning',
+        'lang_scan'     => $LANG_TAG['rescan'],
+        'lang_success'  => 'Scanning content complete.',
+        'lang_ok'       => 'OK',
+        'lang_ajax_status' => 'Status',
+
     ));
 
     $T->parse('output','page');

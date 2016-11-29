@@ -1,16 +1,40 @@
+<script>
+	var lang_scanning = "{lang_scanning}";
+	var lang_scan = "{lang_scan}";
+	var lang_success = "{lang_success}";
+	var lang_ok = "{lang_ok}";
+	var lang_cancel = "{lang_cancel}";
+</script>
+<script src="{site_admin_url}/plugins/tag/ajax.min.js"></script>
+
 {start_block}
 
 <h2>{lang_title}</h2>
 
 <p>{lang_rescan_instructions}</p>
 
-<div id="rescan">
-	<form id="rescanform" class="uk-form" action="{site_admin_url}/plugins/tag/index.php" method="post" style="display:inline;">
+<div id="tagscan">
+	<form id="tagscanform" class="uk-form" action="{site_admin_url}/plugins/tag/index.php" method="post" style="display:inline;">
 		<input type="hidden" name="dorescan" value="x">
-		<input type="hidden" name="{security_token_name}" value="{security_token}">
 		<button id="rescanbutton" class="uk-button uk-button-primary" type="submit" >{lang_rescan}</button>
 		<button id="cancelbutton" name="cancelbutton" class="uk-button uk-button-danger" type="submit" >{lang_cancel}</button>
 	</form>
 </div>
 
+<div style="margin-top:15px;">
+	<div id="tag_scanprocesor" style="display:none;">
+		<hr>
+		<h3 class="uk-margin-bottom uk-margin-remove-top">{lang_ajax_status}</h3>
+
+		<div class="uk-margin">
+			<span id="t" class="tm-updating" style="display:none;">&nbsp;</span>
+			<span class="msg" id="ajax_msg">&nbsp;</span>
+		</div>
+
+	</div>
+</div>
+
 {end_block}
+
+
+
