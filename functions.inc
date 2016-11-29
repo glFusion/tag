@@ -521,8 +521,9 @@ function TAG_normalize($str) {
 *
 */
 function plugin_autotags_tag($op, $content = '', $autotag = '') {
-    global $_CONF, $_TAG_CONF, $LANG_TAG;
+    global $_CONF, $_TAG_CONF, $_VARS, $LANG_TAG;
 
+    $namespace = isset($_VARS['at_namespace']) ? $_VARS['at_namespace'] : '';
     if ($op == 'tagname') {
         return array($_TAG_CONF['tag_name'],'tagcloud');
     } else if ($op == 'tagusage') {
@@ -564,7 +565,7 @@ function plugin_autotags_tag($op, $content = '', $autotag = '') {
                 $_TAG_CONF['template_vars']['tag_part']  = $tag_part;
                 $_TAG_CONF['template_vars']['tag_label'] = $LANG_TAG['display_label'];
 
-                if ($_TAG_CONF['publish_as_template_vars'] === true ) {
+                if ($_TAG_CONF['publish_as_template_vars'] === true && $namespace != 'dokuwiki') {
                     // Replace a tag part with a null string
                     $content = str_replace($tagstr, '', $content);
                 } else {
