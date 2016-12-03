@@ -40,7 +40,7 @@ var tagadminint = (function() {
         $("#rescanbutton").html(lang_scanning);
 
         throbber_on();
-
+        message(lang_scanning);
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -52,7 +52,6 @@ var tagadminint = (function() {
             plugins = result.pluginlist;
             count = plugins.length;
             plugin = plugins.shift();
-            message(lang_scanning);
             window.setTimeout(processPlugin,1000);
         });
         return false; // prevent from firing
@@ -78,6 +77,7 @@ var tagadminint = (function() {
 
     var processPlugin = function() {
         if (plugin) {
+            message(lang_scanning + ' ' + done + '/' + count + ' - '+ plugin);
             // ajax call to process plugin
             $.ajax({
                 type: "POST",
@@ -90,7 +90,6 @@ var tagadminint = (function() {
                 if ( result.errorCode != 0 ) {
                     console.log("TAGadmin: The content scan did not complete");
                 }
-                message(lang_scanning + ' ' + done + '/' + count + ' - '+ plugin);
                 plugin = plugins.shift();
                 done++;
             }).fail(function(jqXHR, textStatus ) {
