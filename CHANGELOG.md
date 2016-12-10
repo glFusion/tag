@@ -1,6 +1,7 @@
 Tag Plugin ChangeLog
 
 ## v2.1.0
+  - Do not display tag cloud if limit is 0
   - SQL cleanup - reformat to use standard format in glFusion
 
 ## v2.0.0
