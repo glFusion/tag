@@ -854,6 +854,10 @@ function TAG_getLevel($count) {
 function TAG_getTagCloud($limit = 0, $is_block = false) {
     global $_CONF, $_TABLES, $_TAG_CONF, $_PLUGINS;
 
+    if ( $limit == 0 ) {
+        return '';
+    }
+
     $cacheName = 'tagcloud__';
     if ( $is_block ) {
         $cacheName = 'tagcloud_block__';
