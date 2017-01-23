@@ -1,8 +1,5 @@
 Tag Plugin ChangeLog
 
-## 2.0.1
-  - Testing pull request features
-
 ##2.0.0
   - Major rewrite of functionality
   - Improved integration with all glFusion plugins
