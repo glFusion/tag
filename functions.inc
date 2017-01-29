@@ -6,7 +6,7 @@
 // |                                                                          |
 // | glFusion integration APIs                                                |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2016 by the following authors:                        |
+// | Copyright (C) 2008-2017 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -69,9 +69,9 @@ if ( !isset($_TAG_CONF['whatsrelated_limit'])) $_TAG_CONF['whatsrelated_limit'] 
 /**
 * Include Porter Stemmer
 */
-if (isset($_TAG_CONF['tag_stemming']) && $_TAG_CONF['tag_stemming'] === true) {
-    require_once $_CONF['path'].'plugins/tag/porter_stemmer.php';
-}
+//if (isset($_TAG_CONF['tag_stemming']) && $_TAG_CONF['tag_stemming'] === true) {
+//    require_once $_CONF['path'].'plugins/tag/porter_stemmer.php';
+//}
 
 // +---------------------------------------------------------------------------+
 // | glFusion Plugin API Implementations                                       |
@@ -302,6 +302,9 @@ function plugin_upgrade_tag() {
             $c->add('whatsrelated_limit', 10, 'text', 0, 0, null, 130, true, 'tag');
             $c->add('limit_related_types', '', 'text', 0, 0, null, 140, true, 'tag');
 
+        case '2.0.0' :
+            $c->del('tag_stemming', 'tag');
+
         default:
             break;
     }
@@ -475,6 +478,9 @@ function TAG_split($str) {
 function TAG_stem($str) {
     global $_TAG_CONF;
 
+    // disable this feature for now
+    return $str;
+
     static $porterStemmer = null;
 
     $encoding = COM_getCharset();
@@ -567,9 +573,9 @@ function plugin_autotags_tag($op, $content = '', $autotag = '') {
                         if (TAG_checkBadword($tag) === true) {
                             $tag_part .= TAG_str('badword_replace') . ' ';
                         } else {
-                            if ($_TAG_CONF['tag_stemming'] === true) {
-                                $tag = TAG_stem($tag);
-                            }
+//                            if ($_TAG_CONF['tag_stemming'] === true) {
+//                                $tag = TAG_stem($tag);
+//                            }
 
                             $text = $tag;
                             if ($_TAG_CONF['replace_underscore'] === true) {
@@ -720,9 +726,9 @@ function TAG_scanTag($str) {
                 if (TAG_checkBadword($part) === true) {
                     continue;
                 } else {
-                    if ($_TAG_CONF['tag_stemming'] === true) {
-                        $part = TAG_stem($part);
-                    }
+//                    if ($_TAG_CONF['tag_stemming'] === true) {
+//                        $part = TAG_stem($part);
+//                    }
                 }
 
                 if (($part !== '') AND (strlen($part) <= $_TAG_CONF['max_tag_len'])) {
