@@ -6,7 +6,7 @@
 // |                                                                          |
 // | Administrative Interface                                                 |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2010-2016 by the following authors:                        |
+// | Copyright (C) 2010-2017 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -375,7 +375,7 @@ foreach ( $expectedActions AS $action ) {
 if ( isset($_POST['cancelbutton'])) $cmd = 'viewtags';
 
 switch ( $cmd ) {
-    case 'bansel' : // does the same damn thing as delete....
+    case 'bansel' : // does the same thing as delete....
     case 'delsel' : // delete a tag
         $rc     = deleteTag();
         if ( $rc != '' ) COM_setMsg( $rc, 'success' );
@@ -393,6 +393,7 @@ switch ( $cmd ) {
     case 'addban' :
         $rc = addBadword();
         if ( $rc != '' ) COM_setMsg( $rc, 'success' );
+        $cmd = 'viewban';
         $title = TAG_str('menu_badword');
         $page .= viewBanList();
         break;
@@ -445,7 +446,7 @@ if ($msg != '') {
     $T->set_var('msg', '<p>' . $msg . '</p>');
 }
 
-if ( $cmd == 'viewtags' || $cmd == 'rescan' || $cmd == 'dorescan') {
+if ( $cmd == 'viewtags' || $cmd == 'rescan' || $cmd == 'dorescan' || $cmd == 'delsel') {
     $menu_arr[] = array( 'url' => $_CONF['site_admin_url'].'/plugins/tag/index.php?viewban=x','text' => TAG_str('menu_badword'));
 } else {
     $menu_arr[] = array( 'url' => $_CONF['site_admin_url'].'/plugins/tag/index.php?viewtags=x','text' => TAG_str('menu_stats'));
