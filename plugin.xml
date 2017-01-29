@@ -2,7 +2,7 @@
     <id>tag</id>
     <name>Tag</name>
     <description>Tag plugin enables you to put tags in your articles to make a tag cloud. This will make it easier for you to classify articles using the tags.</description>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <glfusionversion>1.6.3</glfusionversion>
     <phpversion>5.3.3</phpversion>
     <url>https://www.glfusion.org</url>
