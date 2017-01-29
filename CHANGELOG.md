@@ -1,6 +1,7 @@
 Tag Plugin ChangeLog
 
 ## v2.0.1
+  - Support for custom language files
   - Fixed incorrect menu display after ignoring a tag
   - Improved error handling when rescanning content
   - Do not display tag cloud if limit is 0

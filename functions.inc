@@ -39,12 +39,20 @@ if (!defined ('GVERSION')) {
 /**
 * Language file Include
 */
-$langfile = $_CONF['path'].'plugins/tag/language/'.$_CONF['language'].'.php';
-
+$langfile = $_CONF['path'] . 'plugins/tag/language/' . $_CONF['language'] . '.php';
+$custfile = $_CONF['path'] . 'plugins/tag/language/custom/' . $_CONF['language'] . '.php';
 if (file_exists($langfile)) {
     include_once $langfile;
+    if (file_exists($custfile)) {
+        include_once $custfile;
+    }
 } else {
-    include_once $_CONF['path'].'plugins/tag/language/english_utf-8.php';
+    $langfile = $_CONF['path'].'plugins/tag/language/english_utf-8.php';
+    $custfile = $_CONF['path'].'plugins/tag/language/custom/english_utf-8.php';
+    include_once $langfile;
+    if (file_exists($custfile)) {
+        include_once $custfile;
+    }
 }
 
 $_TAG_CONF = array();
