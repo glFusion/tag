@@ -53,7 +53,7 @@ $_TAG_DEFAULT = array();
 
 // Plugin info
 
-$_TAG_DEFAULT['pi_version'] = '2.0.0';
+$_TAG_DEFAULT['pi_version'] = '2.0.1';
 $_TAG_DEFAULT['gl_version'] = '1.6.3';
 $_TAG_DEFAULT['pi_url']     = 'https://www.glfusion.org/';
 

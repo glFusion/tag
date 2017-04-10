@@ -6,6 +6,7 @@ Tag Plugin ChangeLog
   - Improved error handling when rescanning content
   - Do not display tag cloud if limit is 0
   - SQL cleanup - reformat to use standard format in glFusion
+  - Removed tag stemming option
 
 ## v2.0.0
   - Major rewrite of functionality

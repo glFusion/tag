@@ -561,6 +561,7 @@ function plugin_autotags_tag($op, $content = '', $autotag = '') {
 
     $namespace = isset($_VARS['at_namespace']) ? $_VARS['at_namespace'] : '';
     if ($op == 'tagname') {
+        if ( !isset($_TAG_CONF['tag_name'])) $_TAG_CONF['tag_name'] = 'tag';
         return array($_TAG_CONF['tag_name'],'tagcloud');
     } else if ($op == 'tagusage') {
         return;
