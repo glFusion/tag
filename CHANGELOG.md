@@ -1,6 +1,7 @@
 Tag Plugin ChangeLog
 
 ## v2.0.1
+  - Default tag to tag with most hits when no tag is passed
   - Support for custom language files
   - Fixed incorrect menu display after ignoring a tag
   - Improved error handling when rescanning content
