@@ -65,6 +65,19 @@ $T->set_var('tag_cloud', TAG_getTagCloud($_TAG_CONF['max_tag_cloud'], false));
 /**
 * Other tags
 */
+
+if ( $tag == '' ) {
+    // grab the highest by count
+    $sql = "SELECT * FROM {$_TABLES['tag_list']} ORDER BY hits DESC LIMIT 1";
+    $result = DB_query($sql);
+    if ( DB_numRows($result) > 0 ) {
+        $row = DB_fetchArray($result);
+        $tag = $row['tag'];
+    }
+}
+
+
+
 if ($tag != '') {
     $tag = TAG_normalize($tag);
     $tag_id = TAG_getTagId($tag);
