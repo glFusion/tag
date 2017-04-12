@@ -11,7 +11,7 @@
  * @category   glFusion CMS
  * @package    tag
  * @author     Mark R. Evans  mark AT glFusion DOT org
- * @copyright  2015-2016 - Mark R. Evans
+ * @copyright  2015-2017 - Mark R. Evans
  * @license    http://opensource.org/licenses/gpl-2.0.php - GNU Public License v2 or later
  * @since      File available since Release 1.6.3
  *
@@ -90,21 +90,18 @@ var tagadminint = (function() {
                 if ( result.errorCode != 0 ) {
                     console.log("TAGadmin: The content scan did not complete");
                 }
-                plugin = plugins.shift();
-                done++;
             }).fail(function(jqXHR, textStatus ) {
                 if (textStatus === 'timeout') {
                      console.log("TAGadmin: Timeout scanning plugin " + plugin);
                 } else {
                      console.log("TAGadmin: Error scanning plugin " + plugin);
                 }
-                alert("TAGadmin: Error scanning plugin " + plugin);
-                window.location.href = site_admin_url + "/plugins/tag/index.php";
             }).always(function( xhr, status ) {
                 var wait = 250;
+                plugin = plugins.shift();
+                done++;
                 window.setTimeout(processPlugin, wait);
             });
-
         } else {
             finished();
         }
@@ -124,9 +121,12 @@ var tagadminint = (function() {
             }).done(function(data) {
                 $('#rescanbutton').prop("disabled",false);
                 $("#rescanbutton").html(lang_scan);
-               UIkit.modal.confirm(lang_success, function(){
-                    $(location).attr('href', site_admin_url + '/plugins/tag/index.php');
-                }, function(){}, {labels:{'Ok': lang_ok,'Cancel': lang_cancel } });
+                var modal = UIkit.modal.alert(lang_success);
+                modal.on ({
+                    'hide.uk.modal': function(){
+                        $(location).attr('href',site_admin_url + '/plugins/tag/index.php');
+                    }
+                });
             });
         }, 250);
     };

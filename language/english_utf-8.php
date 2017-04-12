@@ -6,7 +6,7 @@
 // |                                                                          |
 // | English Language File (UTF-8)                                            |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2016 by the following authors:                        |
+// | Copyright (C) 2008-2017 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |

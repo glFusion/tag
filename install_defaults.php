@@ -6,7 +6,7 @@
 // |                                                                          |
 // | Initialize the online configuration settings                             |
 // +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2016 by the following authors:                        |
+// | Copyright (C) 2008-2017 by the following authors:                        |
 // |                                                                          |
 // | Mark R. Evans          mark AT glfusion DOT org                          |
 // |                                                                          |
@@ -53,7 +53,7 @@ $_TAG_DEFAULT = array();
 
 // Plugin info
 
-$_TAG_DEFAULT['pi_version'] = '2.0.0';
+$_TAG_DEFAULT['pi_version'] = '2.0.1';
 $_TAG_DEFAULT['gl_version'] = '1.6.3';
 $_TAG_DEFAULT['pi_url']     = 'https://www.glfusion.org/';
 
@@ -203,7 +203,7 @@ function plugin_initconfig_tag() {
     $c->add('tag_name', $_TAG_DEFAULT['tag_name'], 'text', 0, 0, NULL, 20, true, 'tag');
     $c->add('max_tag_len', $_TAG_DEFAULT['max_tag_len'], 'text', 0, 0, null, 30, true, 'tag');
     $c->add('tag_case_sensitive', $_TAG_DEFAULT['tag_case_sensitive'], 'select', 0, 0, 0, 40, true, 'tag');
-    $c->add('tag_stemming', $_TAG_DEFAULT['tag_stemming'], 'select', 0, 0, 0, 50, true, 'tag');
+//    $c->add('tag_stemming', $_TAG_DEFAULT['tag_stemming'], 'select', 0, 0, 0, 50, true, 'tag');
     $c->add('tag_check_badword', $_TAG_DEFAULT['tag_check_badword'], 'select', 0, 0, 0, 60, true, 'tag');
     $c->add('tag_cloud_spacer', $_TAG_DEFAULT['tag_cloud_spacer'], 'text', 0, 0, null, 70, true, 'tag');
     $c->add('max_tag_cloud', $_TAG_DEFAULT['max_tag_cloud'], 'text', 0, 0, null, 80, true, 'tag');
