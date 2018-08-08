@@ -1,6 +1,6 @@
 {# begin {templatelocation} #}
 <li class="tagged_item">
-	<h3 class="uk-margin-remove"><a href="{url}" rel="{tag}">{type}:&nbsp;{title}</a></h3>
+	<h3 class="uk-margin-remove"><a href="{url}">{type}:&nbsp;{title}</a></h3>
 	{!if related_tags}
 	<div class="related_tags">
 		{related}: {related_tags}

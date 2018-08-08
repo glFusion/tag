@@ -1,5 +1,9 @@
 Tag Plugin ChangeLog
 
+## v2.0.2
+  - UI Updates - HTML 5 compatibility fixes
+  - Fixed uninitialized variable error
+
 ## v2.0.1
   - Default tag to tag with most hits when no tag is passed
   - Support for custom language files

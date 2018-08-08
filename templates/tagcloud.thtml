@@ -1,7 +1,7 @@
 {# begin {templatelocation} #}
 <div id="{container_id}" class="uk-panel uk-panel-box">
 	<!-- BEGIN item -->
-	<a class="tag_lv{level}" href="{url}" rel="{rel}">{title}</a>
+	<a class="tag_lv{level}" href="{url}">{title}</a>
 	<!-- END item -->
 </div>
 {# end {templatelocation} #}

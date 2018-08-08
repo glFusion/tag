@@ -212,7 +212,7 @@ if ( $_TAG_CONF['enable_whatsrelated'] == true ) {
 
             while (  ($row = DB_fetchArray($result)) != false ) {
                 $itemInfo = PLG_getItemInfo($row['type'], $row['sid'], 'title,url,date-created');
-                if ( $itemInfo['title'] != '' && $itemInfo['url'] != '' ) {
+                if ( isset($itemInfo['title']) && $itemInfo['title'] != '' && $itemInfo['url'] != '' ) {
                     $retval[] = array('title' => $itemInfo['title'], 'url' => $itemInfo['url'],'date' => $itemInfo['date-created']);
                     $counter++;
                 }
@@ -312,6 +312,12 @@ function plugin_upgrade_tag() {
 
         case '2.0.0' :
             $c->del('tag_stemming', 'tag');
+
+        case '2.0.1' :
+            // no changes
+
+        case '2.0.2' :
+            // no changes
 
         default:
             break;
@@ -886,7 +892,8 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
         return $retval;
     }
 
-    $sql = "SELECT t.tag_id, t.tag, m.type, COUNT(t.tag_id) AS cnt "
+//    $sql = "SELECT t.tag_id, t.tag, m.type, COUNT(t.tag_id) AS cnt "
+    $sql = "SELECT *, COUNT(t.tag_id) AS cnt "
             . "FROM {$_TABLES['tag_map']} AS m "
             . "LEFT JOIN {$_TABLES['tag_list']} AS t "
             . "ON t.tag_id = m.tag_id WHERE t.ignore_tag = 0 "
@@ -967,7 +974,7 @@ function TAG_formatRelatedTags($all_tags, $tag) {
                     $text = str_replace('_', ' ', $text);
                 }
                 $text = TAG_escape($text);
-                $retval .= '<a href="' . $url . '" rel="' . $text . '">' . $text . '</a>  ';
+                $retval .= '<a href="' . $url . '">' . $text . '</a>  ';
             }
         }
     }
