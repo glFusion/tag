@@ -1,5 +1,0 @@
-{# begin {templatelocation} #}
-<div id="{container_id}" class="uk-panel uk-panel-box">
-	{items}
-</div>
-{# end {templatelocation} #}
