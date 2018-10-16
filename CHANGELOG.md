@@ -1,5 +1,9 @@
 Tag Plugin ChangeLog
 
+## v2.0.3
+  - Do not display an empty tag cloud block
+  - Added self checks to not process PLG calls for tag functions
+
 ## v2.0.2
   - UI Updates - HTML 5 compatibility fixes
   - Fixed uninitialized variable error
