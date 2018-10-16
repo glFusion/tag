@@ -792,6 +792,8 @@ function plugin_itemdeleted_tag($id,$type)
 {
     global $_TABLES, $_PLUGINS;
 
+    if ($type == 'tag') return;
+
     // Delete old records from tag_map
     $sql = "DELETE FROM {$_TABLES['tag_map']} "
             . "WHERE (type = '".$type."') AND (sid = '" . DB_escapeString($id) . "')";
@@ -808,6 +810,8 @@ function plugin_itemdeleted_tag($id,$type)
 */
 function plugin_itemsaved_tag($id, $type, $old_id='') {
     global $_TABLES, $_PLUGINS;
+
+    if ($type == 'tag') return;
 
     if ( $old_id != '' ) {
         $item_old_id = $old_id;
@@ -892,7 +896,6 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
         return $retval;
     }
 
-//    $sql = "SELECT t.tag_id, t.tag, m.type, COUNT(t.tag_id) AS cnt "
     $sql = "SELECT *, COUNT(t.tag_id) AS cnt "
             . "FROM {$_TABLES['tag_map']} AS m "
             . "LEFT JOIN {$_TABLES['tag_list']} AS t "
@@ -911,6 +914,10 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
 
     while (($A = DB_fetchArray($result)) !== FALSE) {
         $list[$A['tag']] = array('tag_id' => $A['tag_id'], 'cnt' => $A['cnt'], 'type' => $A['type']);
+    }
+
+    if (count($list) == 0) {
+        return '';
     }
 
     ksort($list, SORT_STRING);
