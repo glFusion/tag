@@ -38,7 +38,6 @@ The Tag configuration option are available in the Configuration section located 
 
 The default name of tag block which will be created during the installation. If you  disable/enable the tag plugin, the block will also be disabled/enabled automatically.
 
-
 ### Tag Name
 
 Tag name to be used in items (articles), like '[tag:foo]'. You might prefer a shorter name like '[t:foo]'.
@@ -47,11 +46,9 @@ Tag name to be used in items (articles), like '[tag:foo]'. You might prefer a sh
 
 Maximum number of characters allowed in a tag. Should not be longer than 128 characters.
 
-
 ### Tag Case sensitive
 
 If this is true, the tag "glFusion" will NOT be identified with the tag "glfusion". When you change this option, you should re-install tag plugin.
-
 
 ### Allow stemming words
 
