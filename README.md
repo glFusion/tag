@@ -4,9 +4,9 @@ For the latest, and more detailed, documentation, please see the [Tag Plugin Wik
 
 ### OVERVIEW
 
-The Tag plugin enables you to put "tags" to your content and make it easier for you and visitors to classify content using the tags. This plugin works with all content types in glFusion, such as stories, static pages, Media Gallery item descriptions, Filemgmt descriptions, etc. 
+The Tag plugin enables you to put "tags" to your content and make it easier for you and visitors to classify content using the tags. This plugin works with all content types in glFusion, such as stories, static pages, Media Gallery item descriptions, Filemgmt descriptions, etc.
 
-**NOTE**: The Tag plugin **does not** support tags in the Forum plugin. 
+**NOTE**: The Tag plugin **does not** support tags in the Forum plugin.
 
 ### SYSTEM REQUIREMENTS
 
@@ -95,7 +95,7 @@ If this is set to true, tags will NOT be displayed where they should be in the a
 
 Defines which blocks should be displayed (i.e.; left / right ) when displaying the tag interface.
 
-### Replace Story What's Related 
+### Replace Story What's Related
 
 If this is enabled, the Tag plugin will generate a list of content items (not limited to just stories) that are related based on the tags in other content. This provides a much better set of related items than the default What's Related.
 
@@ -141,3 +141,5 @@ This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
 Foundation; either version 2 of the License, or (at your option) any later
 version.
+
+This plugin was originally developed by mystral-kk - geeklog AT mystral-kk DOT net

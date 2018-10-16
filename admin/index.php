@@ -1,36 +1,19 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | Tag Plugin for glFusion                                                  |
-// +--------------------------------------------------------------------------+
-// | index.php                                                                |
-// |                                                                          |
-// | Administrative Interface                                                 |
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2010-2017 by the following authors:                        |
-// |                                                                          |
-// | Mark R. Evans          mark AT glfusion DOT org                          |
-// |                                                                          |
-// | Based on the Tag Plugin                                                  |
-// | Copyright (C) 2008 by the following authors:                             |
-// |                                                                          |
-// | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
-// +--------------------------------------------------------------------------+
-// |                                                                          |
-// | This program is free software; you can redistribute it and/or            |
-// | modify it under the terms of the GNU General Public License              |
-// | as published by the Free Software Foundation; either version 2           |
-// | of the License, or (at your option) any later version.                   |
-// |                                                                          |
-// | This program is distributed in the hope that it will be useful,          |
-// | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
-// | GNU General Public License for more details.                             |
-// |                                                                          |
-// | You should have received a copy of the GNU General Public License        |
-// | along with this program; if not, write to the Free Software Foundation,  |
-// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.          |
-// |                                                                          |
-// +--------------------------------------------------------------------------+
+/**
+* Tag Plugin for glFusion CMS
+*
+* Admin Interface
+*
+* @license GNU General Public License version 2 or later
+*     http://www.opensource.org/licenses/gpl-license.php
+*
+*  Copyright (C) 2010-2018 by the following authors:
+*   Mark R. Evans   mark AT glfusion DOT org
+*
+*  Based on the Original Work from Tag Plugin
+*  @copyright  Copyright (c) 2008 mystral-kk - geeklog AT mystral-kk DOT net
+*
+*/
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -41,26 +24,24 @@ USES_lib_admin();
 * Only let admin users access this page
 */
 if (!SEC_hasRights('tag.admin')) {
-    COM_errorLog("Someone has tried to access the tag Admin page without proper permissions.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
-    $display = COM_siteHeader()
-    . COM_startBlock($LANG_TAG['access_denied'])
-    . $LANG_TAG['access_denied_msg']
-    . COM_endBlock()
-    . COM_siteFooter(true);
-    echo $display;
+    COM_accessLog("User {$_USER['username']} tried to access the Tag admin screen.");
+    COM_404();
     exit;
 }
 
+/*
+ * Displays the main tag list
+ */
 function viewTagList()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_TAG, $_IMAGE_TYPE;
 
     $retval = "";
 
-    $header_arr = array(      # display 'text' and use table field 'field'
-            array('text' => TAG_str('lbl_tag'), 'field' => 'tag', 'sort' => true, 'align' => 'left'),
-            array('text' => TAG_str('lbl_count'), 'field' => 'cnt', 'sort' => true, 'align' => 'center'),
-            array('text' => TAG_str('lbl_hit_count'), 'field' => 'hits', 'sort' => true, 'align' => 'center'),
+    $header_arr = array(
+            array('text' => $LANG_TAG['lbl_tag'], 'field' => 'tag', 'sort' => true, 'align' => 'left'),
+            array('text' => $LANG_TAG['lbl_count'], 'field' => 'cnt', 'sort' => true, 'align' => 'center'),
+            array('text' => $LANG_TAG['lbl_hit_count'], 'field' => 'hits', 'sort' => true, 'align' => 'center'),
     );
 
     $defsort_arr = array('field'     => 'cnt',
@@ -90,10 +71,10 @@ function viewTagList()
 
     $actions = '<input name="delsel" type="image" src="'
             . $_CONF['layout_url'] . '/images/admin/delete.' . $_IMAGE_TYPE
-            . '" style="vertical-align:bottom;" title="' . TAG_str('ban_checked')
-            . '" onclick="return confirm(\'' . TAG_str('ignore_confirm') . '\');"'
-            . ' value="' . TAG_str('ban_checked') . '" '
-            . '/>&nbsp;' . TAG_str('ban_checked');
+            . '" style="vertical-align:bottom;" title="' . $LANG_TAG['ban_checked']
+            . '" onclick="return confirm(\'' . $LANG_TAG['ignore_confirm'] . '\');"'
+            . ' value="' . $LANG_TAG['ban_checked'] . '" '
+            . '/>&nbsp;' . $LANG_TAG['ban_checked'];
 
     $option_arr = array('chkselect' => true,
             'chkfield' => 'tag_id',
@@ -105,7 +86,7 @@ function viewTagList()
 
     $formfields = '
             <input name="cmd" type="hidden" value="stats">
-            <input name="action" type="hidden" value="doDelete">
+            <input name="action" type="hidden" value="bansel">
     ';
 
     $form_arr = array('top' => $formfields);
@@ -124,7 +105,7 @@ function viewBanList()
     $retval = "";
 
     $header_arr = array(      # display 'text' and use table field 'field'
-            array('text' => TAG_str('lbl_tag'), 'field' => 'tag', 'sort' => true, 'align' => 'left'),
+            array('text' => $LANG_TAG['lbl_tag'], 'field' => 'tag', 'sort' => true, 'align' => 'left'),
     );
 
     $defsort_arr = array('field'     => 'tag',
@@ -151,9 +132,9 @@ function viewBanList()
     $actions = '<input name="delban" type="image" src="'
             . $_CONF['layout_url'] . '/images/admin/delete.' . $_IMAGE_TYPE
             . '" style="vertical-align:bottom;" title="' . "delete them"
-            . '" onclick="return confirm(\'' . TAG_str('unban_confirm') . '\');"'
-            . ' value="' . TAG_str('delete_checked') . '" '
-            . '/>&nbsp;' . TAG_str('delete_checked');
+            . '" onclick="return confirm(\'' . $LANG_TAG['unban_confirm'] . '\');"'
+            . ' value="' . $LANG_TAG['delete_checked'] . '" '
+            . '/>&nbsp;' . $LANG_TAG['delete_checked'];
 
     $option_arr = array('chkselect' => true,
             'chkfield' => 'tag',
@@ -164,11 +145,10 @@ function viewBanList()
     );
 
     $formfields = '
-            <input name="cmd" type="hidden" value="badword">
-            <input name="action" type="hidden" value="doDelete">
+            <input name="action" type="hidden" value="bandel">
             <input name="word" type="text">
-            <input name="addban" type="submit" value="'.TAG_str('add').'">
-    ';
+            <input name="addban" type="submit" value="'.$LANG_TAG['add'].'">
+            ';
 
     $form_arr = array('top' => $formfields);
 
@@ -180,15 +160,15 @@ function viewBanList()
 
 function TAG_getListField($fieldname, $fieldvalue, $A, $icon_arr, $token = "")
 {
-    global $_CONF, $_USER, $_TABLES, $LANG_ADMIN, $LANG04, $LANG28, $_IMAGE_TYPE;
+    global $_CONF;
 
     $retval = '';
 
     switch ($fieldname) {
 
         case 'tag' :
-            $url = $_CONF['site_admin_url'].'/plugins/tag/index.php?displaytag=x&id='.$A['tag_id'];
-            $retval = '<a href="'.$url.'">'.TAG_escape($fieldvalue).'</a> ';
+            $url = $_CONF['site_admin_url'].'/plugins/tag/index.php?displaytag=x&id='.urlencode($A['tag_id']);
+            $retval = '<a href="'.$url.'">'.htmlspecialchars($fieldvalue, ENT_QUOTES, COM_getEncodingt()).'</a> ';
             break;
 
         case 'cnt' :
@@ -213,9 +193,9 @@ function badwordDelete()
 {
     global $_TABLES, $LANG_TAG;
 
-    $words = TAG_post('words');
-    if (count($words) == 0) {
-        return '';
+    $words = $_POST['words'];
+    if (!is_array($words) || count($words) == 0) {
+        return;
     }
 
     /**
@@ -241,33 +221,36 @@ function badwordDelete()
 
     CTL_clearCache();
 
-    return DB_error() ? TAG_str('delete_fail') : TAG_str('delete_success');
+    return DB_error() ? $LANG_TAG['delete_fail'] : $LANG_TAG['delete_success'];
 }
 
 function addBadword()
 {
-    global $_TABLES;
+    global $_TABLES, $LANG_TAG;
 
-    /**
-    * Add a bad word into DB
-    */
-    $word = TAG_post('word');
+    if (!isset($_POST['word'])) {
+        return;
+    }
+    $word = COM_applyFilter($_POST['word']);
 
     $sql = "REPLACE INTO {$_TABLES['tag_list']} (tag,ignore_tag) "
     . "VALUES ('" . DB_escapeString($word) . "',1)";
     $result = DB_query($sql);
 
-    return DB_error() ? TAG_str('add_fail') : TAG_str('add_success');
+    return DB_error() ? $LANG_TAG['add_fail'] : $LANG_TAG['add_success'];
 }
 
 function deleteTag()
 {
     global $_TABLES, $LANG_TAG;
 
-    // Retrieve request vars
-    $tag_ids = TAG_post('tag_ids', true, true);
+    if (!isset($_POST['tag_ids'])) {
+        return;
+    }
+
+    $tag_ids = $_POST['tag_ids'];
     if (!is_array($tag_ids) || count($tag_ids) == 0) {
-        return '';
+        return;
     }
 
     $tag_ids = array_map('DB_escapeString', $tag_ids);
@@ -278,15 +261,13 @@ function deleteTag()
     $sql = "UPDATE {$_TABLES['tag_list']} SET ignore_tag=1 WHERE (tag_id IN ({$tag_ids}))";
     $result = DB_query($sql);
 
-    return DB_error() ? TAG_str('delete_fail') : TAG_str('delete_success');
+    return DB_error() ? $LANG_TAG['delete_fail'] : $LANG_TAG['delete_success'];
 }
 
 
 function displayTag( $tag )
 {
     global $_CONF, $_TAG_CONF, $LANG_TAG;
-
-    $retval = '';
 
     /**
     * Display
@@ -300,7 +281,7 @@ function displayTag( $tag )
     $lang_vars = array('tag_list');
 
     foreach ($lang_vars as $lang_var) {
-        $T->set_var('lang_' . $lang_var, TAG_str($lang_var));
+        $T->set_var('lang_' . $lang_var, $LANG_TAG[$lang_var]);
     }
 
     /**
@@ -314,7 +295,7 @@ function displayTag( $tag )
             if ($_TAG_CONF['replace_underscore'] === true) {
                 $text = str_replace('_', ' ', $text);
             }
-            $T->set_var('selected_tag', sprintf($LANG_TAG['selected_tag'], TAG_escape($text)));
+            $T->set_var('selected_tag', sprintf($LANG_TAG['selected_tag'], htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt())));
         }
 
         $T->set_var('tagged_items', ($tag != '') ? TAG_getTaggedItems($tag) : '');
@@ -322,8 +303,7 @@ function displayTag( $tag )
 
     $T->parse('output', 'page');
 
-    $retval .= $T->finish($T->get_var('output'));
-    return $retval;
+    return $T->finish($T->get_var('output'));
 }
 
 function rescanConfirm()
@@ -355,6 +335,37 @@ function rescanConfirm()
 
 }
 
+function _tag_admin_menu($cmd = 'viewtags')
+{
+    global $_CONF, $LANG_ADMIN, $LANG_TAG;
+
+    $retval = '';
+    $menu_arr = array();
+
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'].'/plugins/tag/index.php?viewtags=x',
+                'text' => $LANG_TAG['menu_stats'], 'active' => ($cmd=='viewtags' ? true : false));
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'].'/plugins/tag/index.php?viewban=x',
+                'text' => $LANG_TAG['menu_badword'],'active' => ($cmd=='viewban' ? true : false));
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'].'/plugins/tag/index.php?rescan=x',
+                'text' => $LANG_TAG['menu_rescan'],'active' => ($cmd=='rescan' ? true : false));
+
+    if ($cmd == 'displaytag') {
+        $menu_arr[] = array('url' => '',
+                    'text' => 'Tag Info','active' => true);
+    }
+
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'],
+                'text' => $LANG_ADMIN['admin_home']);
+
+    $retval .= ADMIN_createMenu(
+        $menu_arr,
+        $LANG_TAG['admin_help'],
+        $_CONF['site_url'] . '/tag/images/tag.png'
+    );
+    return $retval;
+
+}
+
 // main controller
 
 $display = '';
@@ -362,8 +373,7 @@ $page = '';
 $cmd = 'viewtags';
 $msg = '';
 
-// order matters here - we need the last ones to be the ones with precendence
-$expectedActions = array('viewtags','viewban','bansel','addban','delsel','delban','rescan','dorescan','displaytag');
+$expectedActions = array('viewtags','viewban','displaytag','rescan','dorescan','addban','delsel_x','bansel','delban_x');
 foreach ( $expectedActions AS $action ) {
     if ( isset($_POST[$action])) {
         $cmd = $action;
@@ -371,55 +381,53 @@ foreach ( $expectedActions AS $action ) {
         $cmd = $action;
     }
 }
+if ( isset($_POST['cancel'])) {
+    $src = COM_applyFilter($_POST['cancel']);
+    $cmd = 'viewtags';
+}
 
-if ( isset($_POST['cancelbutton'])) $cmd = 'viewtags';
-
-switch ( $cmd ) {
-    case 'bansel' : // does the same thing as delete....
-    case 'delsel' : // delete a tag
-        $rc     = deleteTag();
-        if ( $rc != '' ) COM_setMsg( $rc, 'success' );
-        $title = TAG_str('menu_stats');
-        $page   .= viewTagList();
-        break;
-
-    case 'delban' : // remove a ban
-        $rc     = badwordDelete();
-        if ( $rc != '' ) COM_setMsg( $rc, 'success' );
-        $title = TAG_str('menu_badword');
-        $page   .= viewBanList();
-        break;
-
+switch ($cmd) {
     case 'addban' :
         $rc = addBadword();
-        if ( $rc != '' ) COM_setMsg( $rc, 'success' );
+        if ( $rc != '' ) {
+            COM_setMsg( $rc, 'success' );
+        }
         $cmd = 'viewban';
-        $title = TAG_str('menu_badword');
+        $title = $LANG_TAG['menu_badword'];
         $page .= viewBanList();
         break;
-
+    case 'delsel_x' : // delete a tag
+        $rc = deleteTag();
+        if ( $rc != '' ) {
+            COM_setMsg( $rc, 'success' );
+        }
+        $cmd = 'viewtags';
+        $title = $LANG_TAG['menu_stats'];
+        $page   .= viewTagList();
+        break;
+    case 'delban_x' :
+        $rc = badwordDelete();
+        if ($rc != '') {
+            COM_setMsg($rc,'success');
+        }
+        $cmd = 'viewban';
+        $title = $LANG_TAG['menu_badword'];
+        $page = viewBanList();
+        break;
     case 'viewban' :
-        $title = TAG_str('menu_badword');
+        $title = $LANG_TAG['menu_badword'];
         $page .= viewBanList();
         break;
-
-    case 'viewtags' :
-        $page .= viewTagList();
-        $title = TAG_str('menu_stats');
-        break;
-
     case 'rescan' :
-        $title = TAG_str('menu_rescan');
+        $title = $LANG_TAG['menu_rescan'];
         $page .= rescanConfirm();
         break;
-
     case 'dorescan' :
         TAG_scanAll();
         COM_setMsg( $LANG_TAG['rescan_complete'], 'success' );
         $page .= viewTagList();
-        $title = TAG_str('menu_stats');
+        $title = $LANG_TAG['menu_stats'];
         break;
-
     case 'displaytag' :
         if ( isset($_GET['id'])) {
             $tag_id = COM_applyFilter($_GET['id'],true);
@@ -427,14 +435,13 @@ switch ( $cmd ) {
             $page .= displayTag($tag_name);
             $title = 'Tag Usage';
         } else {
-            $title = TAG_str('menu_stats');
+            $title = $LANG_TAG['menu_stats'];
             $page .= viewTagList();
         }
         break;
-
     default :
         $cmd = 'viewtags';
-        $title = TAG_str('menu_stats');
+        $title = $LANG_TAG['menu_stats'];
         $page .= viewTagList();
         break;
 }
@@ -446,27 +453,11 @@ if ($msg != '') {
     $T->set_var('msg', '<p>' . $msg . '</p>');
 }
 
-if ( $cmd == 'viewtags' || $cmd == 'rescan' || $cmd == 'dorescan' || $cmd == 'delsel') {
-    $menu_arr[] = array( 'url' => $_CONF['site_admin_url'].'/plugins/tag/index.php?viewban=x','text' => TAG_str('menu_badword'));
-} else {
-    $menu_arr[] = array( 'url' => $_CONF['site_admin_url'].'/plugins/tag/index.php?viewtags=x','text' => TAG_str('menu_stats'));
-}
-$menu_arr[] = array( 'url' => $_CONF['site_admin_url'].'/plugins/tag/index.php?rescan=x','text' => TAG_str('menu_rescan'));
-$menu_arr[] =  array('url' => $_CONF['site_admin_url'], 'text' => $LANG_ADMIN['admin_home']);
-
-$display = COM_siteHeader();
-
-$display .= COM_startBlock (ucfirst(TAG_str('admin')) . ' :: ' . $title, '',COM_getBlockTemplate ('_admin_block', 'header'));
-
-$display .= ADMIN_createMenu(
-    $menu_arr,
-    $LANG_TAG['admin_help'],
-    $_CONF['site_url'] . '/tag/images/tag.png'
-);
+$display  = COM_siteHeader();
+$display .= COM_startBlock (ucfirst($LANG_TAG['admin']) . ' :: ' . $title, '',COM_getBlockTemplate ('_admin_block', 'header'));
+$display .=_tag_admin_menu($cmd);
 $display .= $page;
-
 $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
 $display .= COM_siteFooter();
 
 echo $display;

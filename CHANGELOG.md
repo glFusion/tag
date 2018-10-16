@@ -1,6 +1,7 @@
 Tag Plugin ChangeLog
 
-## v2.0.3
+## v2.1.0
+  - Rewrite of many internal routines to bring up-to-date
   - Do not display an empty tag cloud block
   - Added self checks to not process PLG calls for tag functions
 

@@ -1,36 +1,19 @@
 <?php
-// +--------------------------------------------------------------------------+
-// | Tag Plugin for glFusion                                                  |
-// +--------------------------------------------------------------------------+
-// | functions.inc                                                            |
-// |                                                                          |
-// | glFusion integration APIs                                                |
-// +--------------------------------------------------------------------------+
-// | Copyright (C) 2008-2017 by the following authors:                        |
-// |                                                                          |
-// | Mark R. Evans          mark AT glfusion DOT org                          |
-// |                                                                          |
-// | Based on the Tag Plugin                                                  |
-// | Copyright (C) 2008 by the following authors:                             |
-// |                                                                          |
-// | Authors: mystral-kk        - geeklog AT mystral-kk DOT net               |
-// +--------------------------------------------------------------------------+
-// |                                                                          |
-// | This program is free software; you can redistribute it and/or            |
-// | modify it under the terms of the GNU General Public License              |
-// | as published by the Free Software Foundation; either version 2           |
-// | of the License, or (at your option) any later version.                   |
-// |                                                                          |
-// | This program is distributed in the hope that it will be useful,          |
-// | but WITHOUT ANY WARRANTY; without even the implied warranty of           |
-// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            |
-// | GNU General Public License for more details.                             |
-// |                                                                          |
-// | You should have received a copy of the GNU General Public License        |
-// | along with this program; if not, write to the Free Software Foundation,  |
-// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.          |
-// |                                                                          |
-// +--------------------------------------------------------------------------+
+/**
+* Tag Plugin for glFusion CMS
+*
+* glFusion Plugin Interface
+*
+* @license GNU General Public License version 2 or later
+*     http://www.opensource.org/licenses/gpl-license.php
+*
+*  Copyright (C) 2010-2018 by the following authors:
+*   Mark R. Evans   mark AT glfusion DOT org
+*
+*  Based on the Original Work from Tag Plugin
+*  @copyright  Copyright (c) 2008 mystral-kk - geeklog AT mystral-kk DOT net
+*
+*/
 
 if (!defined ('GVERSION')) {
     die ('This file can not be used on its own.');
@@ -74,13 +57,6 @@ require_once $_CONF['path'].'plugins/tag/tag.php';
 if ( !isset($_TAG_CONF['enable_whatsrelated'])) $_TAG_CONF['enable_whatsrelated'] = false;
 if ( !isset($_TAG_CONF['whatsrelated_limit'])) $_TAG_CONF['whatsrelated_limit'] = 10;
 
-/**
-* Include Porter Stemmer
-*/
-//if (isset($_TAG_CONF['tag_stemming']) && $_TAG_CONF['tag_stemming'] === true) {
-//    require_once $_CONF['path'].'plugins/tag/porter_stemmer.php';
-//}
-
 // +---------------------------------------------------------------------------+
 // | glFusion Plugin API Implementations                                       |
 // +---------------------------------------------------------------------------+
@@ -96,9 +72,9 @@ if ( !isset($_TAG_CONF['whatsrelated_limit'])) $_TAG_CONF['whatsrelated_limit'] 
 *
 */
 function plugin_getmenuitems_tag() {
-    global $_CONF, $_TAG_CONF;
+    global $_CONF, $_TAG_CONF, $LANG_TAG;
 
-    $menulabel = TAG_str('admin_label');
+    $menulabel = $LANG_TAG['admin_label'];
     $menurul   = $_CONF['site_url'] . "/tag/index.php";
     $menuitems = array();
     $menuitems[$menulabel] = $menurul;
@@ -129,7 +105,7 @@ function plugin_cclabel_tag() {
     global $_CONF, $LANG_TAG;
 
     if (SEC_hasRights('tag.admin')) {
-        $pi_name   = TAG_str('admin_label');
+        $pi_name   = $LANG_TAG['admin_label'];
         $admin_url = $_CONF['site_admin_url'] . '/plugins/tag/index.php';
         $icon_url  = $_CONF['site_url'] . '/tag/images/tag.png';
 
@@ -150,7 +126,7 @@ function plugin_getadminoption_tag() {
     global $_CONF, $_TABLES, $LANG_TAG;
 
     if (SEC_hasRights('tag.admin')) {
-        $pi_name   = TAG_str('admin_label');
+        $pi_name   = $LANG_TAG['admin_label'];
         $admin_url = $_CONF['site_admin_url'] . '/plugins/tag/index.php';
         $num_items = DB_count($_TABLES['tag_list'],'ignore_tag',0);
         return array($pi_name, $admin_url, $num_items);
@@ -242,97 +218,18 @@ function _itemCmp($a, $b)
 * @return   boolean true (= success)
 *
 */
-function plugin_upgrade_tag() {
-    global $_CONF, $_TABLES, $_TAG_CONF;
+function plugin_upgrade_tag()
+{
+    global $_CONF, $_TABLES,$_TAG_CONF;
 
-    $result = DB_query("SELECT pi_version FROM {$_TABLES['plugins']} WHERE (pi_name = 'tag')");
-    $A = DB_fetchArray($result);
-    $pi_version = $A['pi_version'];
+    require_once $_CONF['path'] . 'plugins/tag/upgrade.php';
 
-    require_once $_CONF['path'] . 'system/classes/config.class.php';
-    $c = config::get_instance();
-
-    // Do upgrading
-    switch ($pi_version) {
-        case '0.1.0':	// 0.1.0 --> 0.2.0
-            $sql = "CREATE INDEX idx_tag_list_tag ON {$_TABLES['tag_list']} (tag)";
-            DB_query($sql);
-            $sql = "CREATE INDEX idx_tag_map_tag_id ON {$_TABLES['tag_map']} (tag_id)";
-            DB_query($sql);
-
-        case '0.2.0':	// 0.2.0 --> 0.3.0
-        case '0.3.0':	// 0.3.0 --> 0.3.1
-        case '0.3.1':
-        case '0.3.2':
-            require_once $_CONF['path'] . 'plugins/tag/install_defaults.php';
-            plugin_initconfig_tag();
-
-        case '0.4.1':
-        case '0.4.2':
-        case '0.4.3':
-        case '0.5.0':
-        case '0.5.1':
-            DB_query("UPDATE {$_TABLES['tag_map']} SET type='staticpages' WHERE type='staticpage'",1);
-
-        case '0.5.2' :
-        case '0.5.3' :
-        case '0.5.4' :
-            $c->add('displayblocks', $_TAG_DEFAULT['displayblocks'], 'select', 0, 0, 1, 150, true, 'tag');
-            DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_name='tag Admin'",1);
-
-        case '1.0.1' :
-        case '1.0.2' :
-            DB_query("ALTER TABLE {$_TABLES['tag_badwords']} DROP PRIMARY KEY, ADD PRIMARY KEY (`badword`(191));",1);
-            DB_query("ALTER TABLE {$_TABLES['tag_list']} CHANGE `tag` `tag` VARCHAR(128) NOT NULL DEFAULT '';",1);
-            DB_query("ALTER TABLE {$_TABLES['tag_list']} DROP INDEX `idx_tag_list_tag`, ADD UNIQUE `idx_tag_list_tag` (`tag`);",1);
-            DB_query("ALTER TABLE {$_TABLES['tag_list']} ADD `ignore_tag` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `tag`;",1);
-            DB_query("ALTER TABLE {$_TABLES['tag_map']} CHANGE `sid` `sid` VARCHAR(128) NOT NULL DEFAULT '';",1);
-            // remove the menu block
-            DB_query("DELETE FROM {$_TABLES['blocks']} WHERE name='block_tag_menu'",1);
-            // transfer badwords to main tag_list table
-            $badwordList = array();
-            $result = DB_query("SELECT * FROM {$_TABLES['tag_badwords']}");
-            while ( ($row = DB_fetchArray($result) != false )) {
-                $badwordList[] = $row['badword'];
-            }
-            foreach ($badwordList AS $badword ) {
-                $sql = "REPLACE INTO {$_TABLES['tag_list']} (tag,ignore_tag) VALUES ('" . DB_escapeString($badword) . "',1)";
-                DB_query($sql);
-            }
-            DB_query("DROP TABLE {$_TABLES['tag_badwords']};",1);
-            DB_query("DROP TABLE {$_TABLES['tag_menu']};",1);
-
-            $c->del('default_block_name_menu','tag');
-            $c->del('menu_indenter','tag');
-            $c->del('add_num_items_to_menu','tag');
-
-            $c->add('enable_whatsrelated', false, 'select', 0, 0, 0, 125, true, 'tag');
-            $c->add('whatsrelated_limit', 10, 'text', 0, 0, null, 130, true, 'tag');
-            $c->add('limit_related_types', '', 'text', 0, 0, null, 140, true, 'tag');
-
-        case '2.0.0' :
-            $c->del('tag_stemming', 'tag');
-
-        case '2.0.1' :
-            // no changes
-
-        case '2.0.2' :
-            // no changes
-
-        default:
-            break;
-    }
-
-    // Update plugin info
-    $result = DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = \"{$_TAG_CONF['pi_version']}\" WHERE (pi_name = 'tag')");
-    $result = DB_query("UPDATE {$_TABLES['plugins']} SET pi_gl_version = \"{$_TAG_CONF['gl_version']}\" WHERE (pi_name = 'tag')");
-    COM_errorLog(ucfirst("tag") . " plugin was successfully updated to version {$_TAG_CONF['pi_version']}.");
-
-    return true;
+    return tag_upgrade();
 }
 
 
-function plugin_getheadercss_tag() {
+function plugin_getheadercss_tag()
+{
     global $_CONF;
 
     $styles = array();
@@ -350,7 +247,8 @@ function plugin_getheadercss_tag() {
 * Append a link to CSS file and <meta name="keywords" content="foo,bar"> tag
 * to <head> section
 */
-function plugin_getheadercode_tag() {
+function plugin_getheadercode_tag()
+{
     global $_CONF, $_USER, $_TAG_CONF;
 
     $retval = '';
@@ -358,7 +256,7 @@ function plugin_getheadercode_tag() {
     if ($_TAG_CONF['num_keywords'] > 0) {
         $keywords = TAG_getKeywords($_TAG_CONF['num_keywords']);
         if (count($keywords) > 0) {
-            $keywords = array_map('TAG_escape', $keywords);
+            $keywords = array_map('htmlspecialchars', $keywords);
             $retval .= LB
             .  "\t" . '<meta name="keywords" content="'
             .  implode(',', $keywords) . '" />';
@@ -374,7 +272,8 @@ function plugin_getheadercode_tag() {
 *
 * @param boolean $state - true if enabling, false if disabling
 */
-function plugin_enablestatechange_tag($state) {
+function plugin_enablestatechange_tag($state)
+{
     global $_TABLES, $_TAG_CONF;
 
     $state = ($state === true) ? 1 : 0;
@@ -405,65 +304,6 @@ if (isset($_TAG_CONF['publish_as_template_vars']) && $_TAG_CONF['publish_as_temp
 
 
 /**
-* Retrieve a GET var
-*/
-function TAG_get($name, $is_num = false) {
-    if (isset($_GET[$name])) {
-        return COM_applyFilter($_GET[$name], $is_num);
-    } else {
-        return false;
-    }
-}
-
-/**
-* Retrieve a Post var
-*/
-function TAG_post($name, $is_token = false, $is_num = false) {
-    if (isset($_POST[$name])) {
-        $var = $_POST[$name];
-        if ($is_token) {
-            if (is_array($var)) {
-                return array_map('COM_applyFilter', $var, array_fill(0, count($var), $is_num));
-            } else {
-                return COM_applyFilter($var, $is_num);
-            }
-        } else {
-            return $var;
-        }
-    } else {
-        return false;
-    }
-}
-
-/**
-* Escape a string for displaying in HTML
-*/
-function TAG_escape($str) {
-
-    // Unescape a string
-    $str = str_replace(
-        array('&lt;', '&gt;',  '&auml;', '&ouml;', '&amp;', '&quot:', '&#039;'),
-        array(   '<',    '>',   'ä',    'ö',    '&', '"',      "'"),
-        $str
-    );
-
-    return htmlspecialchars($str, ENT_QUOTES, COM_getEncodingt());
-}
-
-/**
-* Return an escaped language-specific message
-*/
-function TAG_str($msg) {
-    global $LANG_TAG;
-
-    if (isset($LANG_TAG[$msg])) {
-        return TAG_escape($LANG_TAG[$msg]);
-    } else {
-        return '';
-    }
-}
-
-/**
 * Split a string acccoding to $LANG_TAG['tag_separators']
 */
 function TAG_split($str) {
@@ -484,77 +324,18 @@ function TAG_split($str) {
 }
 
 /**
-* Stem a string using Porter Stemming algorithm
-*
-* @param  string $str - a normalized word
-* @return string      - a stemmed word
-*/
-function TAG_stem($str) {
-    global $_TAG_CONF;
-
-    // disable this feature for now
-    return $str;
-
-    static $porterStemmer = null;
-
-    $encoding = COM_getCharset();
-
-    if (!is_object($porterStemmer) OR !$porterStemmer instanceof PorterStemmer) {
-        $porterStemmer = new PorterStemmer();
-    }
-
-    $retval = '';
-
-    if (function_exists('mb_strlen')) {
-        // Stems English part
-        $i    = 0;
-        $len  = mb_strlen($str, $encoding);
-        $temp = $str;
-        $str  = '';
-        $word = '';
-
-        while ($i < $len) {
-            $ch = mb_substr($temp, $i, 1, $encoding);
-            if (mb_strwidth($ch, $encoding) == 1) {
-                $word .= $ch;
-            } else {
-                if ($word !== '') {
-                    $str .= $porterStemmer->Stem($str);
-                    $word = '';
-                } else {
-                    $str .= $ch;
-                }
-            }
-
-            $i ++;
-        }
-
-        if ($word !== '') {
-            $str .= $porterStemmer->Stem($word);
-        }
-    } else {
-        $str = $porterStemmer->Stem($str);
-    }
-
-    return $str;
-}
-
-/**
 * Normalize a string
 */
-function TAG_normalize($str) {
+function TAG_normalize($str)
+{
     global $_TAG_CONF;
 
-    $encoding = COM_getCharset();
-
     if ($_TAG_CONF['tag_case_sensitive'] === false) {
-        $str = MBYTE_strtolower($str);
+        $str = utf8_strtolower($str);
     }
-
-    if (MBYTE_strlen($_TAG_CONF['max_tag_len']) > $_TAG_CONF['max_tag_len']) {
-        $str = MBYTE_substr($str, 0, $_TAG_CONF['max_tag_len']);
+    if (utf8_strlen($str) > $_TAG_CONF['max_tag_len']) {
+        $str = utf8_substr($str, 0, $_TAG_CONF['max_tag_len']);
     }
-
     return $str;
 }
 
@@ -586,19 +367,15 @@ function plugin_autotags_tag($op, $content = '', $autotag = '') {
                     foreach ($tags as $tag) {
                         $tag = TAG_normalize($tag);
                         if (TAG_checkBadword($tag) === true) {
-                            $tag_part .= TAG_str('badword_replace') . ' ';
+                            $tag_part .= $LANG_TAG['badword_replace'] . ' ';
                         } else {
-//                            if ($_TAG_CONF['tag_stemming'] === true) {
-//                                $tag = TAG_stem($tag);
-//                            }
-
                             $text = $tag;
                             if ($_TAG_CONF['replace_underscore'] === true) {
                                 $text = str_replace('_', ' ', $text);
                             }
                             $url = $_CONF['site_url'] . '/tag/index.php?tag='
                             . rawurlencode($tag);
-                            $tag_part .= '<a class="tag_link" href="'.COM_buildURL($url).'">'.TAG_escape($text).'</a> ';
+                            $tag_part .= '<a class="tag_link" href="'.COM_buildURL($url).'">'.htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt()).'</a> ';
                         }
                     }
                 }
@@ -740,12 +517,7 @@ function TAG_scanTag($str) {
                 $part = TAG_normalize($part);
                 if (TAG_checkBadword($part) === true) {
                     continue;
-                } else {
-//                    if ($_TAG_CONF['tag_stemming'] === true) {
-//                        $part = TAG_stem($part);
-//                    }
                 }
-
                 if (($part !== '') AND (strlen($part) <= $_TAG_CONF['max_tag_len'])) {
                     $retval[] = $part;
                 }
@@ -938,7 +710,7 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
         if ($_TAG_CONF['replace_underscore'] === true) {
             $title = str_replace('_', ' ', $title);
         }
-        $title = TAG_escape($title);
+        $title = htmlspecialchars($title, ENT_QUOTES, COM_getEncodingt());
         $level = TAG_getLevel($data['cnt']);
         $url   = COM_buildURL($_CONF['site_url'] . '/tag/index.php?tag=' . $rel);
 
@@ -980,7 +752,7 @@ function TAG_formatRelatedTags($all_tags, $tag) {
                 if ($_TAG_CONF['replace_underscore'] === true) {
                     $text = str_replace('_', ' ', $text);
                 }
-                $text = TAG_escape($text);
+                $text = htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt());
                 $retval .= '<a href="' . $url . '">' . $text . '</a>  ';
             }
         }
@@ -1044,8 +816,8 @@ function TAG_getTaggedItems($tag) {
             $T->set_var('title', $title);
             $T->set_var('type',$type_text);
             $T->set_var('url', $url);
-            $T->set_var('tag', TAG_escape($tag));
-            $T->set_var('related', TAG_str('related'));
+            $T->set_var('tag', htmlspecialchars($tag, ENT_QUOTES, COM_getEncodingt()));
+            $T->set_var('related', $LANG_TAG['related']);
             $T->set_var('related_tags', TAG_formatRelatedTags($all_tags, $tag));
             $T->parse('output', 'item');
             $retval .= $T->finish($T->get_var('output'));
@@ -1212,42 +984,6 @@ function TAG_increaseHitCount($tag_id) {
             . "WHERE (tag_id = '" . DB_escapeString($tag_id) . "')";
 
     DB_query($sql);
-}
-
-/**
-* Return the title of a story
-*/
-function TAG_getStoryTitle($sid) {
-    global $_TABLES;
-
-    $title = DB_getItem($_TABLES['stories'],'title','sid = "'.DB_escapeString($sid).'"');
-    if ( $title != null ) {
-        return $title;
-    }
-    return '';
-}
-
-/**
-* Return the number of items which include all the tag ids
-*
-* @param  array of int $tag_ids - array of tag ids
-* @return int                   - the number of items
-*/
-function TAG_getNumItems($tag_ids) {
-    global $_TABLES;
-
-    $sql = "SELECT COUNT(sid) AS cnt "
-            . "FROM {$_TABLES['tag_map']} "
-            . "WHERE (tag_id IN ('" . implode("','", array_map('DB_escapeString', $tag_ids))
-            . "')) "
-            . "GROUP BY sid "
-            . "HAVING cnt = " . count($tag_ids);
-    $result = DB_query($sql);
-    if (DB_error()) {
-        return 'N/A';
-    } else {
-        return DB_numRows($result);
-    }
 }
 
 
