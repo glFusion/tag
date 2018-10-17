@@ -85,6 +85,7 @@ function tag_upgrade()
             // no changes
 
         default:
+            DB_query("UPDATE {$_TABLES['plugins']} SET pi_version='".$_TAG_CONF['pi_version']."',pi_gl_version='".$_TAG_CONF['gl_version']."' WHERE pi_name='tag' LIMIT 1");
             break;
     }
 
@@ -103,7 +104,7 @@ function tag_update_config()
 {
     global $_CONF, $_TAG_CONF, $_TABLES;
 
-    $c = config::get_instance();
+//    $c = config::get_instance();
 
     require_once $_CONF['path'].'plugins/tag/sql/tag_config_data.php';
 
