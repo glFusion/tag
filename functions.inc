@@ -156,7 +156,7 @@ if ( $_TAG_CONF['enable_whatsrelated'] == true ) {
         $counter = 0;
 
         //  query map table for all tags assigned to this $type / $id
-        $result = DB_query("SELECT tag_id FROM {$_TABLES['tag_map']} WHERE type='".DB_escapeString($type)."' AND sid='".DB_escapeString($id)."'");
+        $result = DB_query("SELECT m.tag_id FROM {$_TABLES['tag_map']} AS m LEFT JOIN {$_TABLES['tag_list']} AS l ON m.tag_id=l.tag_id WHERE m.type='".DB_escapeString($type)."' AND m.sid='".DB_escapeString($id)."' AND l.ignore_tag = 0");
         while ( ($row = DB_fetchArray($result)) != false ) {
             if ( $first != 0 ) $tag_ids .= ',';
             $tag_ids .= $row['tag_id'];

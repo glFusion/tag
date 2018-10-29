@@ -1,6 +1,7 @@
 # Tag Plugin ChangeLog
 
 ## v2.1.0
+  - Ignored tags were included in what's related
   - Rewrite of many internal routines to bring up-to-date
   - Fixed broken admin functions of add / remove ban words
   - Do not display an empty tag cloud block
