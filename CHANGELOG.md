@@ -2,7 +2,7 @@
 
 ## v2.1.0
   - Ignored tags were included in what's related
-  - Rewrite of many internal routines to bring up-to-date
+  - Rewrite of many internal routines to bring up-to-date and improve ignore tag handling
   - Fixed broken admin functions of add / remove ban words
   - Do not display an empty tag cloud block
   - Added self checks to not process PLG calls for tag functions

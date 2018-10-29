@@ -42,7 +42,7 @@ $T->set_var(array(
 
 if ( $tag == '' ) {
     // grab the highest by count
-    $sql = "SELECT * FROM {$_TABLES['tag_list']} ORDER BY hits DESC LIMIT 1";
+    $sql = "SELECT * FROM {$_TABLES['tag_list']} WHERE ignore_tag != 1 ORDER BY hits DESC LIMIT 1";
     $result = DB_query($sql);
     if ( DB_numRows($result) > 0 ) {
         $row = DB_fetchArray($result);
