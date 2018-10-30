@@ -31,9 +31,13 @@ $tag = COM_getArgument('tag');
 $T = new Template($_CONF['path'] . 'plugins/tag/templates');
 $T->set_file('page', 'index.thtml');
 
+$tc = TAG_getTagCloud($_TAG_CONF['max_tag_cloud']);
+if ($tc == '') {
+    $T->set_var('no_tag',true);
+}
 $T->set_var(array(
     'lang_tag_list' => $LANG_TAG['tag_list'],
-    'tag_cloud'     => TAG_getTagCloud($_TAG_CONF['max_tag_cloud'])
+    'tag_cloud'     => $tc
 ));
 
 /**
