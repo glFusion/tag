@@ -2,6 +2,9 @@
 <div id="tag_container">
 	<h2>{lang_tag_list}</h2>
 	{tag_cloud}
+{!if no_tag}
+	<div class="uk-alert uk-alert-success">{$LANG_TAG[no_tag]}</div>
+{!endif}
 	<div id="tagged_items_container">
 		<p>{selected_tag}</p>
 		<ol>

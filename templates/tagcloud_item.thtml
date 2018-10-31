@@ -1,3 +1,0 @@
-{# begin {templatelocation} #}
-<a class="tag_lv{level}" href="{url}">{title}</a>
-{# end {templatelocation} #}

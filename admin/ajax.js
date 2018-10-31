@@ -11,7 +11,7 @@
  * @category   glFusion CMS
  * @package    tag
  * @author     Mark R. Evans  mark AT glFusion DOT org
- * @copyright  2015-2017 - Mark R. Evans
+ * @copyright  2015-2018 - Mark R. Evans
  * @license    http://opensource.org/licenses/gpl-2.0.php - GNU Public License v2 or later
  * @since      File available since Release 1.6.3
  *

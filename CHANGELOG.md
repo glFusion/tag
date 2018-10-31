@@ -1,4 +1,11 @@
-Tag Plugin ChangeLog
+# Tag Plugin ChangeLog
+
+## v2.1.0
+  - Ignored tags were included in what's related
+  - Rewrite of many internal routines to bring up-to-date and improve ignore tag handling
+  - Fixed broken admin functions of add / remove ban words
+  - Do not display an empty tag cloud block
+  - Added self checks to not process PLG calls for tag functions
 
 ## v2.0.2
   - UI Updates - HTML 5 compatibility fixes
@@ -21,7 +28,7 @@ Tag Plugin ChangeLog
   - Improved styling to better integration with uikit based themes
   - New admin interface to allow better management of tags and ignored tags
 
-## v1.0.2 (unreleased)
+## v1.0.2
   - Updated index sizes to allow better utf8 support
 
 ## v1.0.1

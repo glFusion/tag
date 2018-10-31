@@ -4,9 +4,9 @@ For the latest, and more detailed, documentation, please see the [Tag Plugin Wik
 
 ### OVERVIEW
 
-The Tag plugin enables you to put "tags" to your content and make it easier for you and visitors to classify content using the tags. This plugin works with all content types in glFusion, such as stories, static pages, Media Gallery item descriptions, Filemgmt descriptions, etc. 
+The Tag plugin enables you to put "tags" to your content and make it easier for you and visitors to classify content using the tags. This plugin works with all content types in glFusion, such as stories, static pages, Media Gallery item descriptions, Filemgmt descriptions, etc.
 
-**NOTE**: The Tag plugin **does not** support tags in the Forum plugin. 
+**NOTE**: The Tag plugin **does not** support tags in the Forum plugin.
 
 ### SYSTEM REQUIREMENTS
 
@@ -38,7 +38,6 @@ The Tag configuration option are available in the Configuration section located 
 
 The default name of tag block which will be created during the installation. If you  disable/enable the tag plugin, the block will also be disabled/enabled automatically.
 
-
 ### Tag Name
 
 Tag name to be used in items (articles), like '[tag:foo]'. You might prefer a shorter name like '[t:foo]'.
@@ -47,11 +46,9 @@ Tag name to be used in items (articles), like '[tag:foo]'. You might prefer a sh
 
 Maximum number of characters allowed in a tag. Should not be longer than 128 characters.
 
-
 ### Tag Case sensitive
 
 If this is true, the tag "glFusion" will NOT be identified with the tag "glfusion". When you change this option, you should re-install tag plugin.
-
 
 ### Allow stemming words
 
@@ -95,7 +92,7 @@ If this is set to true, tags will NOT be displayed where they should be in the a
 
 Defines which blocks should be displayed (i.e.; left / right ) when displaying the tag interface.
 
-### Replace Story What's Related 
+### Replace Story What's Related
 
 If this is enabled, the Tag plugin will generate a list of content items (not limited to just stories) that are related based on the tags in other content. This provides a much better set of related items than the default What's Related.
 
@@ -141,3 +138,5 @@ This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
 Foundation; either version 2 of the License, or (at your option) any later
 version.
+
+This plugin was originally developed by mystral-kk - geeklog AT mystral-kk DOT net

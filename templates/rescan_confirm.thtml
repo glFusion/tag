@@ -5,7 +5,7 @@
 	var lang_ok = "{lang_ok}";
 	var lang_cancel = "{lang_cancel}";
 </script>
-<script src="{site_admin_url}/plugins/tag/ajax.min.js"></script>
+<script src="{site_admin_url}/plugins/tag/ajax.js"></script>
 
 {start_block}
 
