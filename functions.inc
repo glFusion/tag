@@ -156,7 +156,7 @@ if ( $_TAG_CONF['enable_whatsrelated'] == true ) {
         $counter = 0;
 
         //  query map table for all tags assigned to this $type / $id
-        $result = DB_query("SELECT tag_id FROM {$_TABLES['tag_map']} WHERE type='".DB_escapeString($type)."' AND sid='".DB_escapeString($id)."'");
+        $result = DB_query("SELECT m.tag_id FROM {$_TABLES['tag_map']} AS m LEFT JOIN {$_TABLES['tag_list']} AS l ON m.tag_id=l.tag_id WHERE m.type='".DB_escapeString($type)."' AND m.sid='".DB_escapeString($id)."' AND l.ignore_tag = 0");
         while ( ($row = DB_fetchArray($result)) != false ) {
             if ( $first != 0 ) $tag_ids .= ',';
             $tag_ids .= $row['tag_id'];
@@ -421,7 +421,7 @@ function TAG_getTagId($tag) {
     if (isset($list[$tag])) {
         return $list[$tag];
     }
-    $tag_id = DB_getItem($_TABLES['tag_list'],'tag_id','tag = "'.DB_escapeString($tag).'"');
+    $tag_id = DB_getItem($_TABLES['tag_list'],'tag_id','tag = "'.DB_escapeString($tag).'" AND ignore_tag != 1');
     if ( $tag_id == NULL ) {
         return false;
     }
@@ -456,7 +456,7 @@ function TAG_saveTagToList($tag) {
 
     $tag = trim($tag);
 
-    if ( ( empty($tag) == true ) || (TAG_getTagId($tag) !== false ) ) {
+    if ( ( empty($tag) == true ) || (TAG_getTagId($tag) !== false ) || TAG_checkBadword($tag) == true ) {
         return true;
     }
     $sql = "INSERT INTO {$_TABLES['tag_list']} (tag) VALUES ('" . DB_escapeString($tag) . "')";
@@ -472,11 +472,20 @@ function TAG_saveTagToList($tag) {
 function TAG_saveTagToMap($tag, $id, $type) {
     global $_TABLES;
 
+    static $list = array();
+
     $tag = trim($tag);
     if (empty($tag) === true) {
         return true;
     } else {
-        $tag_id = TAG_getTagId($tag);
+        if (isset($list[$tag])) {
+            $tag_id = $list[$tag];
+        } else {
+            $tag_id = DB_getItem($_TABLES['tag_list'],'tag_id','tag = "'.DB_escapeString($tag).'"');
+            if ( $tag_id == NULL ) {
+                return true;
+            }
+        }
     }
 
     $cnt = DB_count($_TABLES['tag_map'],array('tag_id','sid','type'), array(DB_escapeString($tag_id),DB_escapeString($id),DB_escapeString($type)));
@@ -490,7 +499,6 @@ function TAG_saveTagToMap($tag, $id, $type) {
     } else {
         return true;
     }
-
 }
 
 /**
@@ -515,9 +523,6 @@ function TAG_scanTag($str) {
 
             foreach ($parts as $part) {
                 $part = TAG_normalize($part);
-                if (TAG_checkBadword($part) === true) {
-                    continue;
-                }
                 if (($part !== '') AND (strlen($part) <= $_TAG_CONF['max_tag_len'])) {
                     $retval[] = $part;
                 }
@@ -528,36 +533,6 @@ function TAG_scanTag($str) {
     }
 
     return $retval;
-}
-
-/**
-* Return if a word is "ignored" or not
-*
-* @param  string $word - a normalized word to check
-* @return boolean - true = bad, false = not bad
-*/
-function TAG_isBadword($word) {
-    global $_TABLES;
-
-    static $badwords = null;
-    static $loaded = false;
-
-    if (!$loaded) {
-        $badwords = array();
-
-        $sql = "SELECT * FROM {$_TABLES['tag_list']} WHERE ignore_tag=1";
-        $result = DB_query($sql);
-
-        if (!DB_error() AND (DB_numRows($result) > 0)) {
-            while (($A = DB_fetchArray($result)) !== FALSE) {
-                $badwords[] = $A['tag'];
-            }
-        }
-
-        $loaded = true;
-    }
-
-    return array_search($word, $badwords);
 }
 
 function plugin_itemdeleted_tag($id,$type)
@@ -610,10 +585,8 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
         $tags = array_unique($tags);
         if (count($tags) > 0) {
             foreach ($tags as $tag) {
-                if (!TAG_isBadword($tag)) {
-                    TAG_saveTagToList($tag);
-                    TAG_saveTagToMap($tag, $id, $type);
-                }
+                TAG_saveTagToList($tag);
+                TAG_saveTagToMap($tag, $id, $type);
             }
         }
     }
@@ -671,7 +644,7 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
     $sql = "SELECT *, COUNT(t.tag_id) AS cnt "
             . "FROM {$_TABLES['tag_map']} AS m "
             . "LEFT JOIN {$_TABLES['tag_list']} AS t "
-            . "ON t.tag_id = m.tag_id WHERE t.ignore_tag = 0 "
+            . "ON t.tag_id = m.tag_id WHERE t.ignore_tag != 1 "
             . "GROUP BY t.tag_id "
             . "ORDER BY cnt DESC ";
     if ($limit > 0) {
@@ -746,6 +719,9 @@ function TAG_formatRelatedTags($all_tags, $tag) {
 
         foreach ($all_tags as $t) {
             if ($t != $tag) {
+                if (TAG_checkBadword($t)) {
+                    continue;
+                }
                 $url  = COM_buildURL($_CONF['site_url'] . '/tag/index.php?tag='
                 . rawurlencode($t));
                 $text = $t;
@@ -771,8 +747,8 @@ function TAG_getTaggedItems($tag) {
 
     $retval = '';
 
-    $sql = "SELECT type, sid FROM {$_TABLES['tag_map']} "
-    . "WHERE (tag_id = '" . DB_escapeString(TAG_getTagId($tag)) . "')";
+    $sql = "SELECT m.type, m.sid FROM {$_TABLES['tag_map']} AS m LEFT JOIN {$_TABLES['tag_list']} AS l ON m.tag_id=l.tag_id "
+    . "WHERE (m.tag_id = '" . DB_escapeString(TAG_getTagId($tag)) . "' AND l.ignore_tag != 1)";
     $result = DB_query($sql);
     if (DB_error()) {
         return $retval;

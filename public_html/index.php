@@ -31,9 +31,13 @@ $tag = COM_getArgument('tag');
 $T = new Template($_CONF['path'] . 'plugins/tag/templates');
 $T->set_file('page', 'index.thtml');
 
+$tc = TAG_getTagCloud($_TAG_CONF['max_tag_cloud']);
+if ($tc == '') {
+    $T->set_var('no_tag',true);
+}
 $T->set_var(array(
     'lang_tag_list' => $LANG_TAG['tag_list'],
-    'tag_cloud'     => TAG_getTagCloud($_TAG_CONF['max_tag_cloud'])
+    'tag_cloud'     => $tc
 ));
 
 /**
@@ -42,7 +46,7 @@ $T->set_var(array(
 
 if ( $tag == '' ) {
     // grab the highest by count
-    $sql = "SELECT * FROM {$_TABLES['tag_list']} ORDER BY hits DESC LIMIT 1";
+    $sql = "SELECT * FROM {$_TABLES['tag_list']} WHERE ignore_tag != 1 ORDER BY hits DESC LIMIT 1";
     $result = DB_query($sql);
     if ( DB_numRows($result) > 0 ) {
         $row = DB_fetchArray($result);

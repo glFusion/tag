@@ -36,7 +36,7 @@ $LANG_TAG = array(
     'admin_label'       => 'Tag',
     'display_label'     => 'Tag: ',
     'default_block_title' => 'Popular tags at this site',
-    'tag_list'          => 'Tag list',
+    'tag_list'          => 'Tag List',
     'selected_tag'      => 'Items having <strong>%s</strong> tag: ',	// %s = tag name
     'related'           => 'Related tags',
     'block_title'       => 'Popular tags at this site',

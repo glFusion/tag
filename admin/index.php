@@ -64,7 +64,7 @@ function viewTagList()
     $query_arr = array('table' => 'tag_list',
                         'sql' => $sql,
                         'query_fields' => array('tag'),
-                        'default_filter' => " WHERE ignore_tag=0 ",
+                        'default_filter' => " WHERE ignore_tag != 1 ",
                         'group_by' => "m.tag_id");
 
     $filter = "";
@@ -237,6 +237,9 @@ function addBadword()
     . "VALUES ('" . DB_escapeString($word) . "',1)";
     $result = DB_query($sql);
 
+    CACHE_remove_instance('tagcloud');
+    CACHE_remove_instance('tagkwd');
+
     return DB_error() ? $LANG_TAG['add_fail'] : $LANG_TAG['add_success'];
 }
 
@@ -260,6 +263,9 @@ function deleteTag()
 
     $sql = "UPDATE {$_TABLES['tag_list']} SET ignore_tag=1 WHERE (tag_id IN ({$tag_ids}))";
     $result = DB_query($sql);
+
+    CACHE_remove_instance('tagcloud');
+    CACHE_remove_instance('tagkwd');
 
     return DB_error() ? $LANG_TAG['delete_fail'] : $LANG_TAG['delete_success'];
 }
