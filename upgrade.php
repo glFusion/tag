@@ -7,7 +7,7 @@
 * @license GNU General Public License version 2 or later
 *     http://www.opensource.org/licenses/gpl-license.php
 *
-*  Copyright (C) 2010-2018 by the following authors:
+*  Copyright (C) 2010-2020 by the following authors:
 *   Mark R. Evans   mark AT glfusion DOT org
 *
 *  Based on the Original Work from Tag Plugin
@@ -82,6 +82,9 @@ function tag_upgrade()
             // no changes
 
         case '2.0.2' :
+            // no changes
+
+        case '2.1.0' :
             // no changes
 
         default:

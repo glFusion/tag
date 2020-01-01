@@ -1,5 +1,8 @@
 # Tag Plugin ChangeLog
 
+## v2.1.1
+  - Configuration settings where not always honored
+
 ## v2.1.0
   - Ignored tags were included in what's related
   - Rewrite of many internal routines to bring up-to-date and improve ignore tag handling

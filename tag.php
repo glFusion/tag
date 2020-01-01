@@ -5,7 +5,7 @@
 * @license GNU General Public License version 2 or later
 *     http://www.opensource.org/licenses/gpl-license.php
 *
-*  Copyright (C) 2010-2018 by the following authors:
+*  Copyright (C) 2010-2020 by the following authors:
 *   Mark R. Evans   mark AT glfusion DOT org
 *
 *  Based on the Original Work from Tag Plugin
@@ -31,7 +31,7 @@ $_TABLES['tag_menu']      = $_DB_table_prefix . 'tag_menu';
 
 $_TAG_CONF['pi_name']           = 'tag';
 $_TAG_CONF['pi_display_name']   = 'Tag';
-$_TAG_CONF['pi_version']        = '2.1.0';
+$_TAG_CONF['pi_version']        = '2.1.1';
 $_TAG_CONF['gl_version']        = '1.6.3';
 $_TAG_CONF['pi_url']            = 'https://www.glfusion.org/';
 ?>
