@@ -60,7 +60,7 @@ if ($tag != '') {
     if ($tag_id !== false) {
         TAG_increaseHitCount($tag_id);
         $text = $tag;
-        if ($_TAG_CONF['replace_underscore'] == true) {
+        if ($_TAG_CONF['replace_underscore'] === true) {
             $text = str_replace('_', ' ', $text);
         }
         $T->set_var('selected_tag', sprintf($LANG_TAG['selected_tag'], htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt())));
