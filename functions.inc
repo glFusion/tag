@@ -569,7 +569,7 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
     // Delete old records from tag_map
     $sql = "DELETE FROM {$_TABLES['tag_map']} "
             . "WHERE (type = '".DB_escapeString($type)."') AND (sid = '" . DB_escapeString($item_old_id) . "')";
-    DB_query($sql);
+    DB_query($sql,1);
 
     $info = array();
     $what = 'raw-description,title,status';
