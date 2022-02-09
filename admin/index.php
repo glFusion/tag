@@ -360,7 +360,7 @@ function _tag_admin_menu($cmd = 'viewtags')
                     'text' => 'Tag Info','active' => true);
     }
 
-    $menu_arr[] = array('url' => $_CONF['site_admin_url'],
+    $menu_arr[] = array('url' => $_CONF['site_admin_url'].'/index.php',
                 'text' => $LANG_ADMIN['admin_home']);
 
     $retval .= ADMIN_createMenu(

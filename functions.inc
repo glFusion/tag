@@ -7,7 +7,7 @@
 * @license GNU General Public License version 2 or later
 *     http://www.opensource.org/licenses/gpl-license.php
 *
-*  Copyright (C) 2010-2018 by the following authors:
+*  Copyright (C) 2010-2020 by the following authors:
 *   Mark R. Evans   mark AT glfusion DOT org
 *
 *  Based on the Original Work from Tag Plugin
@@ -291,7 +291,7 @@ function plugin_enablestatechange_tag($state)
 *
 * Vars available in templates are {tag_label} and {tag_part}.
 */
-if (isset($_TAG_CONF['publish_as_template_vars']) && $_TAG_CONF['publish_as_template_vars'] === true) {
+if (isset($_TAG_CONF['publish_as_template_vars']) && $_TAG_CONF['publish_as_template_vars'] == true) {
     function plugin_templatesetvars_tag($templatename, &$template) {
         global $_TAG_CONF;
 
@@ -330,7 +330,7 @@ function TAG_normalize($str)
 {
     global $_TAG_CONF;
 
-    if ($_TAG_CONF['tag_case_sensitive'] === false) {
+    if ($_TAG_CONF['tag_case_sensitive'] == false) {
         $str = utf8_strtolower($str);
     }
     if (utf8_strlen($str) > $_TAG_CONF['max_tag_len']) {
@@ -370,7 +370,7 @@ function plugin_autotags_tag($op, $content = '', $autotag = '') {
                             $tag_part .= $LANG_TAG['badword_replace'] . ' ';
                         } else {
                             $text = $tag;
-                            if ($_TAG_CONF['replace_underscore'] === true) {
+                            if ($_TAG_CONF['replace_underscore'] == true) {
                                 $text = str_replace('_', ' ', $text);
                             }
                             $url = $_CONF['site_url'] . '/tag/index.php?tag='
@@ -385,7 +385,7 @@ function plugin_autotags_tag($op, $content = '', $autotag = '') {
                 $_TAG_CONF['template_vars']['tag_part']  = $tag_part;
                 $_TAG_CONF['template_vars']['tag_label'] = $LANG_TAG['display_label'];
 
-                if ($_TAG_CONF['publish_as_template_vars'] === true && $namespace != 'dokuwiki') {
+                if ($_TAG_CONF['publish_as_template_vars'] == true && $namespace != 'dokuwiki') {
                     // Replace a tag part with a null string
                     $content = str_replace($tagstr, '', $content);
                 } else {
@@ -569,7 +569,7 @@ function plugin_itemsaved_tag($id, $type, $old_id='') {
     // Delete old records from tag_map
     $sql = "DELETE FROM {$_TABLES['tag_map']} "
             . "WHERE (type = '".DB_escapeString($type)."') AND (sid = '" . DB_escapeString($item_old_id) . "')";
-    DB_query($sql);
+    DB_query($sql,1);
 
     $info = array();
     $what = 'raw-description,title,status';
@@ -680,7 +680,7 @@ function TAG_getTagCloud($limit = 0, $is_block = false) {
         }
         $rel   = rawurlencode($tag);
         $title = $tag;
-        if ($_TAG_CONF['replace_underscore'] === true) {
+        if ($_TAG_CONF['replace_underscore'] == true) {
             $title = str_replace('_', ' ', $title);
         }
         $title = htmlspecialchars($title, ENT_QUOTES, COM_getEncodingt());
@@ -725,7 +725,7 @@ function TAG_formatRelatedTags($all_tags, $tag) {
                 $url  = COM_buildURL($_CONF['site_url'] . '/tag/index.php?tag='
                 . rawurlencode($t));
                 $text = $t;
-                if ($_TAG_CONF['replace_underscore'] === true) {
+                if ($_TAG_CONF['replace_underscore'] == true) {
                     $text = str_replace('_', ' ', $text);
                 }
                 $text = htmlspecialchars($text, ENT_QUOTES, COM_getEncodingt());
