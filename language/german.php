@@ -118,10 +118,9 @@ $LANG_fs['tag'] = array(
     'fs_main' => 'Tag-Plugin - Haupteinstellungen'
 );
 
-// Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
-$LANG_configselects['tag'] = array(
-    0 => array('Ja' => true, 'Nein' => false),
-    1 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
+$LANG_configSelect['tag'] = array(
+    0 => array(true => 'Yes', false => 'No'),
+    1 => array(0 => 'Left Blocks', 1 => 'Right Blocks', 2 => 'Left & Right Blocks', 3 => 'None')
 );
 
 ?>
