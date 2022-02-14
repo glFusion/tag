@@ -1,5 +1,9 @@
 # Tag Plugin ChangeLog
 
+## v2.1.3
+
+- Fixed configuration issue on glFusion LTS releases
+
 ## v2.1.2
 
 - Several minor code tweaks to address SQL errors
