@@ -90,7 +90,7 @@ function tag_upgrade()
         case '2.1.1' :
             // no changes
 
-        case '2.1.2' ::
+        case '2.1.2' :
             // no changes
 
         default:
