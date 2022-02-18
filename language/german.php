@@ -78,6 +78,7 @@ $LANG_TAG = array(
     'ignore_confirm' => 'Are you sure you want to ignore this tag?',
     'unban_confirm' => 'Are you sure you want to allow this tag?',
     'menu_rescan' => 'Rescan Content',
+    'cancel'            => 'Cancel',
     'rescan' => 'Rescan',
     'rescan_instructions' => 'This will rescan all glFusion content and rebuild the tag mappings. This process will rescan all content, so it could take some time to run. You generally do not need to rescan all content. If you have re-installed the Tag Plugin, rescanning should be done, othrwise, it should not be necessary.',
     'rescan_title' => 'Rescan All Content',
