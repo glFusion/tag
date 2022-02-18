@@ -317,6 +317,8 @@ if (isset($_TAG_CONF['publish_as_template_vars']) && $_TAG_CONF['publish_as_temp
 function TAG_split($str) {
     global $LANG_TAG;
 
+    $str = str_replace("\xc2\xa0", ' ', $str);
+
     $pattern = preg_quote($LANG_TAG['tag_separators']);
     $pattern = '[' . $pattern . ']+';
     if (function_exists('mb_split')) {
