@@ -7,7 +7,7 @@
 * @license GNU General Public License version 2 or later
 *     http://www.opensource.org/licenses/gpl-license.php
 *
-*  Copyright (C) 2010-2018 by the following authors:
+*  Copyright (C) 2010-2022 by the following authors:
 *   Mark R. Evans   mark AT glfusion DOT org
 *
 *  Based on the Original Work from Tag Plugin
@@ -118,8 +118,8 @@ $LANG_fs['tag'] = array(
     'fs_main'   => 'Tag plugin Main Config',
 );
 
-$LANG_configselects['tag'] = array(
-    0 => array('Yes' => true, 'No' => false),
-    1 => array('Left Blocks' => 0, 'Right Blocks' => 1, 'Left & Right Blocks' => 2, 'None' => 3)
+$LANG_configSelect['tag'] = array(
+    0 => array(true => 'Yes', false => 'No'),
+    1 => array(0 => 'Left Blocks', 1 => 'Right Blocks', 2 => 'Left & Right Blocks', 3 => 'None')
 );
 ?>

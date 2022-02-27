@@ -7,7 +7,7 @@
 * @license GNU General Public License version 2 or later
 *     http://www.opensource.org/licenses/gpl-license.php
 *
-*  Copyright (C) 2010-2020 by the following authors:
+*  Copyright (C) 2010-2022 by the following authors:
 *   Mark R. Evans   mark AT glfusion DOT org
 *
 *  Based on the Original Work from Tag Plugin
@@ -35,6 +35,14 @@ if (file_exists($langfile)) {
     include_once $langfile;
     if (file_exists($custfile)) {
         include_once $custfile;
+    }
+}
+
+if (version_compare(GVERSION,'2.0.0','lt')) {
+    if (isset($LANG_configSelect['tag']) && !isset($LANG_configselects['tag'])) {
+        foreach ($LANG_configSelect['tag'] AS $cfgItem) {
+            $LANG_configselects['tag'][] = array_flip($cfgItem);
+        }
     }
 }
 
@@ -309,6 +317,8 @@ if (isset($_TAG_CONF['publish_as_template_vars']) && $_TAG_CONF['publish_as_temp
 function TAG_split($str) {
     global $LANG_TAG;
 
+    $str = str_replace("\xc2\xa0", ' ', $str);
+
     $pattern = preg_quote($LANG_TAG['tag_separators']);
     $pattern = '[' . $pattern . ']+';
     if (function_exists('mb_split')) {
@@ -317,7 +327,7 @@ function TAG_split($str) {
         }
         $retval = mb_split($pattern, $str);
     } else {
-        $retval = split($pattern, $str);
+        $retval = preg_split($pattern,$str);
     }
 
     return $retval;
@@ -515,7 +525,6 @@ function TAG_scanTag($str) {
     if ( !isset($_TAG_CONF['tag_name']) ) {
         return $retval;
     }
-
     $pattern = '|\[' . $_TAG_CONF['tag_name'] . ':([^\]]*)\]|i';
     if (preg_match_all($pattern, $str, $match, PREG_SET_ORDER)) {
         foreach ($match as $M) {
@@ -528,7 +537,6 @@ function TAG_scanTag($str) {
                 }
             }
         }
-
         $retval = array_unique($retval);
     }
 
@@ -858,8 +866,8 @@ function TAG_getKeywords($num_keywords) {
 
     $retval = '';
     $retval = CACHE_check_instance($cacheInstance, 0);
-    if ( $retval ) {
-        return unserialize($retval);
+    if ( !empty($retval) ) {
+        return unserialize((string) $retval);
     }
 
     $sql = "SELECT L.tag, COUNT(m.tag_id) AS cnt "

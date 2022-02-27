@@ -1,5 +1,11 @@
 # Tag Plugin ChangeLog
 
+## v2.1.3
+
+- Czech translation
+- Fixed configuration issue on glFusion LTS releases
+- Fixed issue where a &nbsp; instead of physical space could cause tags to not be split
+
 ## v2.1.2
 
 - Several minor code tweaks to address SQL errors
